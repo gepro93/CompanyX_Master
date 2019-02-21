@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2196f3</color>
+    <color name="colorPrimaryDark">#04043d</color>
+    <color name="colorAccent">#04043e</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGrey">#666666</color>
+    <color name="colorSwitchTrackGreen">#27702B</color>
+    <color name="colorSwitchThumbGreen">#0FF714</color>
+    <color name="colorSwitchTrackRed">#741414</color>
+    <color name="colorSwitchThumbRed">#EE0202</color>
+
+</resources>

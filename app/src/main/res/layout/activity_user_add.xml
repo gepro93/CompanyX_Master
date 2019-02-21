@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserAdd"
+    android:background="@drawable/ic_background"
+    android:weightSum="1000"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="350">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Felhasználó létrehozása"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/twUserAdd"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*Minden mező kitöltése kötelező!"
+            android:textSize="13sp"
+            android:textColor="@color/colorWhite"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/twUserAdd"
+            android:layout_marginTop="10sp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="530"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Felhasználónév"
+            android:textAlignment="center"
+            android:defaultFocusHighlightEnabled="true"
+            android:id="@+id/etUsername_add"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jelszó"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:id="@+id/etPassword_add_1"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jelszó megerősítés"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:id="@+id/etPassword_add_2"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/spPermission"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/spStatus"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="220">
+
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="@drawable/button_background"
+        android:text="Létrehozás"
+        android:textAllCaps="false"
+        android:textColor="@drawable/button_text_color"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btUserAdd"
+        android:layout_marginTop="35sp"
+        android:layout_marginRight="10sp"
+        android:layout_marginLeft="40sp"
+        />
+
+        <Button
+        android:background="@drawable/button_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:drawableLeft="@drawable/menu_logout"
+        android:text="Vissza"
+        android:textColor="@drawable/button_text_color"
+        android:textAllCaps="false"
+        android:id="@+id/btUserAddBack"
+        android:layout_below="@+id/btUserAdd"
+        android:layout_marginTop="35sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginLeft="10sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

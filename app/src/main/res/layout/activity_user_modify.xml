@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserModify"
+    android:background="@drawable/ic_background"
+    android:weightSum="1000"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="450">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Felhasználó módisítása"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/twUserMod"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/twUserMod"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Felhasználónév: "
+                android:textSize="15sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="end"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="15sp"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/twUserName"/>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="460"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Felhasználónév"
+            android:textAlignment="center"
+            android:defaultFocusHighlightEnabled="true"
+            android:id="@+id/etUsernameMod"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jelszó"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:id="@+id/etPasswordMod1"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jelszó megerősítés"
+            android:textAlignment="center"
+            android:inputType="textPassword"
+            android:id="@+id/etPasswordMod2"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/spPermissionMod"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:id="@+id/spStatusMod"
+            android:textAlignment="gravity"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="90">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_background"
+            android:drawableLeft="@drawable/menu_modify"
+            android:text="Módosítás"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color"
+            android:id="@+id/btUserModifyExecute"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginLeft="40sp"
+            />
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btUserModifyBack"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="40sp"
+            android:layout_marginLeft="10sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

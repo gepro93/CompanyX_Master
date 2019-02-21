@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserModifyList"
+    android:background="@drawable/ic_background"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="37.5">
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beosztás módosítása"
+            android:textColor="@color/colorWhite"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50sp"
+            android:textSize="25sp"
+            android:id="@+id/twUserMod"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="50">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lwPositionModify"
+            android:choiceMode="singleChoice">
+        </ListView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="12.5"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_background"
+            android:drawableLeft="@drawable/menu_modify"
+            android:text="Módosít"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color"
+            android:layout_gravity="center"
+            android:layout_marginRight="20sp"
+            android:layout_marginLeft="40sp"
+            android:id="@+id/btPositionMod"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_background"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="40sp"
+            android:id="@+id/btPositionModBack"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

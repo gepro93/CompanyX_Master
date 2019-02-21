@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_background"
+    tools:context=".Login">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="168dp"
+        android:layout_height="175dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        app:srcCompat="@drawable/logo" />
+    
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:id="@+id/etUsername"
+        android:layout_marginTop="60dp"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Felhasználónév"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:inputType="textPersonName"
+        android:textSize="18dp"
+        android:background="#11000000"
+        android:drawableLeft="@drawable/ic_action_user"
+        />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:id="@+id/etPassword"
+        android:layout_marginTop="28dp"
+        android:layout_below="@id/etUsername"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint="Jelszó"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:inputType="textPassword"
+        android:background="#11000000"
+        android:layout_alignLeft="@id/etUsername"
+        android:layout_alignStart="@id/etUsername"
+        android:drawableLeft="@drawable/ic_action_password"
+        />
+
+
+    <Button
+        android:id="@+id/btLogin"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background"
+        android:text="Belépés"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+        android:layout_below="@id/etPassword"
+        android:textColor="@drawable/button_text_color"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:layout_below="@id/btLogin"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlack"
+        android:text="Copyright © Prokli Gergely"/>
+
+</RelativeLayout>
+

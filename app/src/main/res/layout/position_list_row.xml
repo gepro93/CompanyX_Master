@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/twPositionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:text="0"
+            android:drawableLeft="@drawable/button_menu_position"
+            />
+        <TextView
+            android:id="@+id/twPositionGradeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twPositionName"
+            android:layout_marginTop="7dp"
+            android:textColor="#343434"
+            android:textSize="14dp"
+            android:text="0"
+            android:drawableLeft="@drawable/button_menu_grade"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/twPositionSalaryFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#343434"
+            android:textSize="14dp"
+            android:text="0"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#343434"
+            android:textSize="14dp"
+            android:text="-"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            />
+
+        <TextView
+            android:id="@+id/twPositionSalaryTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#343434"
+            android:textSize="14dp"
+            android:text="0"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#343434"
+            android:textSize="14dp"
+            android:text=" HUF"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
