@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DepartmentMenu"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@drawable/ic_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="23">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Osztályok kezelése"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30sp"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="22"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_useradd"
+            android:text="Létrehozás"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btDepartmentCreate"
+            android:layout_marginTop="35sp"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="20sp"
+            />
+
+        <Button
+            android:background="@drawable/button_v2_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:drawableTop="@drawable/menu_button_useredit"
+            android:text="Módosítás"
+            android:textColor="@drawable/button_text_color2"
+            android:textAllCaps="false"
+            android:id="@+id/btDepartmentModify"
+            android:layout_marginTop="35sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="40sp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="22"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btDepartmentDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="20sp"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_userdelete"
+            android:text="Törlés"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+        <Button
+            android:id="@+id/btDepartmentList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="40sp"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_userlist"
+            android:text="Osztályok"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="33">
+
+
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btDepartmentMenuBack"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="90sp"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -19,45 +19,53 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+public class PositionDelete extends AppCompatActivity {
 
-public class UserDelete extends AppCompatActivity {
-
+    private Button btPositionDeleteBack, btPositionDeleteExec;
+    private ListView lwPositionDelete;
     private Database db;
-    private ListView lwUserDelete;
-    private Button btUserDeleteExec, btUserDeleteBack;
     private ProgressDialog progress;
-    private String userNameForDelete;
+    private String positionNameForDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_delete);
+        setContentView(R.layout.activity_position_delete);
         init();
 
-        final ArrayList<HashMap<String,String>> userList = db.viewUsers();
-        final ListAdapter adapter = new SimpleAdapter(UserDelete.this, userList, R.layout.user_delete_row,
-                new String[]{"USER_NAME","PERMISSION_NAME","USER_STATUS"}, new int[]{R.id.twName, R.id.twPermission, R.id.twStatus});
+        final ArrayList<HashMap<String, String>> positionDeleteList = db.viewPositions();
 
-        lwUserDelete.setAdapter(adapter);
+        final ListAdapter adapter = new SimpleAdapter(PositionDelete.this, positionDeleteList, R.layout.position_del_row,
+                new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
+                new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
 
+        lwPositionDelete.setAdapter(adapter);
 
-        lwUserDelete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lwPositionDelete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 view.setSelected(true);
                 HashMap<String, Object> obj = (HashMap<String, Object>) adapter.getItem(i);
-                userNameForDelete = (String) obj.get("POSITION_NAME");
+                positionNameForDelete = (String) obj.get("POSITION_NAME");
             }
         });
 
-        btUserDeleteExec.setOnClickListener(new View.OnClickListener() {
+        btPositionDeleteBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UserDelete.this);
+                startActivity(new Intent(PositionDelete.this,PositionMenu.class));
+                finish();
+            }
+        });
+
+        btPositionDeleteExec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(PositionDelete.this);
 
                 builder.setCancelable(true);
                 builder.setTitle("Törlés");
-                builder.setMessage("Biztosan törlöd a felhasználót?");
+                builder.setMessage("Biztosan törlöd a pozíciót?");
 
                 builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
                     @Override
@@ -69,71 +77,40 @@ public class UserDelete extends AppCompatActivity {
                 builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        userDelete(userList,adapter); //Felhasználó törlése
+                        positionDelete(positionDeleteList,adapter); //Pozició törlése
                     }
                 });
                 builder.show();
             }
         });
 
-        btUserDeleteBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserDelete.this, UserMenu.class));
-                finish();
-            }
-        });
-
     }
-    public void init(){
+
+    private void init() {
+        btPositionDeleteBack = findViewById(R.id.btPositionDeleteBack);
+        btPositionDeleteExec = findViewById(R.id.btPositionDeleteExec);
+        lwPositionDelete = findViewById(R.id.lwPositionDelete);
         db = new Database(this);
-        lwUserDelete = (ListView) findViewById(R.id.lwUserDelete);
-        btUserDeleteExec = (Button) findViewById(R.id.btUserDeleteExec);
-        btUserDeleteBack = (Button) findViewById(R.id.btUserDeleteBack);
     }
 
-    public void userDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
-        int pos  = lwUserDelete.getCheckedItemPosition();
+    public void positionDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
+        int pos  = lwPositionDelete.getCheckedItemPosition();
+
 
         if (pos > -1)
         {
-            Boolean userDelete = db.UserDelete(userNameForDelete);
+            Boolean positionDelete = db.positionDelete(positionNameForDelete);
 
-            if (userDelete){
+            if (positionDelete){
                 arrayList.remove(pos);
                 progressDialog();
-            }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
+            }else Toast.makeText(PositionDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
     }
 
-    public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserDelete.this);
-
-        builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
-
-        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.show();
-    }
-
-
     public void progressDialog(){
-        progress = new ProgressDialog(UserDelete.this);
+        progress = new ProgressDialog(PositionDelete.this);
         progress.setMax(100);
         progress.setMessage("Felhasználó törlése folyamatban...");
         progress.setTitle("Eltávolítás...");

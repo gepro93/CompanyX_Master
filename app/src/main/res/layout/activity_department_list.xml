@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PositionList"
+    tools:context=".DepartmentList"
     android:orientation="vertical"
     android:background="@drawable/ic_background"
     android:weightSum="1000">
@@ -17,12 +17,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beosztás lista"
+            android:text="Osztály lista"
             android:textColor="@color/colorWhite"
             android:textSize="25sp"
             android:layout_centerInParent="true"
             />
-        
+
     </RelativeLayout>
 
     <LinearLayout
@@ -33,7 +33,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lwPositionList"/>
+            android:id="@+id/lwDepartmentList"/>
 
     </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:textColor="@drawable/button_text_color"
             android:text="Vissza"
             android:drawableLeft="@drawable/menu_logout"
-            android:id="@+id/btPositionListBack"
+            android:id="@+id/btDepartmentListBack"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20sp"
             android:textAllCaps="false"/>

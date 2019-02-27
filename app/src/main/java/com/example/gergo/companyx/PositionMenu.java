@@ -59,6 +59,22 @@ public class PositionMenu extends AppCompatActivity {
                 finish();
             }
         });
+
+        btPositionDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PositionMenu.this,PositionDelete.class));
+                finish();
+            }
+        });
+
+        btPositionMenuBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PositionMenu.this,AdminMenu.class));
+                finish();
+            }
+        });
     }
 
     public void init(){
@@ -142,7 +158,7 @@ public class PositionMenu extends AppCompatActivity {
                     if (!positionCheck){
                         boolean createPosition = db.insertPosition(etPosition,gradeId);
                         if (createPosition){
-                            new Task1().execute();
+                            progressDialog();
                         }else Toast.makeText(PositionMenu.this, "Adatbázis hiba létrehozáskor!", Toast.LENGTH_SHORT).show();
                     }
 
@@ -177,49 +193,39 @@ public class PositionMenu extends AppCompatActivity {
         builder.show();
     }
 
-    class Task1 extends AsyncTask<Void, Void, String> {
+    public void progressDialog(){
+        progress = new ProgressDialog(PositionMenu.this);
+        progress.setMax(100);
+        progress.setMessage("Pozíció létrehozása folyamatban...");
+        progress.setTitle("Létrehozás...");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.show();
 
-        Handler handler = new Handler(){
+        new Thread(new Runnable() {
             @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                progress.incrementProgressBy(1);
-            }
-        };
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(PositionMenu.this);
-            progress.setMax(100);
-            progress.setMessage("Felhasználó létrehozása folyamatban...");
-            progress.setTitle("Létrehozás");
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                while (progress.getProgress() <= progress.getMax()) {
-                    Thread.sleep(40);
-                    handler.sendMessage(handler.obtainMessage());
-                    if(progress.getProgress() == progress.getMax()){
-                        progress.dismiss();
+            public void run() {
+                try{
+                    while(progress.getProgress() <= progress.getMax()){
+                        Thread.sleep(20);
+                        handler.sendMessage(handler.obtainMessage());
+                        if(progress.getProgress() == progress.getMax()){
+                            progress.dismiss();
+                        }
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        }).start();
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Toast.makeText(PositionMenu.this, "Sikeres létrehozás!", Toast.LENGTH_LONG).show();
-        }
 
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            progress.incrementProgressBy(1);
+        }
+    };
 }

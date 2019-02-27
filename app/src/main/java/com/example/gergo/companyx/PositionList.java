@@ -28,7 +28,7 @@ public class PositionList extends AppCompatActivity {
         init();
 
         ArrayList<HashMap<String, String>> positionList = db.viewPositions();
-        Toast.makeText(this, ""+positionList, Toast.LENGTH_SHORT).show();
+
         ListAdapter adapter = new SimpleAdapter(PositionList.this, positionList, R.layout.position_list_row,
                 new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
                 new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});

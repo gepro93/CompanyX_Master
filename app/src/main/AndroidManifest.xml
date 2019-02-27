@@ -8,8 +8,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".PositionModify"></activity>
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+        <activity android:name=".DepartmentList"></activity>
+        <activity android:name=".DepartmentMenu" />
+        <activity android:name=".PositionDelete" />
+        <activity android:name=".PositionModify" />
         <activity android:name=".PositionList" />
         <activity
             android:name=".SplashScreen"

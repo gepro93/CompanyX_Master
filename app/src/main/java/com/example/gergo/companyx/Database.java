@@ -737,80 +737,6 @@ public class Database extends SQLiteOpenHelper{
             return userCount;
         }
 
-        //Admin létrehozása
-        protected boolean insertAdmin(){
-                SQLiteDatabase db = this.getWritableDatabase();
-                ContentValues contentValues = new ContentValues();
-
-                String adminUserName = "admin";
-                String adminPassword = "admin1234";
-                Boolean adminStatus = true;
-                int adminPermission = 1;
-
-                contentValues.put(USER_NAME, adminUserName);
-                contentValues.put(USER_PASSWORD, adminPassword);
-                contentValues.put(USER_STATUS, adminStatus);
-                contentValues.put(USER_PERMISSION_ID, adminPermission);
-
-                long eredmeny = db.insert(USER_TABLE, null, contentValues);
-
-                if(eredmeny == -1){
-                    return false;
-                }else{
-                    return true;
-                }
-        }
-
-
-    /*
-    * JOGOSULTSÁGGAL KAPCSOLATOS ADATBÁZIS PARANCSOK
-    * */
-
-        //Jogosultságok létrehozása
-        protected boolean createPermissions(){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentAdmin = new ContentValues();
-            ContentValues contentHr = new ContentValues();
-            ContentValues contentFacilities = new ContentValues();
-            ContentValues contentEmployee = new ContentValues();
-            ContentValues contentSuperUser = new ContentValues();
-
-            String adminPerm = "Admin";
-            String hrPerm = "HR";
-            String facilitiesPerm = "Beszerzés";
-            String employeePerm = "Dolgozó";
-            String superUser = "Super User";
-
-            contentAdmin.put(PERMISSION_NAME, adminPerm);
-            contentHr.put(PERMISSION_NAME, hrPerm);
-            contentFacilities.put(PERMISSION_NAME, facilitiesPerm);
-            contentEmployee.put(PERMISSION_NAME, employeePerm);
-            contentSuperUser.put(PERMISSION_NAME, superUser);
-
-            long resultAdmin = db.insert(PERMISSION_TABLE, null, contentAdmin);
-            long resultHr = db.insert(PERMISSION_TABLE, null, contentHr);
-            long resultFacilities = db.insert(PERMISSION_TABLE, null, contentFacilities);
-            long resultEmployee = db.insert(PERMISSION_TABLE, null, contentEmployee);
-            long resultSuperUser = db.insert(PERMISSION_TABLE, null, contentSuperUser);
-
-            if(resultAdmin == -1 || resultHr == -1 || resultFacilities == -1 || resultEmployee == -1 || resultSuperUser == -1){
-                return false;
-            }else{
-                return true;
-            }
-        }
-
-        //Jogosultságok ellenőrzése
-        public Boolean permissionCheck(){
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + PERMISSION_TABLE + " WHERE jogosultsag_id=1 AND jogosultsag_id=2 AND jogosultsag_id=3 AND jogosultsag_id=4 AND jogosultsag_id=5", null);
-
-            if(cursor.getCount()>0){
-                return true;
-            }else return false;
-        }
-
-
     /*
     * POZÍCIÓVAL KAPCSOLATOS ADATBÁZIS PARANCSOK
     * */
@@ -831,7 +757,8 @@ public class Database extends SQLiteOpenHelper{
 
             String query = "SELECT u."+ POSITION_NAME + ", g."+ GRADE_NAME + ", g."+ SALARY_MIN_VALUE +" , g."+ SALARY_MAX_VALUE +
                     " FROM " + POSITION_TABLE + " AS u" +
-                    " LEFT JOIN " + GRADE_TABLE + " AS g ON u." + POSITION_GRADE_ID + " = g."+ GRADE_ID;
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON u." + POSITION_GRADE_ID + " = g."+ GRADE_ID +
+                    " ORDER BY " + GRADE_NAME;
 
             Cursor cursor = db.rawQuery(query,null);
 
@@ -843,22 +770,6 @@ public class Database extends SQLiteOpenHelper{
                 position.put("SALARY_MAX_VALUE",cursor.getString(cursor.getColumnIndex(SALARY_MAX_VALUE)));
 
                 positionList.add(position);
-            }
-            return positionList;
-        }
-
-        //Poziciók feltöltése listába
-        public ArrayList<String> viewPositionsByName(){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ArrayList<String> positionList = new ArrayList<>();
-
-            String query = "SELECT "+ POSITION_NAME + " AS beosztasNeve" +
-                    " FROM " + POSITION_TABLE;
-
-            Cursor cursor = db.rawQuery(query,null);
-
-            while(cursor.moveToNext()){
-                positionList.add(cursor.getString(cursor.getColumnIndex("beosztasNeve")));
             }
             return positionList;
         }
@@ -875,43 +786,33 @@ public class Database extends SQLiteOpenHelper{
             return i > 0;
         }
 
-        //Poziciók feltöltése listába
-        public ArrayList<Integer> viewPositionsByGrade(){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ArrayList<Integer> gradeList = new ArrayList<>();
 
-            String query = "SELECT "+ POSITION_GRADE_ID +
-                    " FROM " + POSITION_TABLE;
+        //Pozició törlése
+        public Boolean positionDelete(String position){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(POSITION_TABLE,POSITION_NAME + "="+'"'+position+'"',null) > 0;
+        }
+
+     /*
+     * Pozícióval kapcsolatos adatbázis utasítások
+     * */
+
+        //Department tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewDepartments(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> departmentList = new ArrayList<>();
+
+            String query = "SELECT "+ DEPARTMENT_NAME +
+                    " FROM " + DEPARTMENT_TABLE;
 
             Cursor cursor = db.rawQuery(query,null);
 
             while(cursor.moveToNext()){
-                gradeList.add(cursor.getInt(cursor.getColumnIndex("gradeNeve")));
+                HashMap<String,String> department = new HashMap<>();
+                department.put("DEPARTMENT_NAME",cursor.getString(cursor.getColumnIndex(DEPARTMENT_NAME)));
+                departmentList.add(department);
             }
-            return gradeList;
-        }
-
-        //Grade létrehozása
-        protected boolean insertGrade(){
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-
-            String gradeName = "Manager";
-            int salaryMin = 500;
-            int salaryMax = 1000;
-
-            contentValues.put(GRADE_NAME, gradeName);
-            contentValues.put(SALARY_MIN_VALUE, salaryMin);
-            contentValues.put(SALARY_MAX_VALUE, salaryMax);
-
-
-            long eredmeny = db.insert(GRADE_TABLE, null, contentValues);
-
-            if(eredmeny == -1){
-                return false;
-            }else{
-                return true;
-            }
+            return departmentList;
         }
 
 }

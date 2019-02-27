@@ -17,23 +17,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Felhasználói törlés"
+            android:text="Felhasználó törlés"
             android:textColor="@color/colorWhite"
             android:textSize="25dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_centerInParent="true"
             android:id="@+id/twUserDeleteMain"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin"
-            android:textColor="@color/colorWhite"
-            android:textSize="15dp"
-            android:layout_below="@+id/twUserDeleteMain"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            />
 
     </RelativeLayout>
 

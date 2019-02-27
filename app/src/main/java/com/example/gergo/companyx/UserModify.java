@@ -234,7 +234,7 @@ public class UserModify extends AppCompatActivity {
                     builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Boolean userModify = db.userModifyWithoutPassword(userNameOld,modifiedUserName,userStatus,userPerm);
+                            Boolean userModify = db.userModify(userNameOld,modifiedUserName,modifiedPassword1,userStatus,userPerm);
                             if(userModify){
                                 new Task1().execute();
                                 twUserName.setText(modifiedUserName);

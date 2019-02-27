@@ -32,9 +32,8 @@ public class PositionModify extends AppCompatActivity {
     private Button btPositionMod, btPositionModBack;
     private ListView lwPositionModify;
     private Database db;
-    private ArrayList<String> positionListByName;
-    private ArrayList<Integer>  positionListByGrade;
-    private int gradeId,selectedGrade;
+    private String positionName, positionGradeName;
+    private int gradeId, modGradeId;
     private ProgressDialog progress;
 
     @Override
@@ -44,14 +43,21 @@ public class PositionModify extends AppCompatActivity {
         init();
 
         final ArrayList<HashMap<String, String>> positionList = db.viewPositions();
-        final ListAdapter adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_list_row,
+        final ListAdapter adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_del_row,
                 new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
                 new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
 
         lwPositionModify.setAdapter(adapter);
 
-        positionListByName = db.viewPositionsByName();
-        //positionListByGrade = db.viewPositionsByGrade();
+        lwPositionModify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                view.setSelected(true);
+                HashMap<String, Object> obj = (HashMap<String, Object>) adapter.getItem(i);
+                positionName = (String) obj.get("POSITION_NAME");
+                positionGradeName = (String) obj.get("GRADE_NAME");
+            }
+        });
 
         lwPositionModify.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -67,7 +73,6 @@ public class PositionModify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 positionModify(positionList,adapter);
-                lwPositionModify.setAdapter(adapter);
                 ((SimpleAdapter) adapter).notifyDataSetChanged();
             }
         });
@@ -90,14 +95,11 @@ public class PositionModify extends AppCompatActivity {
         db = new Database(this);
     }
 
-    public void positionModify(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
+    public void positionModify(ArrayList<HashMap<String,String>> arrayList, final ListAdapter listAdapter){
         int pos  = lwPositionModify.getCheckedItemPosition();
 
         if (pos > -1)
         {
-            String positionName = positionListByName.get(pos);
-            int gradeIdItem = positionListByGrade.get(pos);
-
             AlertDialog.Builder alert = new AlertDialog.Builder(PositionModify.this);
 
             alert.setMessage("Beosztás megnevezése:");
@@ -121,17 +123,28 @@ public class PositionModify extends AppCompatActivity {
 
             //Spinner tartalmának elkészítése listában
             final List<String> grades = new ArrayList<>();
-            grades.add("Grade 1");
+            grades.add(0,"Grade 1");
             grades.add("Grade 2");
             grades.add("Grade 3");
             grades.add("Grade 4");
+            grades.add("Grade 5");
+            grades.add("Grade 6");
+
+            switch (positionGradeName){
+                case "Grade 1": modGradeId = 0; break;
+                case "Grade 2": modGradeId = 1; break;
+                case "Grade 3": modGradeId = 2; break;
+                case "Grade 4": modGradeId = 3; break;
+                case "Grade 5": modGradeId = 4; break;
+                case "Grade 6": modGradeId = 5; break;
+            }
 
             //Grade lista adapter létrehozása
             ArrayAdapter<String> spinnerDataAdapter;
             spinnerDataAdapter = new ArrayAdapter(PositionModify.this, android.R.layout.simple_spinner_item, grades);
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             grade.setAdapter(spinnerDataAdapter);
-            grade.setSelection(gradeIdItem);
+            grade.setSelection(modGradeId);
             layout.addView(grade); //Spinner hozzáadása layouthoz
 
             layout.setPadding(0,30,0,30);
@@ -140,11 +153,7 @@ public class PositionModify extends AppCompatActivity {
             grade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (adapterView.getItemAtPosition(i).equals("Grade 1")) {
-                        gradeId = 1;
-                    } else {
-                        gradeId = adapterView.getSelectedItemPosition();
-                    }
+                    gradeId = adapterView.getSelectedItemPosition()+1;
                 }
 
                 @Override
@@ -163,23 +172,23 @@ public class PositionModify extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String etPosition = position.getText().toString();
                     boolean positionCheck = db.positionCheck(etPosition);
-                    int pos  = lwPositionModify.getCheckedItemPosition();
-                    String positionName = positionListByName.get(pos);
 
                     if (etPosition.equals("")){
                         position.setError("A mező kitöltése kötelező!");
                     }else if(positionCheck) {
                         position.setError("A beosztás már létezik!");
                     }else{
-                        boolean positionModify = db.positionModify(positionName,etPosition,selectedGrade);
+                        boolean positionModify = db.positionModify(positionName,etPosition,gradeId);
                         if (positionModify){
                             new Task1().execute();
+                            ((SimpleAdapter) listAdapter).notifyDataSetChanged();
                         }else Toast.makeText(PositionModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }
             }});
             alert.show();
         }
     }
+
 
     class Task1 extends AsyncTask<Void, Void, String> {
 
