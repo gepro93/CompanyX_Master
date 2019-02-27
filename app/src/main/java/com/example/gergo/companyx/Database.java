@@ -815,4 +815,31 @@ public class Database extends SQLiteOpenHelper{
             return departmentList;
         }
 
+        //Osztály ellenőrzése
+        public Boolean departmentCheck(String department){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + DEPARTMENT_TABLE + " WHERE osztalyNeve=?", new String[]{department});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Osztály módosítása
+        public Boolean departmentModify(String oldDepartmentName, String newDepartmentName){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(DEPARTMENT_NAME, newDepartmentName);
+
+            int i = db.update(DEPARTMENT_TABLE, contentValues, DEPARTMENT_NAME + "=" + '"'+oldDepartmentName+'"',null);
+            return i > 0;
+        }
+
+        //Osztály törlése
+        public Boolean departmentDelete(String department){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(DEPARTMENT_TABLE,DEPARTMENT_NAME + "="+'"'+department+'"',null) > 0;
+        }
+
 }

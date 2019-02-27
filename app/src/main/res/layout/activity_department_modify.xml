@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserModifyList"
+    tools:context=".DepartmentModify"
     android:background="@drawable/ic_background"
     android:orientation="vertical"
     android:weightSum="100">
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beosztás módosítása"
+            android:text="Osztály módosítása"
             android:textColor="@color/colorWhite"
             android:layout_centerInParent="true"
             android:layout_marginTop="50sp"
@@ -34,7 +34,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lwPositionModify"
+            android:id="@+id/lwDepartmentModify"
             android:choiceMode="singleChoice">
         </ListView>
 
@@ -58,7 +58,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="20sp"
             android:layout_marginLeft="40sp"
-            android:id="@+id/btPositionMod"
+            android:id="@+id/btDepartmentMod"
             />
 
         <Button
@@ -73,7 +73,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20sp"
             android:layout_marginRight="40sp"
-            android:id="@+id/btPositionModBack"
+            android:id="@+id/btDepartmentModBack"
             />
 
     </LinearLayout>

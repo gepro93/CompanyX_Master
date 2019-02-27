@@ -19,55 +19,55 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PositionDelete extends AppCompatActivity {
+public class DepartmentDelete extends AppCompatActivity {
 
-    private Button btPositionDeleteBack, btPositionDeleteExec;
-    private ListView lwPositionDelete;
+    private Button btDepartmentDeleteBack, btDepartmentDeleteExec;
+    private ListView lwDepartmentDelete;
     private Database db;
     private ProgressDialog progress;
-    private String positionNameForDelete;
-    private ArrayList<HashMap<String, String>> positionDeleteList;
+    private String departmentNameForDelete;
+    private ArrayList<HashMap<String, String>> departmentList;
     private ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_position_delete);
+        setContentView(R.layout.activity_department_delete);
         init();
 
-        positionDeleteList = db.viewPositions();
+        departmentList = db.viewDepartments();
 
-        adapter = new SimpleAdapter(PositionDelete.this, positionDeleteList, R.layout.position_del_row,
-                new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
-                new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
+        adapter = new SimpleAdapter(DepartmentDelete.this, departmentList, R.layout.department_mod_row,
+                new String[]{"DEPARTMENT_NAME"},
+                new int[]{R.id.twDepartmentName});
 
-        lwPositionDelete.setAdapter(adapter);
+        lwDepartmentDelete.setAdapter(adapter);
 
-        lwPositionDelete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lwDepartmentDelete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 view.setSelected(true);
                 HashMap<String, Object> obj = (HashMap<String, Object>) adapter.getItem(i);
-                positionNameForDelete = (String) obj.get("POSITION_NAME");
+                departmentNameForDelete = (String) obj.get("DEPARTMENT_NAME");
             }
         });
 
-        btPositionDeleteBack.setOnClickListener(new View.OnClickListener() {
+        btDepartmentDeleteBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PositionDelete.this,PositionMenu.class));
+                startActivity(new Intent(DepartmentDelete.this,DepartmentMenu.class));
                 finish();
             }
         });
 
-        btPositionDeleteExec.setOnClickListener(new View.OnClickListener() {
+        btDepartmentDeleteExec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PositionDelete.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DepartmentDelete.this);
 
                 builder.setCancelable(true);
                 builder.setTitle("Törlés");
-                builder.setMessage("Biztosan törlöd a pozíciót?");
+                builder.setMessage("Biztosan törlöd az osztályt?");
 
                 builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
                     @Override
@@ -79,7 +79,7 @@ public class PositionDelete extends AppCompatActivity {
                 builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        positionDelete(positionDeleteList,adapter); //Pozició törlése
+                        departmentDelete(departmentList,adapter); //Osztály törlése
                     }
                 });
                 builder.show();
@@ -89,32 +89,32 @@ public class PositionDelete extends AppCompatActivity {
     }
 
     private void init() {
-        btPositionDeleteBack = findViewById(R.id.btPositionDeleteBack);
-        btPositionDeleteExec = findViewById(R.id.btPositionDeleteExec);
-        lwPositionDelete = findViewById(R.id.lwPositionDelete);
+        btDepartmentDeleteBack = findViewById(R.id.btDepartmentDeleteBack);
+        btDepartmentDeleteExec = findViewById(R.id.btDepartmentDeleteExec);
+        lwDepartmentDelete = findViewById(R.id.lwDepartmentDelete);
         db = new Database(this);
     }
 
-    public void positionDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
-        int pos  = lwPositionDelete.getCheckedItemPosition();
+    public void departmentDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
+        int pos  = lwDepartmentDelete.getCheckedItemPosition();
 
 
         if (pos > -1)
         {
-            Boolean positionDelete = db.positionDelete(positionNameForDelete);
+            Boolean departmentDelete = db.departmentDelete(departmentNameForDelete);
 
-            if (positionDelete){
+            if (departmentDelete){
                 arrayList.remove(pos);
                 progressDialog();
-            }else Toast.makeText(PositionDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
+            }else Toast.makeText(DepartmentDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
     }
 
     public void progressDialog(){
-        progress = new ProgressDialog(PositionDelete.this);
+        progress = new ProgressDialog(DepartmentDelete.this);
         progress.setMax(100);
-        progress.setMessage("Beosztás törlése folyamatban...");
+        progress.setMessage("Osztály törlése folyamatban...");
         progress.setTitle("Eltávolítás...");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.show();
@@ -146,5 +146,4 @@ public class PositionDelete extends AppCompatActivity {
             progress.incrementProgressBy(1);
         }
     };
-
 }
