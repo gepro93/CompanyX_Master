@@ -1,11 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,10 +23,10 @@ public class UserAdd extends AppCompatActivity {
     private Spinner spPermission, spStatus;
     private EditText etUsername_add, etPassword_add_1, etPassword_add_2;
     private Button btUserAdd, btUserAddBack;
-    private Integer selectedPermisson;
+    private Integer selectedPermission;
     private Integer selectedStatus;
     private Database db;
-    private ProgressDialog progress;
+    private LoadScreen ls;
     private Boolean userStatus;
 
 
@@ -40,6 +36,37 @@ public class UserAdd extends AppCompatActivity {
         setContentView(R.layout.activity_user_add);
         init();
 
+        buildLists();
+
+        btUserAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userAdd(); //Felhasználó létrehozása
+            }
+        });
+
+        btUserAddBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserAdd.this, UserMenu.class));
+                finish();
+            }
+        });
+    }
+
+    public void init() {
+        spPermission = findViewById(R.id.spPermission);
+        spStatus = findViewById(R.id.spStatus);
+        etUsername_add = findViewById(R.id.etUsername_add);
+        etPassword_add_1 = findViewById(R.id.etPassword_add_1);
+        etPassword_add_2 = findViewById(R.id.etPassword_add_2);
+        btUserAdd = findViewById(R.id.btUserAdd);
+        btUserAddBack = findViewById(R.id.btUserAddBack);
+        db = new Database(this);
+        ls = new LoadScreen();
+    }
+
+    public void buildLists(){
         //Jogosultság lista létrehozása
         final List<String> permission = new ArrayList<>();
         permission.add(0, "Válassz hozzáférést!");
@@ -71,10 +98,9 @@ public class UserAdd extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getItemAtPosition(i).equals("Válassz hozzáférést!")) {
-                    selectedPermisson = 0;
+                    selectedPermission = 0;
                 } else {
-                    selectedPermisson = adapterView.getSelectedItemPosition();
-                    Toast.makeText(adapterView.getContext(), "Selected: " + selectedPermisson, Toast.LENGTH_SHORT).show();
+                    selectedPermission = adapterView.getSelectedItemPosition();
                 }
             }
 
@@ -91,7 +117,6 @@ public class UserAdd extends AppCompatActivity {
                     selectedStatus = 0;
                 } else {
                     selectedStatus = adapterView.getSelectedItemPosition();
-                    Toast.makeText(adapterView.getContext(), "Selected: " + selectedStatus, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -100,56 +125,6 @@ public class UserAdd extends AppCompatActivity {
 
             }
         });
-
-        btUserAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userAdd(); //Felhasználó létrehozása
-            }
-        });
-
-        btUserAddBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserAdd.this, UserMenu.class));
-                finish();
-            }
-        });
-    }
-
-    public void init() {
-        spPermission = (Spinner) findViewById(R.id.spPermission);
-        spStatus = (Spinner) findViewById(R.id.spStatus);
-        etUsername_add = (EditText) findViewById(R.id.etUsername_add);
-        etPassword_add_1 = (EditText) findViewById(R.id.etPassword_add_1);
-        etPassword_add_2 = (EditText) findViewById(R.id.etPassword_add_2);
-        btUserAdd = (Button) findViewById(R.id.btUserAdd);
-        btUserAddBack = (Button) findViewById(R.id.btUserAddBack);
-        db = new Database(this);
-    }
-
-    public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserAdd.this);
-
-        builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
-
-        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.show();
     }
 
     public void userAdd(){
@@ -172,7 +147,7 @@ public class UserAdd extends AppCompatActivity {
         //Adatbázis lekérdezések
         Boolean userCheck = db.userNameCheck(userName);
 
-        if (etUsername_add.equals("") || etPassword_add_1.equals("") || etPassword_add_2.equals("") || selectedPermisson == 0 || selectedStatus == 0) {
+        if (etUsername_add.equals("") || etPassword_add_1.equals("") || etPassword_add_2.equals("") || selectedPermission == 0 || selectedStatus == 0) {
             Toast.makeText(UserAdd.this, "Hoppá, valamit nem töltöttél ki!", Toast.LENGTH_SHORT).show();
         } else if (!userPassword1.equals(userPassword2)) {
             etPassword_add_1.setError("A jelszavaknak meg kell egyezniük!");
@@ -183,9 +158,9 @@ public class UserAdd extends AppCompatActivity {
             etUsername_add.setError("A felhasználónév csak kisbetűs lehet és tartalmaznia kell számot!\nMin 6 Max 8 karakter hosszú lehet!");
         }else {
             if (!userCheck) {
-                Boolean userCreation = db.insertUser(userName, userPassword1, userStatus, selectedPermisson);
+                Boolean userCreation = db.insertUser(userName, userPassword1, userStatus, selectedPermission);
                 if (userCreation) {
-                    new Task1().execute();
+                    ls.progressDialog(UserAdd.this,"Felhasználó létrehozása folyamatban...", "Létrehozás");
                     etUsername_add.getText().clear();
                     etPassword_add_1.getText().clear();
                     etPassword_add_2.getText().clear();
@@ -213,83 +188,35 @@ public class UserAdd extends AppCompatActivity {
     public static boolean isValidUsername(final String username) {
         Pattern pattern;
         Matcher matcher;
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z]).{6,8}$";
-        pattern = Pattern.compile(PASSWORD_PATTERN);
+        final String USERNAME_PATTERN = "^(?=.*[0-9])(?=.*[a-z]).{6,8}$";
+        pattern = Pattern.compile(USERNAME_PATTERN);
         matcher = pattern.matcher(username);
 
         return matcher.matches();
     }
 
-    class Task1 extends AsyncTask<Void, Void, String> {
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserAdd.this);
 
-        Handler handler = new Handler(){
+        builder.setCancelable(true);
+        builder.setTitle("Kilépés");
+        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                progress.incrementProgressBy(1);
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
             }
-        };
+        });
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(UserAdd.this);
-            progress.setMax(100);
-            progress.setMessage("Felhasználó létrehozása folyamatban...");
-            progress.setTitle("Létrehozás");
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                while (progress.getProgress() <= progress.getMax()) {
-                    Thread.sleep(40);
-                    handler.sendMessage(handler.obtainMessage());
-                    if(progress.getProgress() == progress.getMax()){
-                        progress.dismiss();
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
             }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Toast.makeText(UserAdd.this, "Sikeres létrehozás!", Toast.LENGTH_LONG).show();
-        }
-
+        });
+        builder.show();
     }
 
-    /*public void progressDialog(){
-        progress = new ProgressDialog(UserAdd.this);
-        progress.setMax(100);
-        progress.setMessage("Felhasználó létrehozása folyamatban...");
-        progress.setTitle("Létrehozás");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(40);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-    }*/
 }

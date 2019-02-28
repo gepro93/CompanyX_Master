@@ -1,10 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,10 +21,10 @@ public class PositionDelete extends AppCompatActivity {
     private Button btPositionDeleteBack, btPositionDeleteExec;
     private ListView lwPositionDelete;
     private Database db;
-    private ProgressDialog progress;
     private String positionNameForDelete;
     private ArrayList<HashMap<String, String>> positionDeleteList;
     private ListAdapter adapter;
+    private LoadScreen ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +90,7 @@ public class PositionDelete extends AppCompatActivity {
         btPositionDeleteExec = findViewById(R.id.btPositionDeleteExec);
         lwPositionDelete = findViewById(R.id.lwPositionDelete);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
     public void positionDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
@@ -105,46 +103,10 @@ public class PositionDelete extends AppCompatActivity {
 
             if (positionDelete){
                 arrayList.remove(pos);
-                progressDialog();
+                ls.progressDialog(this,"Pozíció törlése folyamatban...", "Eltávolítás");
             }else Toast.makeText(PositionDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
     }
-
-    public void progressDialog(){
-        progress = new ProgressDialog(PositionDelete.this);
-        progress.setMax(100);
-        progress.setMessage("Beosztás törlése folyamatban...");
-        progress.setTitle("Eltávolítás...");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-
-    }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
 
 }

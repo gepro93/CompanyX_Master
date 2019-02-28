@@ -30,7 +30,7 @@ public class UserModify extends AppCompatActivity {
     private int selectedPermission, selectedStatus;
     private Database db;
     private TextView twUserName;
-    private ProgressDialog progress;
+    private LoadScreen ls;
 
 
     @Override
@@ -141,8 +141,9 @@ public class UserModify extends AppCompatActivity {
         spStatusMod = (Spinner) findViewById(R.id.spStatusMod);
         btUserModifyExecute = (Button) findViewById(R.id.btUserModifyExecute);
         btUserModifyBack = (Button) findViewById(R.id.btUserModifyBack);
-        db = new Database(this);
         twUserName = (TextView) findViewById(R.id.twUserName);
+        db = new Database(this);
+        ls = new LoadScreen();
     }
 
     public void onBackPressed(){
@@ -204,7 +205,7 @@ public class UserModify extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Boolean userModify = db.userModifyWithoutPassword(userNameOld,modifiedUserName,userStatus,userPerm);
                         if(userModify){
-                            new Task1().execute();
+                            ls.progressDialog(UserModify.this, "Felhasználó módosítása folyamatban...","Módosítás");
                             twUserName.setText(modifiedUserName);
                         }
                     }
@@ -236,7 +237,7 @@ public class UserModify extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Boolean userModify = db.userModify(userNameOld,modifiedUserName,modifiedPassword1,userStatus,userPerm);
                             if(userModify){
-                                new Task1().execute();
+                                ls.progressDialog(UserModify.this, "Felhasználó módosítása folyamatban...","Módosítás");
                                 twUserName.setText(modifiedUserName);
                             }
                         }
@@ -248,52 +249,6 @@ public class UserModify extends AppCompatActivity {
             etPasswordMod1.setError("A jelszavaknak meg kell egyezniük!");
             etPasswordMod2.setError("A jelszavaknak meg kell egyezniük!");
 
-        }
-
-    }
-
-    class Task1 extends AsyncTask<Void, Void, String> {
-
-        Handler handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                progress.incrementProgressBy(1);
-            }
-        };
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(UserModify.this);
-            progress.setMax(100);
-            progress.setMessage("Felhasználó módosítása folyamatban...");
-            progress.setTitle("Módosítás");
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                while (progress.getProgress() <= progress.getMax()) {
-                    Thread.sleep(40);
-                    handler.sendMessage(handler.obtainMessage());
-                    if(progress.getProgress() == progress.getMax()){
-                        progress.dismiss();
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Toast.makeText(UserModify.this, "Sikeres módosítás!", Toast.LENGTH_LONG).show();
         }
 
     }

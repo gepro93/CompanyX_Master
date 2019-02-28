@@ -1,11 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,7 +30,7 @@ public class PositionModify extends AppCompatActivity {
     private Database db;
     private String positionName, positionGradeName;
     private int gradeId, modGradeId;
-    private ProgressDialog progress;
+    private LoadScreen ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +79,7 @@ public class PositionModify extends AppCompatActivity {
         btPositionModBack = (Button) findViewById(R.id.btPositionModBack);
         lwPositionModify = (ListView) findViewById(R.id.lwPositionModify);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
     public void positionModify(ArrayList<HashMap<String,String>> arrayList, final ListAdapter listAdapter){
@@ -170,8 +167,7 @@ public class PositionModify extends AppCompatActivity {
                     }else{
                         boolean positionModify = db.positionModify(positionName,etPosition,gradeId);
                         if (positionModify){
-                            new Task1().execute();
-                            ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+                            ls.progressDialog(PositionModify.this,"Módosítás folyamatban...", "Módosítás");
                         }else Toast.makeText(PositionModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }
             }});
@@ -179,50 +175,4 @@ public class PositionModify extends AppCompatActivity {
         }
     }
 
-
-    class Task1 extends AsyncTask<Void, Void, String> {
-
-        Handler handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                progress.incrementProgressBy(1);
-            }
-        };
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(PositionModify.this);
-            progress.setMax(100);
-            progress.setMessage("Felhasználó létrehozása folyamatban...");
-            progress.setTitle("Létrehozás");
-            progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progress.show();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                while (progress.getProgress() <= progress.getMax()) {
-                    Thread.sleep(40);
-                    handler.sendMessage(handler.obtainMessage());
-                    if(progress.getProgress() == progress.getMax()){
-                        progress.dismiss();
-                    }
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Toast.makeText(PositionModify.this, "Sikeres létrehozás!", Toast.LENGTH_LONG).show();
-        }
-
-    }
 }

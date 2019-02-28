@@ -1,10 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +22,7 @@ public class UserDelete extends AppCompatActivity {
     private Database db;
     private ListView lwUserDelete;
     private Button btUserDeleteExec, btUserDeleteBack;
-    private ProgressDialog progress;
+    private LoadScreen ls;
     private String userNameForDelete;
 
     @Override
@@ -101,7 +98,7 @@ public class UserDelete extends AppCompatActivity {
 
             if (userDelete){
                 arrayList.remove(pos);
-                progressDialog();
+                ls.progressDialog(UserDelete.this, "Felhasználó törlése folyamatban...", "Eltávolítás");
             }else Toast.makeText(UserDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
@@ -131,41 +128,5 @@ public class UserDelete extends AppCompatActivity {
         builder.show();
     }
 
-
-    public void progressDialog(){
-        progress = new ProgressDialog(UserDelete.this);
-        progress.setMax(100);
-        progress.setMessage("Felhasználó törlése folyamatban...");
-        progress.setTitle("Eltávolítás...");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-
-    }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
 
 }

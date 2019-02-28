@@ -1,10 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,10 +21,10 @@ public class DepartmentDelete extends AppCompatActivity {
     private Button btDepartmentDeleteBack, btDepartmentDeleteExec;
     private ListView lwDepartmentDelete;
     private Database db;
-    private ProgressDialog progress;
     private String departmentNameForDelete;
     private ArrayList<HashMap<String, String>> departmentList;
     private ListAdapter adapter;
+    private LoadScreen ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class DepartmentDelete extends AppCompatActivity {
         btDepartmentDeleteBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(DepartmentDelete.this,DepartmentMenu.class));
+                startActivity(new Intent(DepartmentDelete.this, DepartmentMenu.class));
                 finish();
             }
         });
@@ -79,7 +76,7 @@ public class DepartmentDelete extends AppCompatActivity {
                 builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        departmentDelete(departmentList,adapter); //Osztály törlése
+                        departmentDelete(departmentList, adapter); //Osztály törlése
                     }
                 });
                 builder.show();
@@ -93,57 +90,23 @@ public class DepartmentDelete extends AppCompatActivity {
         btDepartmentDeleteExec = findViewById(R.id.btDepartmentDeleteExec);
         lwDepartmentDelete = findViewById(R.id.lwDepartmentDelete);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
-    public void departmentDelete(ArrayList<HashMap<String,String>> arrayList, ListAdapter listAdapter){
-        int pos  = lwDepartmentDelete.getCheckedItemPosition();
+    public void departmentDelete(ArrayList<HashMap<String, String>> arrayList, ListAdapter listAdapter) {
+        int pos = lwDepartmentDelete.getCheckedItemPosition();
 
 
-        if (pos > -1)
-        {
+        if (pos > -1) {
             Boolean departmentDelete = db.departmentDelete(departmentNameForDelete);
 
-            if (departmentDelete){
+            if (departmentDelete) {
                 arrayList.remove(pos);
-                progressDialog();
-            }else Toast.makeText(DepartmentDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
+                ls.progressDialog(this, "Osztály törlése folyamatban...", "Eltávolítás...");
+            } else
+                Toast.makeText(DepartmentDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
     }
-
-    public void progressDialog(){
-        progress = new ProgressDialog(DepartmentDelete.this);
-        progress.setMax(100);
-        progress.setMessage("Osztály törlése folyamatban...");
-        progress.setTitle("Eltávolítás...");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-
-    }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
 }
+

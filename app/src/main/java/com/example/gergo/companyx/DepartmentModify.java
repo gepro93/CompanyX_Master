@@ -1,10 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,19 +9,16 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 
 public class DepartmentModify extends AppCompatActivity {
 
@@ -32,10 +26,10 @@ public class DepartmentModify extends AppCompatActivity {
     private ListView lwDepartmentModify;
     private Database db;
     private String departmentName;
-    private ProgressDialog progress;
     private ArrayList<HashMap<String, String>> departmentList;
     private ListAdapter adapter;
     private int pos;
+    private LoadScreen ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +111,7 @@ public class DepartmentModify extends AppCompatActivity {
                     } else {
                         boolean positionModify = db.departmentModify(departmentName, etDepartment);
                         if (positionModify) {
-                            progressDialog();
+                            ls.progressDialog(DepartmentModify.this,"Módosítás folyamatban...","Módosítás");
                         } else
                             Toast.makeText(DepartmentModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }
@@ -132,41 +126,9 @@ public class DepartmentModify extends AppCompatActivity {
         btDepartmentModBack = findViewById(R.id.btDepartmentModBack);
         lwDepartmentModify = findViewById(R.id.lwDepartmentModify);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
-
-    public void progressDialog(){
-        progress = new ProgressDialog(DepartmentModify.this);
-        progress.setMax(100);
-        progress.setMessage("Osztály módosítása folyamatban...");
-        progress.setTitle("Módosítás");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();}
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
 }
 
 

@@ -1,11 +1,7 @@
 package com.example.gergo.companyx;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,14 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DepartmentMenu extends AppCompatActivity {
 
     private Button btDepartmentCreate, btDepartmentModify, btDepartmentDelete, btDepartmentList,  btDepartmentMenuBack;
     private Database db;
-    private ProgressDialog progress;
+    private LoadScreen ls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +100,7 @@ public class DepartmentMenu extends AppCompatActivity {
                     if (!departmentCheck){
                         boolean createDepartment = db.insertDepartment(etDepartment);
                         if (createDepartment){
-                            progressDialog();
+                            ls.progressDialog(DepartmentMenu.this,"Létrehozás folyamatban...", "Létrehozás");
                         }else Toast.makeText(DepartmentMenu.this, "Adatbázis hiba létrehozáskor!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -130,38 +124,8 @@ public class DepartmentMenu extends AppCompatActivity {
         btDepartmentList = findViewById(R.id.btDepartmentList);
         btDepartmentMenuBack = findViewById(R.id.btDepartmentMenuBack);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
-    public void progressDialog(){
-        progress = new ProgressDialog(DepartmentMenu.this);
-        progress.setMax(100);
-        progress.setMessage("Osztály létrehozása folyamatban...");
-        progress.setTitle("Létrehozás");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.show();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
-                        handler.sendMessage(handler.obtainMessage());
-                        if(progress.getProgress() == progress.getMax()){
-                            progress.dismiss();
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();}
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            progress.incrementProgressBy(1);
-        }
-    };
 }
