@@ -68,7 +68,6 @@ public class Database extends SQLiteOpenHelper{
     public static final String CAR_VINNUMBER = "autoAlvazszam";
     public static final String CAR_MOTDATE = "autoMuszakierveny";
     public static final String CAR_MODEL_ID = "autoGyartmany_id";
-    public static final String CAR_GRADE_ID = "grade_id";
 
     //autó gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFCAR_TABLE = "auto_gyartmanyok";
@@ -76,6 +75,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String MODELOFCAR_ID = "autoGyartmany_id";
     public static final String MODELOFCAR_BRAND = "autoMarka";
     public static final String MODELOFCAR_TYPE = "autoTipus";
+    public static final String MODELOFCAR_GRADE_ID = "grade_id";
 
 
     //mobilok tábla és oszlopok definiálása
@@ -84,7 +84,6 @@ public class Database extends SQLiteOpenHelper{
     public static final String MOBIL_ID = "mobil_id";
     public static final String MOBIL_IMEINUMBER = "mobilImeiSzam";
     public static final String MOBIL_MODEL_ID = "mobilGyartmany_id";
-    public static final String MOBIL_GRADE_ID = "grade_id";
 
     //mobil gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFMOBIL_TABLE = "mobil_gyartmanyok";
@@ -92,6 +91,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String MODELOFMOBIL_ID = "mobilGyartmany_id";
     public static final String MODELOFMOBIL_BRAND = "mobilMarka";
     public static final String MODELOFMOBIL_TYPE = "mobilTipus";
+    public static final String MODELOFMOBIL_GRADE_ID = "grade_id";
 
     //laptopok tábla és oszlopok definiálása
     public static final String LAPTOP_TABLE = "laptopok";
@@ -99,7 +99,6 @@ public class Database extends SQLiteOpenHelper{
     public static final String LAPTOP_ID = "laptop_id";
     public static final String LAPTOP_IMEINUMBER = "laptopImeiSzam";
     public static final String LAPTOP_MODEL_ID = "laptopGyartmany_id";
-    public static final String LAPTOP_GRADE_ID = "grade_id";
 
     //laptop gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFLAPTOP_TABLE = "laptop_gyartmanyok";
@@ -107,6 +106,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String MODELOFLAPTOP_ID = "laptopGyartmany_id";
     public static final String MODELOFLAPTOP_BRAND = "laptopMarka";
     public static final String MODELOFLAPTOP_TYPE = "laptopTipus";
+    public static final String MODELOFLAPTOP_GRADE_ID = "grade_id";
 
     //gradek tábla és oszlopok definiálása
     public static final String GRADE_TABLE = "gradek";
@@ -191,45 +191,45 @@ public class Database extends SQLiteOpenHelper{
                 + CAR_VINNUMBER + " text not null, "
                 + CAR_MOTDATE + " date not null,"
                 + CAR_MODEL_ID + " integer not null,"
-                + CAR_GRADE_ID + " integer not null,"
-                + " FOREIGN KEY ("+CAR_MODEL_ID+") REFERENCES "+MODELOFCAR_TABLE+"("+MODELOFCAR_ID+"),"
-                + " FOREIGN KEY ("+CAR_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
+                + " FOREIGN KEY ("+CAR_MODEL_ID+") REFERENCES "+MODELOFCAR_TABLE+"("+MODELOFCAR_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + MODELOFCAR_TABLE + " ("
                 + MODELOFCAR_ID + " integer primary key autoincrement, "
                 + MODELOFCAR_BRAND + " text not null,"
-                + MODELOFCAR_TYPE + " text not null)");
+                + MODELOFCAR_TYPE + " text not null,"
+                + MODELOFCAR_GRADE_ID + " integer not null,"
+                + " FOREIGN KEY ("+MODELOFCAR_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + MOBILE_TABLE + " ("
                 + MOBIL_ID + " integer primary key autoincrement, "
                 + MOBIL_IMEINUMBER + " text not null, "
                 + MOBIL_MODEL_ID + " integer not null, "
-                + MOBIL_GRADE_ID + " integer not null,"
-                + " FOREIGN KEY ("+MOBIL_MODEL_ID+") REFERENCES "+MODELOFMOBIL_TABLE+"("+MODELOFMOBIL_ID+"),"
-                + " FOREIGN KEY ("+MOBIL_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
+                + " FOREIGN KEY ("+MOBIL_MODEL_ID+") REFERENCES "+MODELOFMOBIL_TABLE+"("+MODELOFMOBIL_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + MODELOFMOBIL_TABLE + " ("
                 + MODELOFMOBIL_ID + " integer primary key autoincrement, "
                 + MODELOFMOBIL_BRAND + " text not null,"
-                + MODELOFMOBIL_TYPE + " text not null)");
+                + MODELOFMOBIL_TYPE + " text not null,"
+                + MODELOFMOBIL_GRADE_ID + " integer not null,"
+                + " FOREIGN KEY ("+MODELOFMOBIL_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + LAPTOP_TABLE + " ("
                 + LAPTOP_ID + " integer primary key autoincrement, "
                 + LAPTOP_IMEINUMBER + " text not null, "
                 + LAPTOP_MODEL_ID + " integer not null, "
-                + LAPTOP_GRADE_ID + " integer not null,"
-                + " FOREIGN KEY ("+LAPTOP_MODEL_ID+") REFERENCES "+MODELOFLAPTOP_TABLE+"("+MODELOFLAPTOP_ID+"),"
-                + " FOREIGN KEY ("+LAPTOP_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
+                + " FOREIGN KEY ("+LAPTOP_MODEL_ID+") REFERENCES "+MODELOFLAPTOP_TABLE+"("+MODELOFLAPTOP_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + MODELOFLAPTOP_TABLE + " ("
                 + MODELOFLAPTOP_ID + " integer primary key autoincrement, "
                 + MODELOFLAPTOP_BRAND + " text not null,"
-                + MODELOFLAPTOP_TYPE + " text not null)");
+                + MODELOFLAPTOP_TYPE + " text not null,"
+                + MODELOFLAPTOP_GRADE_ID + " integer not null,"
+                + " FOREIGN KEY ("+MODELOFLAPTOP_GRADE_ID+") REFERENCES "+GRADE_TABLE+"("+GRADE_ID+"))");
 
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + GRADE_TABLE + " ("
@@ -371,14 +371,13 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Autó felvétel
-    public boolean insertCar(String autoRendszam, String autoAlvazszam, Date autoMuszakierveny, String autoGyartmany_id, int grade_id){
+    public boolean insertCar(String autoRendszam, String autoAlvazszam, Date autoMuszakierveny, int autoGyartmany_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CAR_LICENSENUMBER, autoRendszam);
         contentValues.put(CAR_VINNUMBER, autoAlvazszam);
         contentValues.put(CAR_MOTDATE, String.valueOf(autoMuszakierveny));
         contentValues.put(CAR_MODEL_ID, autoGyartmany_id);
-        contentValues.put(CAR_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(CAR_TABLE, null, contentValues);
 
@@ -395,6 +394,7 @@ public class Database extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(MODELOFCAR_BRAND, autoMarka);
         contentValues.put(MODELOFCAR_TYPE, autoTipus);
+        contentValues.put(MODELOFCAR_GRADE_ID, autoTipus);
 
         long eredmeny = db.insert(MODELOFCAR_TABLE, null, contentValues);
 
@@ -411,7 +411,6 @@ public class Database extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(MOBIL_IMEINUMBER, mobilImeiSzam);
         contentValues.put(MOBIL_MODEL_ID, mobilGyartmany_id);
-        contentValues.put(MOBIL_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(MOBILE_TABLE, null, contentValues);
 
@@ -428,6 +427,7 @@ public class Database extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(MODELOFMOBIL_BRAND, mobilMarka);
         contentValues.put(MODELOFMOBIL_TYPE, mobilTipus);
+        contentValues.put(MODELOFMOBIL_GRADE_ID, mobilTipus);
 
         long eredmeny = db.insert(MODELOFMOBIL_TABLE, null, contentValues);
 
@@ -444,7 +444,6 @@ public class Database extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(LAPTOP_IMEINUMBER, laptopImeiSzam);
         contentValues.put(LAPTOP_MODEL_ID, laptopGyartmany_id);
-        contentValues.put(LAPTOP_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(LAPTOP_TABLE, null, contentValues);
 
@@ -461,6 +460,7 @@ public class Database extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(MODELOFLAPTOP_BRAND, laptopMarka);
         contentValues.put(MODELOFLAPTOP_TYPE, laptopTipus);
+        contentValues.put(MODELOFLAPTOP_GRADE_ID, laptopTipus);
 
         long eredmeny = db.insert(MODELOFLAPTOP_TABLE, null, contentValues);
 
@@ -840,6 +840,58 @@ public class Database extends SQLiteOpenHelper{
         public Boolean departmentDelete(String department){
             SQLiteDatabase db = this.getWritableDatabase();
             return  db.delete(DEPARTMENT_TABLE,DEPARTMENT_NAME + "="+'"'+department+'"',null) > 0;
+        }
+
+    /*
+    * Autóval kapcsolatos adatbázis utasítások
+    * */
+
+        //Autó gyártmányok feltöltése listába
+        public ArrayList<String> modelOfCarList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> modelOfCarList = new ArrayList<>();
+
+            String query = "SELECT ("+ MODELOFCAR_BRAND + " || " + "' '" + " || " + MODELOFCAR_TYPE + ") AS carType" +
+                    " FROM " + MODELOFCAR_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                modelOfCarList.add(cursor.getString(cursor.getColumnIndex("carType")));
+            }
+            return modelOfCarList;
+        }
+
+        //Felhasználó létezésének ellenőzése belépéshez
+        public Boolean carCheck(String licenseeNumber, String vinNumber){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + CAR_TABLE + " WHERE autoRendszam=? AND autoAlvazszam=?", new String[]{licenseeNumber,vinNumber});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Pozició tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewCars(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> carList = new ArrayList<>();
+
+            String query = "SELECT "+ CAR_LICENSENUMBER + ", "+ CAR_VINNUMBER + ", "+ CAR_MOTDATE +" , "+ CAR_MODEL_ID +
+                    " FROM " + CAR_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> position = new HashMap<>();
+                position.put("CAR_LICENSENUMBER",cursor.getString(cursor.getColumnIndex(CAR_LICENSENUMBER)));
+                position.put("CAR_VINNUMBER",cursor.getString(cursor.getColumnIndex(CAR_VINNUMBER)));
+                position.put("CAR_MOTDATE",cursor.getString(cursor.getColumnIndex(CAR_MOTDATE)));
+                position.put("CAR_MODEL_ID",cursor.getString(cursor.getColumnIndex(CAR_MODEL_ID)));
+
+                carList.add(position);
+            }
+            return carList;
         }
 
 }
