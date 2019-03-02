@@ -68,6 +68,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String CAR_VINNUMBER = "autoAlvazszam";
     public static final String CAR_MOTDATE = "autoMuszakierveny";
     public static final String CAR_MODEL_ID = "autoGyartmany_id";
+    public static final String CARTYPE = "autoTipus";
 
     //autó gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFCAR_TABLE = "auto_gyartmanyok";
@@ -877,8 +878,9 @@ public class Database extends SQLiteOpenHelper{
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String,String>> carList = new ArrayList<>();
 
-            String query = "SELECT "+ CAR_LICENSENUMBER + ", "+ CAR_VINNUMBER + ", "+ CAR_MOTDATE +" , "+ CAR_MODEL_ID +
-                    " FROM " + CAR_TABLE;
+            String query = "SELECT c."+ CAR_LICENSENUMBER + ", c."+ CAR_VINNUMBER + ", c."+ CAR_MOTDATE +" , (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
+                    " FROM " + CAR_TABLE + " AS c" +
+                    " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID;
 
             Cursor cursor = db.rawQuery(query,null);
 
@@ -887,7 +889,7 @@ public class Database extends SQLiteOpenHelper{
                 position.put("CAR_LICENSENUMBER",cursor.getString(cursor.getColumnIndex(CAR_LICENSENUMBER)));
                 position.put("CAR_VINNUMBER",cursor.getString(cursor.getColumnIndex(CAR_VINNUMBER)));
                 position.put("CAR_MOTDATE",cursor.getString(cursor.getColumnIndex(CAR_MOTDATE)));
-                position.put("CAR_MODEL_ID",cursor.getString(cursor.getColumnIndex(CAR_MODEL_ID)));
+                position.put("CARTYPE",cursor.getString(cursor.getColumnIndex(CARTYPE)));
 
                 carList.add(position);
             }

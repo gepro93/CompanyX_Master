@@ -30,7 +30,7 @@ public class CarEdit extends AppCompatActivity {
 
         carList = db.viewCars();
         adapter = new SimpleAdapter(CarEdit.this, carList, R.layout.car_edit_row,
-                new String[]{"CAR_LICENSENUMBER","CAR_VINNUMBER","CAR_MOTDATE","CAR_MODEL_ID"},
+                new String[]{"CAR_LICENSENUMBER","CAR_VINNUMBER","CAR_MOTDATE","CARTYPE"},
                 new int[]{R.id.twLicenseeNumber,R.id.twVinNumber,R.id.twMotDate,R.id.twCarType});
 
         lwCarEdit.setAdapter(adapter);
@@ -40,7 +40,7 @@ public class CarEdit extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 view.setSelected(true);
                 HashMap<String, Object> obj = (HashMap<String, Object>) adapter.getItem(i);
-                carType = (String) obj.get("CAR_MODEL_ID");
+                carType = (String) obj.get("CARTYPE");
                 licenseeNumber = (String) obj.get("CAR_LICENSENUMBER");
                 motDate = (String) obj.get("CAR_MOTDATE");
                 vinNumber = (String) obj.get("CAR_VINNUMBER");

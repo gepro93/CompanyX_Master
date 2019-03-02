@@ -31,6 +31,8 @@ public class PositionModify extends AppCompatActivity {
     private String positionName, positionGradeName;
     private int gradeId, modGradeId;
     private LoadScreen ls;
+    private ArrayList<HashMap<String, String>> positionList;
+    private ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,7 @@ public class PositionModify extends AppCompatActivity {
         setContentView(R.layout.activity_position_modify);
         init();
 
-        final ArrayList<HashMap<String, String>> positionList = db.viewPositions();
-        final ListAdapter adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_del_row,
-                new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
-                new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
-
-        lwPositionModify.setAdapter(adapter);
+        createList();
 
         lwPositionModify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,7 +56,6 @@ public class PositionModify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 positionModify(positionList,adapter);
-                ((SimpleAdapter) adapter).notifyDataSetChanged();
             }
         });
 
@@ -72,6 +68,15 @@ public class PositionModify extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void createList() {
+        positionList = db.viewPositions();
+        adapter = new SimpleAdapter(PositionModify.this, positionList, R.layout.position_del_row,
+                new String[]{"POSITION_NAME", "GRADE_NAME", "SALARY_MIN_VALUE", "SALARY_MAX_VALUE"},
+                new int[]{R.id.twPositionName, R.id.twPositionGradeName, R.id.twPositionSalaryFrom, R.id.twPositionSalaryTo});
+
+        lwPositionModify.setAdapter(adapter);
     }
 
     public void init(){
@@ -168,6 +173,7 @@ public class PositionModify extends AppCompatActivity {
                         boolean positionModify = db.positionModify(positionName,etPosition,gradeId);
                         if (positionModify){
                             ls.progressDialog(PositionModify.this,"Módosítás folyamatban...", "Módosítás");
+                            createList();
                         }else Toast.makeText(PositionModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }
             }});

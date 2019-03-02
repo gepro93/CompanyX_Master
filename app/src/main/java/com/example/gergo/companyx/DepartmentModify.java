@@ -37,12 +37,7 @@ public class DepartmentModify extends AppCompatActivity {
         setContentView(R.layout.activity_department_modify);
         init();
 
-        departmentList = db.viewDepartments();
-        adapter = new SimpleAdapter(DepartmentModify.this, departmentList, R.layout.department_mod_row,
-                new String[]{"DEPARTMENT_NAME"},
-                new int[]{R.id.twDepartmentName});
-
-        lwDepartmentModify.setAdapter(adapter);
+        createList();
 
         lwDepartmentModify.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,6 +62,15 @@ public class DepartmentModify extends AppCompatActivity {
                 departmentModify(departmentList,adapter);
             }
         });
+    }
+
+    private void createList(){
+        departmentList = db.viewDepartments();
+        adapter = new SimpleAdapter(DepartmentModify.this, departmentList, R.layout.department_mod_row,
+                new String[]{"DEPARTMENT_NAME"},
+                new int[]{R.id.twDepartmentName});
+
+        lwDepartmentModify.setAdapter(adapter);
     }
 
     private void departmentModify(final ArrayList<HashMap<String,String>> arrayList, final ListAdapter listAdapter){
@@ -112,6 +116,7 @@ public class DepartmentModify extends AppCompatActivity {
                         boolean positionModify = db.departmentModify(departmentName, etDepartment);
                         if (positionModify) {
                             ls.progressDialog(DepartmentModify.this,"Módosítás folyamatban...","Módosítás");
+                            createList();
                         } else
                             Toast.makeText(DepartmentModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }
