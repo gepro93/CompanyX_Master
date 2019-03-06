@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-        <activity android:name=".CarEdit"></activity>
+        <activity android:name=".CarBrandEdit"></activity>
+        <activity android:name=".CarBrandList" />
+        <activity android:name=".CarList" />
+        <activity android:name=".CarEdit" />
         <activity android:name=".CarBrandHandle" />
         <activity android:name=".CarHandle" />
         <activity android:name=".CarMenu" />

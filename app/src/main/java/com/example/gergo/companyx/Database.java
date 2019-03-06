@@ -69,6 +69,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String CAR_MOTDATE = "autoMuszakierveny";
     public static final String CAR_MODEL_ID = "autoGyartmany_id";
     public static final String CARTYPE = "autoTipus";
+    public static final String MOTDATE = "muszakiDatum";
 
     //autó gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFCAR_TABLE = "auto_gyartmanyok";
@@ -390,12 +391,12 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Autó gyártmány felvétel
-    public boolean insertModelOfCar(String autoMarka, String autoTipus){
+    public boolean insertModelOfCar(String autoMarka, String autoTipus, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MODELOFCAR_BRAND, autoMarka);
         contentValues.put(MODELOFCAR_TYPE, autoTipus);
-        contentValues.put(MODELOFCAR_GRADE_ID, autoTipus);
+        contentValues.put(MODELOFCAR_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(MODELOFCAR_TABLE, null, contentValues);
 
@@ -863,7 +864,7 @@ public class Database extends SQLiteOpenHelper{
             return modelOfCarList;
         }
 
-        //Felhasználó létezésének ellenőzése belépéshez
+        //Autó létezésének ellenőzése
         public Boolean carCheck(String licenseeNumber, String vinNumber){
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM " + CAR_TABLE + " WHERE autoRendszam=? AND autoAlvazszam=?", new String[]{licenseeNumber,vinNumber});
@@ -873,27 +874,143 @@ public class Database extends SQLiteOpenHelper{
             }else return false;
         }
 
-        //Pozició tábla feltöltése listába
+        //Autó tábla feltöltése listába
         public ArrayList<HashMap<String,String>> viewCars(){
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String,String>> carList = new ArrayList<>();
 
-            String query = "SELECT c."+ CAR_LICENSENUMBER + ", c."+ CAR_VINNUMBER + ", c."+ CAR_MOTDATE +" , (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
+            String query = "SELECT c."+ CAR_LICENSENUMBER + ", c."+ CAR_VINNUMBER + ", STRFTIME('%Y-%m-%d', c."+ CAR_MOTDATE +") AS "+MOTDATE+", (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
                     " FROM " + CAR_TABLE + " AS c" +
                     " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID;
 
             Cursor cursor = db.rawQuery(query,null);
 
             while(cursor.moveToNext()){
-                HashMap<String,String> position = new HashMap<>();
-                position.put("CAR_LICENSENUMBER",cursor.getString(cursor.getColumnIndex(CAR_LICENSENUMBER)));
-                position.put("CAR_VINNUMBER",cursor.getString(cursor.getColumnIndex(CAR_VINNUMBER)));
-                position.put("CAR_MOTDATE",cursor.getString(cursor.getColumnIndex(CAR_MOTDATE)));
-                position.put("CARTYPE",cursor.getString(cursor.getColumnIndex(CARTYPE)));
+                HashMap<String,String> car = new HashMap<>();
+                car.put("CAR_LICENSENUMBER",cursor.getString(cursor.getColumnIndex(CAR_LICENSENUMBER)));
+                car.put("CAR_VINNUMBER",cursor.getString(cursor.getColumnIndex(CAR_VINNUMBER)));
+                car.put("MOTDATE",cursor.getString(cursor.getColumnIndex(MOTDATE)));
+                car.put("CARTYPE",cursor.getString(cursor.getColumnIndex(CARTYPE)));
 
-                carList.add(position);
+                carList.add(car);
             }
             return carList;
+        }
+
+        //Autó módosítása
+        public Boolean carModify(String oldLicenseeNumber, String newLicenseeNumber,String vinNumber, Date motDate, int carModelId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(CAR_LICENSENUMBER, newLicenseeNumber);
+            contentValues.put(CAR_VINNUMBER, vinNumber);
+            contentValues.put(CAR_MOTDATE, String.valueOf(motDate));
+            contentValues.put(CAR_MODEL_ID, carModelId);
+
+            int i = db.update(CAR_TABLE, contentValues, CAR_LICENSENUMBER + "=" + '"'+oldLicenseeNumber+'"',null);
+            return i > 0;
+        }
+
+        //Rendszám létezésének ellenőrzése alapján -- darabszám
+        public Integer carLicenseeCheckForModify(String licenseeNumber){
+            int licenseeNumberCount=0;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor eredmeny = db.rawQuery("SELECT COUNT("+CAR_LICENSENUMBER+") AS eredmeny FROM " + CAR_TABLE + " WHERE "+CAR_LICENSENUMBER+"='" + licenseeNumber +"'", null);
+            if (eredmeny!=null && eredmeny.getCount()>0) {
+                eredmeny.moveToFirst();
+                licenseeNumberCount = eredmeny.getInt(eredmeny.getColumnIndex("eredmeny"));
+            }
+            return licenseeNumberCount;
+        }
+
+        //Alvázszám létezésének ellenőrzése -- darabszám
+        public Integer carVinCheckForModify(String vinNumber){
+            int vinNumberCount=0;
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor eredmeny = db.rawQuery("SELECT COUNT("+CAR_VINNUMBER+") AS eredmeny FROM " + CAR_TABLE + " WHERE "+CAR_VINNUMBER+"='" + vinNumber +"'", null);
+            if (eredmeny!=null && eredmeny.getCount()>0) {
+                eredmeny.moveToFirst();
+                vinNumberCount = eredmeny.getInt(eredmeny.getColumnIndex("eredmeny"));
+            }
+            return vinNumberCount;
+        }
+
+        //Autó törlése
+        public Boolean carDelete(String licenseeNumber){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(CAR_TABLE,CAR_LICENSENUMBER + "="+'"'+licenseeNumber+'"',null) > 0;
+        }
+
+
+     /*
+     * Autó gyártmánnyal kapcsolatos lekérdezések
+     * */
+
+        //Grade-ek feltöltése listába
+        public ArrayList<String> gradeList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> gradeNameList = new ArrayList<>();
+
+            String query = "SELECT "+ GRADE_NAME +" AS gradeName"+
+                    " FROM " + GRADE_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                gradeNameList.add(cursor.getString(cursor.getColumnIndex("gradeName")));
+            }
+            return gradeNameList;
+        }
+
+        //Autó gyártmány létezésének ellenőzése
+        public Boolean carBrandCheck(String brand, String type){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + MODELOFCAR_TABLE + " WHERE autoMarka=? AND autoTipus=?", new String[]{brand,type});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Autó gyártmány tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewCarBrands(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String,String>> carBrandList = new ArrayList<>();
+
+        String query = "SELECT m."+ MODELOFCAR_BRAND + ", m."+ MODELOFCAR_TYPE + ", g."+ GRADE_NAME +
+                " FROM " + MODELOFCAR_TABLE + " AS m" +
+                " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFCAR_GRADE_ID;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            HashMap<String,String> brand = new HashMap<>();
+            brand.put("MODELOFCAR_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFCAR_BRAND)));
+            brand.put("MODELOFCAR_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFCAR_TYPE)));
+            brand.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
+
+            carBrandList.add(brand);
+        }
+        return carBrandList;
+    }
+
+        //Autó gyártmány módosítása
+        public Boolean modifyCarBrand(String oldCarBrand, String oldCarType, String carBrand,String carType, int gradeId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(MODELOFCAR_BRAND, carBrand);
+            contentValues.put(MODELOFCAR_TYPE, carType);
+            contentValues.put(MODELOFCAR_GRADE_ID, gradeId);
+
+            int i = db.update(MODELOFCAR_TABLE, contentValues, MODELOFCAR_BRAND + "=" + '"'+oldCarBrand+'"' +" AND "+ MODELOFCAR_TYPE + "=" + '"'+oldCarType+'"',null);
+            return i > 0;
+        }
+
+        //Autó gyártmány törlése
+        public Boolean carBrandDelete(String brand, String type){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(MODELOFCAR_TABLE,MODELOFCAR_BRAND + "="+'"'+brand+'"' +" AND "+ MODELOFCAR_TYPE + "="+'"'+type+'"',null) > 0;
         }
 
 }

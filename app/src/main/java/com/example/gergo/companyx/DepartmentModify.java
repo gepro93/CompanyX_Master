@@ -59,7 +59,7 @@ public class DepartmentModify extends AppCompatActivity {
         btDepartmentMod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                departmentModify(departmentList,adapter);
+                departmentModify();
             }
         });
     }
@@ -73,7 +73,7 @@ public class DepartmentModify extends AppCompatActivity {
         lwDepartmentModify.setAdapter(adapter);
     }
 
-    private void departmentModify(final ArrayList<HashMap<String,String>> arrayList, final ListAdapter listAdapter){
+    private void departmentModify(){
         pos = lwDepartmentModify.getCheckedItemPosition();
 
         if (pos > -1) {

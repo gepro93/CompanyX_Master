@@ -55,7 +55,7 @@ public class PositionModify extends AppCompatActivity {
         btPositionMod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                positionModify(positionList,adapter);
+                positionModify();
             }
         });
 
@@ -87,7 +87,7 @@ public class PositionModify extends AppCompatActivity {
         ls = new LoadScreen();
     }
 
-    public void positionModify(ArrayList<HashMap<String,String>> arrayList, final ListAdapter listAdapter){
+    public void positionModify(){
         int pos  = lwPositionModify.getCheckedItemPosition();
 
         if (pos > -1)

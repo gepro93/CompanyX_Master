@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="0.4">
+
+        <TextView
+            android:id="@+id/twCarType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_car"
+            android:text="Ford Focus"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"/>
+        <TextView
+            android:id="@+id/twLicenseeNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twCarType"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            android:text="LSL-123"
+            android:drawableLeft="@drawable/button_menu_data"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="0.6"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/twMot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_date"
+            android:text="Műszaki érvényesség: "
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/twMotDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="165sp"
+            android:text="2015-06-06" />
+
+        <TextView
+            android:id="@+id/twVinNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twMotDate"
+            android:layout_marginTop="13dp"
+            android:drawableLeft="@drawable/button_menu_data"
+            android:text="Vin"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

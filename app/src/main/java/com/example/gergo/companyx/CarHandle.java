@@ -69,6 +69,14 @@ public class CarHandle extends AppCompatActivity {
             }
         });
 
+        btCarList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CarHandle.this, CarList.class));
+                finish();
+            }
+        });
+
     }
 
     private void init() {
@@ -77,6 +85,7 @@ public class CarHandle extends AppCompatActivity {
         btCarList = findViewById(R.id.btCarList);
         btCarHandleBack = findViewById(R.id.btCarHandleBack);
         db = new Database(this);
+        ls = new LoadScreen();
     }
 
     private void addCar() {
