@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-        <activity android:name=".MobileBrandList"></activity>
+        <activity android:name=".LaptopBrandList"></activity>
+        <activity android:name=".LaptopBrandEdit" />
+        <activity android:name=".LaptopBrandHandle" />
+        <activity android:name=".LaptopList" />
+        <activity android:name=".LaptopEdit" />
+        <activity android:name=".LaptopHandle" />
+        <activity android:name=".LaptopMenu" />
+        <activity android:name=".MobileBrandList" />
         <activity android:name=".MobileBrandEdit" />
         <activity android:name=".MobileBrandHandle" />
         <activity android:name=".MobileList" />
