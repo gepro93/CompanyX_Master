@@ -148,7 +148,7 @@ public class CarBrandEdit extends AppCompatActivity {
             spGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectedGrade = adapterView.getSelectedItemPosition();
+                    selectedGrade = adapterView.getSelectedItemPosition()+1;
                 }
 
                 @Override
@@ -174,7 +174,7 @@ public class CarBrandEdit extends AppCompatActivity {
                     }else if (etBrandName.equals(modCarBrand) && etTypeName.equals(modCarType)){
                         boolean modifyCarBrand = db.modifyCarBrand(modCarBrand,modCarType,etBrandName, etTypeName, selectedGrade);
                         if (modifyCarBrand) {
-                            ls.progressDialog(CarBrandEdit.this, "Márka módosítása folyamatban...", "Létrehozás");
+                            ls.progressDialog(CarBrandEdit.this, "Márka módosítása folyamatban...", "Módosítás");
                             createList();
                         } else
                             Toast.makeText(CarBrandEdit.this, "Adatbázis hiba létrehozáskor!", Toast.LENGTH_SHORT).show();
@@ -183,7 +183,7 @@ public class CarBrandEdit extends AppCompatActivity {
                         if (!carBrandCheck){
                             boolean modifyCarBrand = db.modifyCarBrand(modCarBrand,modCarType,etBrandName, etTypeName, selectedGrade);
                             if (modifyCarBrand) {
-                                ls.progressDialog(CarBrandEdit.this, "Márka módosítása folyamatban...", "Létrehozás");
+                                ls.progressDialog(CarBrandEdit.this, "Márka módosítása folyamatban...", "Módosítás");
                                 createList();
                             } else
                                 Toast.makeText(CarBrandEdit.this, "Adatbázis hiba létrehozáskor!", Toast.LENGTH_SHORT).show();

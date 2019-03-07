@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MobileHandle"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@drawable/ic_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="23">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobilok kezelése"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30sp"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="25"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btMobileCreate"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:layout_marginTop="50sp"
+            android:layout_marginRight="20sp"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_useradd"
+            android:text="Új mobil felvétele"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+        <Button
+            android:id="@+id/btMobileEdit"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="50sp"
+            android:layout_marginRight="40sp"
+            android:layout_weight="0.5"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_useredit"
+            android:text="Mobilok kezelése"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="22"
+        >
+
+
+        <Button
+            android:id="@+id/btMobileList"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginRight="40sp"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_userlist"
+            android:text="Mobilok"
+            android:textAllCaps="false"
+            android:textColor="@drawable/button_text_color2" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="33">
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btMobileHandleBack"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="160sp"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/selected_list_view_background"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/twMobileBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_mobile"
+            android:text="Iphone"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/twMobileType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twCarType"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:text="XS"
+            android:drawableLeft="@drawable/button_menu_data"
+            android:layout_gravity="center"
+            android:paddingLeft="10sp"
+            android:paddingRight="20sp"
+            />
+
+        <TextView
+            android:id="@+id/twGradeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twCarType"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:text="Grade 4"
+            android:drawableLeft="@drawable/button_menu_grade"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

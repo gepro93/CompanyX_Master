@@ -86,6 +86,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String MOBIL_ID = "mobil_id";
     public static final String MOBIL_IMEINUMBER = "mobilImeiSzam";
     public static final String MOBIL_MODEL_ID = "mobilGyartmany_id";
+    public static final String MOBILTYPE = "mobilTipus";
 
     //mobil gyártámányok tábla és oszlopok definiálása
     public static final String MODELOFMOBIL_TABLE = "mobil_gyartmanyok";
@@ -408,7 +409,7 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Mobil felvétel
-    public boolean insertMobile(String mobilImeiSzam, int mobilGyartmany_id, int grade_id){
+    public boolean insertMobile(String mobilImeiSzam, int mobilGyartmany_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MOBIL_IMEINUMBER, mobilImeiSzam);
@@ -424,12 +425,12 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Mobil gyártmány felvétel
-    public boolean insertModelOfMobile(String mobilMarka, String mobilTipus){
+    public boolean insertModelOfMobile(String mobilMarka, String mobilTipus, int grade_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(MODELOFMOBIL_BRAND, mobilMarka);
         contentValues.put(MODELOFMOBIL_TYPE, mobilTipus);
-        contentValues.put(MODELOFMOBIL_GRADE_ID, mobilTipus);
+        contentValues.put(MODELOFMOBIL_GRADE_ID, grade_id);
 
         long eredmeny = db.insert(MODELOFMOBIL_TABLE, null, contentValues);
 
@@ -844,9 +845,15 @@ public class Database extends SQLiteOpenHelper{
             return  db.delete(DEPARTMENT_TABLE,DEPARTMENT_NAME + "="+'"'+department+'"',null) > 0;
         }
 
+
+
+
     /*
     * Autóval kapcsolatos adatbázis utasítások
     * */
+
+
+
 
         //Autó gyártmányok feltöltése listába
         public ArrayList<String> modelOfCarList(){
@@ -911,29 +918,6 @@ public class Database extends SQLiteOpenHelper{
             return i > 0;
         }
 
-        //Rendszám létezésének ellenőrzése alapján -- darabszám
-        public Integer carLicenseeCheckForModify(String licenseeNumber){
-            int licenseeNumberCount=0;
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor eredmeny = db.rawQuery("SELECT COUNT("+CAR_LICENSENUMBER+") AS eredmeny FROM " + CAR_TABLE + " WHERE "+CAR_LICENSENUMBER+"='" + licenseeNumber +"'", null);
-            if (eredmeny!=null && eredmeny.getCount()>0) {
-                eredmeny.moveToFirst();
-                licenseeNumberCount = eredmeny.getInt(eredmeny.getColumnIndex("eredmeny"));
-            }
-            return licenseeNumberCount;
-        }
-
-        //Alvázszám létezésének ellenőrzése -- darabszám
-        public Integer carVinCheckForModify(String vinNumber){
-            int vinNumberCount=0;
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor eredmeny = db.rawQuery("SELECT COUNT("+CAR_VINNUMBER+") AS eredmeny FROM " + CAR_TABLE + " WHERE "+CAR_VINNUMBER+"='" + vinNumber +"'", null);
-            if (eredmeny!=null && eredmeny.getCount()>0) {
-                eredmeny.moveToFirst();
-                vinNumberCount = eredmeny.getInt(eredmeny.getColumnIndex("eredmeny"));
-            }
-            return vinNumberCount;
-        }
 
         //Autó törlése
         public Boolean carDelete(String licenseeNumber){
@@ -1011,6 +995,138 @@ public class Database extends SQLiteOpenHelper{
         public Boolean carBrandDelete(String brand, String type){
             SQLiteDatabase db = this.getWritableDatabase();
             return  db.delete(MODELOFCAR_TABLE,MODELOFCAR_BRAND + "="+'"'+brand+'"' +" AND "+ MODELOFCAR_TYPE + "="+'"'+type+'"',null) > 0;
+        }
+
+
+
+
+
+    /*
+     * Mobilokkal kapcsolatos adatbázis utasítások
+     * */
+
+        //Mobil gyártmányok feltöltése listába
+        public ArrayList<String> modelOfMobileList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> modelOfMobileList = new ArrayList<>();
+
+            String query = "SELECT ("+ MODELOFMOBIL_BRAND + " || " + "' '" + " || " + MODELOFMOBIL_TYPE + ") AS mobilType" +
+                    " FROM " + MODELOFMOBIL_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                modelOfMobileList.add(cursor.getString(cursor.getColumnIndex("mobilType")));
+            }
+            return modelOfMobileList;
+        }
+
+        //Mobil létezésének ellenőzése
+        public Boolean mobileCheck(String imeiNumber){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + MOBILE_TABLE + " WHERE mobilImeiSzam=?", new String[]{imeiNumber});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Mobil tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewMobiles(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> mobileBrandList = new ArrayList<>();
+
+            String query = "SELECT m."+ MOBIL_IMEINUMBER + ", (g."+ MODELOFMOBIL_BRAND + " || " + "' '" + " || g." + MODELOFMOBIL_TYPE+ ") AS " + MOBILTYPE +
+                    " FROM " + MOBILE_TABLE + " AS m" +
+                    " LEFT JOIN " + MODELOFMOBIL_TABLE + " AS g ON g." + MODELOFMOBIL_ID + " = m." + MOBIL_MODEL_ID;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> mobile = new HashMap<>();
+                mobile.put("MOBIL_IMEINUMBER",cursor.getString(cursor.getColumnIndex(MOBIL_IMEINUMBER)));
+                mobile.put("MOBILTYPE",cursor.getString(cursor.getColumnIndex(MOBILTYPE)));
+
+                mobileBrandList.add(mobile);
+            }
+            return mobileBrandList;
+        }
+
+        //Mobil módosítása
+        public Boolean modifyMobile(String oldMobileImei,String mobileImeiNumber, int mobileBrandId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(MOBIL_IMEINUMBER, mobileImeiNumber);
+            contentValues.put(MOBIL_MODEL_ID, mobileBrandId);
+
+            int i = db.update(MOBILE_TABLE, contentValues, MOBIL_IMEINUMBER + "=" + '"'+oldMobileImei+'"',null);
+            return i > 0;
+        }
+
+        //Mobil törlése
+        public Boolean mobileDelete(String mobileImeiNumber){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(MOBILE_TABLE,MOBIL_IMEINUMBER + "="+'"'+mobileImeiNumber+'"',null) > 0;
+        }
+
+
+
+    /*
+     * Mobil gyártmányokkal kapcsolatos adatbázis utasítások
+     * */
+
+
+
+        //Mobil gyártmány létezésének ellenőzése
+        public Boolean mobileBrandCheck(String brand, String type){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + MODELOFMOBIL_TABLE + " WHERE mobilMarka=? AND mobilTipus=?", new String[]{brand,type});
+
+            if(cursor.getCount()>0){
+                return true;
+            }else return false;
+        }
+
+        //Mobil gyártmány tábla feltöltése listába
+        public ArrayList<HashMap<String,String>> viewMobileBrands(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> carBrandList = new ArrayList<>();
+
+            String query = "SELECT m."+ MODELOFMOBIL_BRAND + ", m."+ MODELOFMOBIL_TYPE + ", g."+ GRADE_NAME +
+                    " FROM " + MODELOFMOBIL_TABLE + " AS m" +
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFMOBIL_GRADE_ID;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> brand = new HashMap<>();
+                brand.put("MODELOFMOBIL_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_BRAND)));
+                brand.put("MODELOFMOBIL_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_TYPE)));
+                brand.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
+
+                carBrandList.add(brand);
+            }
+            return carBrandList;
+        }
+
+        //Mobil gyártmány módosítása
+        public Boolean modifyMobileBrand(String oldMobileBrand, String oldMobileType, String mobileBrand,String mobileType, int gradeId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(MODELOFMOBIL_BRAND, mobileBrand);
+            contentValues.put(MODELOFMOBIL_TYPE, mobileType);
+            contentValues.put(MODELOFMOBIL_GRADE_ID, gradeId);
+
+            int i = db.update(MODELOFMOBIL_TABLE, contentValues, MODELOFMOBIL_BRAND + "=" + '"'+oldMobileBrand+'"' +" AND "+ MODELOFMOBIL_TYPE + "=" + '"'+oldMobileType+'"',null);
+            return i > 0;
+        }
+
+        //Mobil gyártmány törlése
+        public Boolean mobileBrandDelete(String brand, String type){
+            SQLiteDatabase db = this.getWritableDatabase();
+            return  db.delete(MODELOFMOBIL_TABLE,MODELOFMOBIL_BRAND + "="+'"'+brand+'"' +" AND "+ MODELOFMOBIL_TYPE + "="+'"'+type+'"',null) > 0;
         }
 
 }

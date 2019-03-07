@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_description_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_phone_iphone_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,9 +44,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="button_menu_data" />
+                                      <entry key="outputName" value="menu_mobile_dark" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="102142" />
+                                      <entry key="themeColor" value="070642" />
                                     </map>
                                   </option>
                                 </PersistentState>

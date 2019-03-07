@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="0.4">
+
+        <TextView
+            android:id="@+id/twModelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_mobile"
+            android:text="Iphone XS"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"/>
+        <TextView
+            android:id="@+id/twImeiNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/twModelType"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14dp"
+            android:text="IMEI060606060606006"
+            android:drawableLeft="@drawable/button_menu_data"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

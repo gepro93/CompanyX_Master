@@ -58,6 +58,14 @@ public class AdminMenu extends AppCompatActivity {
             }
         });
 
+        btMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminMenu.this, MobileMenu.class));
+                finish();
+            }
+        });
+
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
