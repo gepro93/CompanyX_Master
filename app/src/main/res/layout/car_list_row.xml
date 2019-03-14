@@ -44,15 +44,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/button_menu_date"
-            android:text="Műszaki érvényesség: "
+            android:text="Műszaki érv.: "
             android:textSize="14dp"
+            android:paddingRight="80dp"
             android:textColor="@color/colorPrimaryDark"/>
 
         <TextView
             android:id="@+id/twMotDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="165sp"
+            android:layout_alignRight="@id/twMot"
             android:text="2015-06-06" />
 
         <TextView

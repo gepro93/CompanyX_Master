@@ -45,7 +45,8 @@ public class AdminMenu extends AppCompatActivity{
                         break;
 
                     case R.id.navEmployeeMenu:
-
+                        startActivity(new Intent(AdminMenu.this, EmployeeHandle.class));
+                        finish();
                         break;
 
                     case R.id.navPositionMenu:

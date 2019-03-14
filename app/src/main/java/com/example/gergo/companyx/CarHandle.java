@@ -132,7 +132,13 @@ public class CarHandle extends AppCompatActivity {
                 dpd = new DatePickerDialog(CarHandle.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
-                        motDate.setText(mYear + "-" + (mMonth+1) + "-" + mDay);
+                        if(mMonth < 10 && mDay < 10){
+                            motDate.setText(mYear + "-0" + (mMonth+1) + "-0" + mDay);
+                        }else if (mMonth < 10){
+                            motDate.setText(mYear + "-0" + (mMonth+1) + "-" + mDay);
+                        }else if(mDay < 10){
+                            motDate.setText(mYear + "-" + (mMonth+1) + "-0" + mDay);
+                        }else motDate.setText(mYear + "-" + (mMonth+1) + "-" + mDay);
                     }
                 }, year, month, day);
                 dpd.show();

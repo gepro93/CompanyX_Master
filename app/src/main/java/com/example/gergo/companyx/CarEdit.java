@@ -43,7 +43,6 @@ public class CarEdit extends AppCompatActivity {
     private Calendar c;
     private DatePickerDialog dpd;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +60,7 @@ public class CarEdit extends AppCompatActivity {
                 modLicenseeNumber = (String) obj.get("CAR_LICENSENUMBER");
                 modMotDate = (String) obj.get("MOTDATE");
                 modVinNumber = (String) obj.get("CAR_VINNUMBER");
+                Toast.makeText(CarEdit.this, modMotDate, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -235,22 +235,14 @@ public class CarEdit extends AppCompatActivity {
                 String etLicenseNumber = licenseNumber.getText().toString();
                 String etVinNumber = vinNumber.getText().toString();
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 String etMotDate = motDate.getText().toString();
-
-                Date formattedMotDate = null;
-                try {
-                    formattedMotDate = formatter.parse(etMotDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
 
                 if (etLicenseNumber.equals("") || etVinNumber.equals("") || etMotDate.equals("")) {
                     Toast.makeText(CarEdit.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                 }else {
                     if (modLicenseeNumber.equals(etLicenseNumber) && modVinNumber.equals(etVinNumber)){
-                        boolean carModify = db.carModify(modLicenseeNumber,etLicenseNumber,etVinNumber, formattedMotDate,selectedCarType);
+                        boolean carModify = db.carModify(modLicenseeNumber,etLicenseNumber,etVinNumber, etMotDate,selectedCarType);
                         if (carModify) {
                             ls.progressDialog(CarEdit.this, "Autó módosítása folyamatban...", "Módosítás");
                             createList();
@@ -260,7 +252,7 @@ public class CarEdit extends AppCompatActivity {
                         else {
                         boolean carCheck = db.carCheck(etLicenseNumber,etVinNumber);
                         if (!carCheck){
-                            boolean carModify = db.carModify(modLicenseeNumber,etLicenseNumber,etVinNumber, formattedMotDate,selectedCarType);
+                            boolean carModify = db.carModify(modLicenseeNumber,etLicenseNumber,etVinNumber, etMotDate,selectedCarType);
                             if (carModify) {
                                 ls.progressDialog(CarEdit.this, "Autó módosítása folyamatban...", "Módosítás");
                                 createList();

@@ -164,7 +164,7 @@ public class Database extends SQLiteOpenHelper{
                 + EMPLOYEE_TABLE + " ("
                 + EMPLOYEE_ID + " integer primary key autoincrement, "
                 + EMPLOYEE_NAME + " text not null, "
-                + EMPLOYEE_GENDER + " char not null, "
+                + EMPLOYEE_GENDER + " integer not null, "
                 + EMPLOYEE_BIRTH + " date not null, "
                 + EMPLOYEE_MOTHERS_NAME + " text not null, "
                 + EMPLOYEE_STATUS + " bool not null, "
@@ -304,8 +304,8 @@ public class Database extends SQLiteOpenHelper{
     }
 
     //Dolgozó felvétel
-    public boolean insertEmployee(String dolgNev, String dolgNeme, Date dolgSzuletesiDatum, String dolgAnyjaNeve,
-                                  int dolgStatusz, Boolean dolgFizetes, int osztaly_id, int beosztas_id, int felh_id){
+    public boolean insertEmployee(String dolgNev, int dolgNeme, String dolgSzuletesiDatum, String dolgAnyjaNeve,
+                                  boolean dolgStatusz, int dolgFizetes, int osztaly_id, int beosztas_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EMPLOYEE_NAME, dolgNev);
@@ -316,7 +316,6 @@ public class Database extends SQLiteOpenHelper{
         contentValues.put(EMPLOYEE_SALARY, dolgFizetes);
         contentValues.put(EMPLOYEE_DEPARTMANET_ID, osztaly_id);
         contentValues.put(EMPLOYEE_POSITION_ID, beosztas_id);
-        contentValues.put(EMPLOYEE_USER_ID, felh_id);
 
         long eredmeny = db.insert(EMPLOYEE_TABLE, null, contentValues);
 
@@ -745,6 +744,22 @@ public class Database extends SQLiteOpenHelper{
     * POZÍCIÓVAL KAPCSOLATOS ADATBÁZIS PARANCSOK
     * */
 
+        //Pozíciók feltöltése listába
+        public ArrayList<String> positionList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> positionList = new ArrayList<>();
+
+            String query = "SELECT "+ POSITION_NAME + " AS posName" +
+                    " FROM " + POSITION_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                positionList.add(cursor.getString(cursor.getColumnIndex("posName")));
+            }
+            return positionList;
+        }
+
         public Boolean positionCheck(String positionName){
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM " + POSITION_TABLE + " WHERE beosztasNeve=?", new String[]{positionName});
@@ -798,8 +813,24 @@ public class Database extends SQLiteOpenHelper{
         }
 
      /*
-     * Pozícióval kapcsolatos adatbázis utasítások
+     * Osztállyal kapcsolatos adatbázis utasítások
      * */
+
+        //Osztályok feltöltése listába
+        public ArrayList<String> departmentList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> departmentList = new ArrayList<>();
+
+            String query = "SELECT "+ DEPARTMENT_NAME +
+                    " FROM " + DEPARTMENT_TABLE;
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                departmentList.add(cursor.getString(cursor.getColumnIndex("osztalyNeve")));
+            }
+            return departmentList;
+        }
 
         //Department tábla feltöltése listába
         public ArrayList<HashMap<String,String>> viewDepartments(){
@@ -887,7 +918,7 @@ public class Database extends SQLiteOpenHelper{
             SQLiteDatabase db = this.getWritableDatabase();
             ArrayList<HashMap<String,String>> carList = new ArrayList<>();
 
-            String query = "SELECT c."+ CAR_LICENSENUMBER + ", c."+ CAR_VINNUMBER + ", STRFTIME('%Y-%m-%d', c."+ CAR_MOTDATE +") AS "+MOTDATE+", (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
+            String query = "SELECT c."+ CAR_LICENSENUMBER + ", c."+ CAR_VINNUMBER + ", date(c."+ CAR_MOTDATE +") AS "+MOTDATE+", (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
                     " FROM " + CAR_TABLE + " AS c" +
                     " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID;
 
@@ -906,13 +937,13 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Autó módosítása
-        public Boolean carModify(String oldLicenseeNumber, String newLicenseeNumber,String vinNumber, Date motDate, int carModelId){
+        public Boolean carModify(String oldLicenseeNumber, String newLicenseeNumber,String vinNumber, String motDate, int carModelId){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(CAR_LICENSENUMBER, newLicenseeNumber);
             contentValues.put(CAR_VINNUMBER, vinNumber);
-            contentValues.put(CAR_MOTDATE, String.valueOf(motDate));
+            contentValues.put(CAR_MOTDATE, motDate);
             contentValues.put(CAR_MODEL_ID, carModelId);
 
             int i = db.update(CAR_TABLE, contentValues, CAR_LICENSENUMBER + "=" + '"'+oldLicenseeNumber+'"',null);
@@ -1131,6 +1162,65 @@ public class Database extends SQLiteOpenHelper{
         }
 
 
+
+    /*
+     * Laptop gyártmányokkal kapcsolatos adatbázis utasítások
+     * */
+
+
+
+    //Laptop gyártmány létezésének ellenőzése
+    public Boolean laptopBrandCheck(String brand, String type){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LAPTOP_TABLE + " WHERE laptopMarka=? AND laptopTipus=?", new String[]{brand,type});
+
+        if(cursor.getCount()>0){
+            return true;
+        }else return false;
+    }
+
+    //Laptop gyártmány tábla feltöltése listába
+    public ArrayList<HashMap<String,String>> viewLaptopBrands(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String,String>> laptopBrandList = new ArrayList<>();
+
+        String query = "SELECT m."+ MODELOFLAPTOP_BRAND + ", m."+ MODELOFLAPTOP_TYPE + ", g."+ GRADE_NAME +
+                " FROM " + MODELOFLAPTOP_TABLE + " AS m" +
+                " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFLAPTOP_GRADE_ID;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            HashMap<String,String> brand = new HashMap<>();
+            brand.put("MODELOFMOBIL_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_BRAND)));
+            brand.put("MODELOFMOBIL_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_TYPE)));
+            brand.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
+
+            laptopBrandList.add(brand);
+        }
+        return laptopBrandList;
+    }
+
+    //Laptop gyártmány módosítása
+    public Boolean modifyLaptopBrand(String oldLaptopBrand, String oldLaptopType, String laptopBrand,String laptopType, int gradeId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MODELOFMOBIL_BRAND, laptopBrand);
+        contentValues.put(MODELOFMOBIL_TYPE, laptopType);
+        contentValues.put(MODELOFMOBIL_GRADE_ID, gradeId);
+
+        int i = db.update(MODELOFLAPTOP_TABLE, contentValues, MODELOFLAPTOP_BRAND + "=" + '"'+oldLaptopBrand+'"' +" AND "+ MODELOFLAPTOP_TYPE + "=" + '"'+oldLaptopType+'"',null);
+        return i > 0;
+    }
+
+    //Laptop gyártmány törlése
+    public Boolean laptopBrandDelete(String brand, String type){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(MODELOFLAPTOP_TABLE,MODELOFLAPTOP_BRAND + "="+'"'+brand+'"' +" AND "+ MODELOFLAPTOP_TYPE + "="+'"'+type+'"',null) > 0;
+    }
+
+
     /*
      * Laptopokkal kapcsolatos adatbázis utasítások
      * */
@@ -1203,60 +1293,20 @@ public class Database extends SQLiteOpenHelper{
 
 
     /*
-     * Laptop gyártmányokkal kapcsolatos adatbázis utasítások
+     * Dolgozókkal kapcsolatos adatbázis utasítások
      * */
 
 
 
     //Laptop gyártmány létezésének ellenőzése
-    public Boolean laptopBrandCheck(String brand, String type){
+    public Boolean employeeCheck(String empName, String empMoName){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + LAPTOP_TABLE + " WHERE laptopMarka=? AND laptopTipus=?", new String[]{brand,type});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + EMPLOYEE_TABLE + " WHERE dolgNev=? AND dolgAnyjaNeve=?", new String[]{empName,empMoName});
 
         if(cursor.getCount()>0){
             return true;
         }else return false;
     }
 
-    //Laptop gyártmány tábla feltöltése listába
-    public ArrayList<HashMap<String,String>> viewLaptopBrands(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<HashMap<String,String>> laptopBrandList = new ArrayList<>();
-
-        String query = "SELECT m."+ MODELOFLAPTOP_BRAND + ", m."+ MODELOFLAPTOP_TYPE + ", g."+ GRADE_NAME +
-                " FROM " + MODELOFLAPTOP_TABLE + " AS m" +
-                " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFLAPTOP_GRADE_ID;
-
-        Cursor cursor = db.rawQuery(query,null);
-
-        while(cursor.moveToNext()){
-            HashMap<String,String> brand = new HashMap<>();
-            brand.put("MODELOFMOBIL_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_BRAND)));
-            brand.put("MODELOFMOBIL_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_TYPE)));
-            brand.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
-
-            laptopBrandList.add(brand);
-        }
-        return laptopBrandList;
-    }
-
-    //Laptop gyártmány módosítása
-    public Boolean modifyLaptopBrand(String oldLaptopBrand, String oldLaptopType, String laptopBrand,String laptopType, int gradeId){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(MODELOFMOBIL_BRAND, laptopBrand);
-        contentValues.put(MODELOFMOBIL_TYPE, laptopType);
-        contentValues.put(MODELOFMOBIL_GRADE_ID, gradeId);
-
-        int i = db.update(MODELOFLAPTOP_TABLE, contentValues, MODELOFLAPTOP_BRAND + "=" + '"'+oldLaptopBrand+'"' +" AND "+ MODELOFLAPTOP_TYPE + "=" + '"'+oldLaptopType+'"',null);
-        return i > 0;
-    }
-
-    //Laptop gyártmány törlése
-    public Boolean laptopBrandDelete(String brand, String type){
-        SQLiteDatabase db = this.getWritableDatabase();
-        return  db.delete(MODELOFLAPTOP_TABLE,MODELOFLAPTOP_BRAND + "="+'"'+brand+'"' +" AND "+ MODELOFLAPTOP_TYPE + "="+'"'+type+'"',null) > 0;
-    }
 
 }

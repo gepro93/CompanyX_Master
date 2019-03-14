@@ -49,11 +49,6 @@ public class Login extends AppCompatActivity{
         Integer permCheck = db.userPermissionCheck(userName,userPassword);
         Boolean statusCheck = db.userStatusCheck(userName,userPassword);
 
-        SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("LoginUserName", userName);
-        editor.apply();
-        editor.commit();
 
         if(userName.equals("") && userPassword.equals("")){
             etUsername.setError("Kérlek add meg a felhasználó neved!");
@@ -70,6 +65,12 @@ public class Login extends AppCompatActivity{
                 switch (permCheck){
                     case 1:
                         if (statusCheck){
+                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("LoginUserName", userName);
+                            editor.putString("Permission", "admin");
+                            editor.apply();
+                            editor.commit();
                             startActivity(new Intent(Login.this, AdminMenu.class));
                             finish();
                         }else{
@@ -77,6 +78,12 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 2:
                         if (statusCheck){
+                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("LoginUserName", userName);
+                            editor.putString("Permission", "hr");
+                            editor.apply();
+                            editor.commit();
                             startActivity(new Intent(Login.this, HRMenu.class));
                             finish();
                         }else{
@@ -84,6 +91,12 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 3:
                         if (statusCheck){
+                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("LoginUserName", userName);
+                            editor.putString("Permission", "fac");
+                            editor.apply();
+                            editor.commit();
                             startActivity(new Intent(Login.this, FacilitiesMenu.class));
                             finish();
                         }else{
@@ -91,6 +104,12 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 4:
                         if (statusCheck){
+                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("LoginUserName", userName);
+                            editor.putString("Permission", "emp");
+                            editor.apply();
+                            editor.commit();
                             startActivity(new Intent(Login.this, EmployeeMenu.class));
                             finish();
                         }else{
