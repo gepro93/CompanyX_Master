@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+    android:title=""/>
+    <item
+        android:title=""/>
+    <item
+        android:title=""/>
+
+    <group>
+        <item
+            android:id="@+id/navUserMenu"
+        android:icon="@drawable/button_menu_user"
+        android:title="Felhasználók"/>
+    </group>
+
+    <item android:title="Munkavállaló és szervezet kezelése">
+        <menu>
+            <item
+                android:id="@+id/navEmployeeMenu"
+                android:icon="@drawable/button_menu_employee"
+                android:title="Munkavállalók"/>
+            <item
+                android:id="@+id/navPositionMenu"
+                android:icon="@drawable/button_menu_position"
+                android:title="Beosztások"/>
+            <item
+                android:id="@+id/navDepartmentMenu"
+                android:icon="@drawable/button_menu_department"
+                android:title="Osztályok"/>
+
+        </menu>
+    </item>
+
+    <item android:title="Céges eszközök">
+        <menu>
+            <item
+                android:id="@+id/navCarMenu"
+                android:icon="@drawable/button_menu_car"
+                android:title="Flotta"/>
+            <item
+                android:id="@+id/navMobileMenu"
+                android:icon="@drawable/button_menu_mobile"
+                android:title="Mobilok"/>
+            <item
+                android:id="@+id/navLaptopMenu"
+                android:icon="@drawable/button_menu_laptop"
+                android:title="Laptopok"/>
+        </menu>
+    </item>
+
+    <item android:title="Tranzakciók">
+        <menu>
+            <item
+                android:id="@+id/navTrans"
+                android:icon="@drawable/button_menu_transactions"
+                android:title="Céges eszköz"/>
+            <item
+                android:id="@+id/navTrip"
+                android:icon="@drawable/button_menu_trip"
+                android:title="Utak"/>
+            <item
+                android:id="@+id/navLog"
+                android:icon="@drawable/button_menu_log"
+                android:title="Adatbázis"/>
+        </menu>
+    </item>
+
+    <item android:title="Kilépés">
+        <menu>
+            <item
+                android:id="@+id/navLogout"
+                android:icon="@drawable/menu_logout"
+                android:title="Kijelentkezés"/>
+        </menu>
+    </item>
+</menu>

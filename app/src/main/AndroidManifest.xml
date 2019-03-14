@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-        <activity android:name=".LaptopBrandList"></activity>
+        <activity android:name=".LaptopBrandList" />
         <activity android:name=".LaptopBrandEdit" />
         <activity android:name=".LaptopBrandHandle" />
         <activity android:name=".LaptopList" />
@@ -51,7 +51,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".AdminMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            />
         <activity
             android:name=".HRMenu"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />

@@ -3,17 +3,26 @@ package com.example.gergo.companyx;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class AdminMenu extends AppCompatActivity {
+public class AdminMenu extends AppCompatActivity{
 
-    private TextView twlogin;
-    private Button btUser, btEmployee, btPosition, btDepartment, btCar, btMobile, btLaptop, btGrade, btTrip, btTrans, btLog, btLogout;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private TextView twLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,83 +33,87 @@ public class AdminMenu extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
         String LoginUserName = sp.getString("LoginUserName","Nincs adat");
 
-        twlogin.setText("Belejentkezve mint: " + LoginUserName);
+        twLogin.setText(LoginUserName);
 
-        btUser.setOnClickListener(new View.OnClickListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, UserMenu.class));
-                finish();
-            }
-        });
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navUserMenu:
+                        startActivity(new Intent(AdminMenu.this, UserMenu.class));
+                        finish();
+                        break;
 
-        btPosition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, PositionMenu.class));
-                finish();
-            }
-        });
+                    case R.id.navEmployeeMenu:
 
-        btDepartment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, DepartmentMenu.class));
-                finish();
-            }
-        });
+                        break;
 
-        btCar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, CarMenu.class));
-                finish();
-            }
-        });
+                    case R.id.navPositionMenu:
+                        startActivity(new Intent(AdminMenu.this, PositionMenu.class));
+                        finish();
+                        break;
 
-        btMobile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, MobileMenu.class));
-                finish();
-            }
-        });
+                    case R.id.navDepartmentMenu:
+                        startActivity(new Intent(AdminMenu.this, DepartmentMenu.class));
+                        finish();
+                        break;
 
-        btLaptop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, LaptopMenu.class));
-                finish();
-            }
-        });
+                    case R.id.navCarMenu:
+                        startActivity(new Intent(AdminMenu.this, CarMenu.class));
+                        finish();
+                        break;
 
-        btLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminMenu.this, Login.class));
-                finish();
+                    case R.id.navMobileMenu:
+                        startActivity(new Intent(AdminMenu.this, MobileMenu.class));
+                        finish();
+                        break;
+
+                    case R.id.navLaptopMenu:
+                        startActivity(new Intent(AdminMenu.this, LaptopMenu.class));
+                        finish();
+                        break;
+
+                    case R.id.navTrans:
+
+                        break;
+
+                    case R.id.navTrip:
+
+                        break;
+
+                    case R.id.navLog:
+
+                        break;
+
+                    case R.id.navLogout:
+                        startActivity(new Intent(AdminMenu.this, Login.class));
+                        finish();
+                        break;
+                }
+
+                return true;
             }
         });
 
     }
 
     public void init(){
-        twlogin = (TextView) findViewById(R.id.twlogin);
-        btUser = (Button) findViewById(R.id.btUser);
-        btEmployee = (Button) findViewById(R.id.btEmployee);
-        btPosition = (Button) findViewById(R.id.btPosition);
-        btDepartment = (Button) findViewById(R.id.btDepartment);
-        btCar = (Button) findViewById(R.id.btCar);
-        btMobile = (Button) findViewById(R.id.btMobile);
-        btLaptop = (Button) findViewById(R.id.btLaptop);
-        btGrade = (Button) findViewById(R.id.btGrade);
-        btTrip = (Button) findViewById(R.id.btTrip);
-        btTrans = (Button) findViewById(R.id.btTrans);
-        btLog = (Button) findViewById(R.id.btLog);
-        btLogout = (Button) findViewById(R.id.btLogout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Főmenü");
+        drawer = findViewById(R.id.admin_layout);
+        navigationView = findViewById(R.id.nav_view_admin);
+        twLogin = findViewById(R.id.twLogin);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     public void onBackPressed(){
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else{
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminMenu.this);
 
         builder.setCancelable(true);
@@ -122,5 +135,6 @@ public class AdminMenu extends AppCompatActivity {
             }
         });
         builder.show();
+        }
     }
 }
