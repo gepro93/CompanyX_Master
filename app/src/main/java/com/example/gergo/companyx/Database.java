@@ -1386,5 +1386,55 @@ public class Database extends SQLiteOpenHelper{
         return  db.delete(EMPLOYEE_TABLE,EMPLOYEE_ID + "="+'"'+empId+'"',null) > 0;
     }
 
+    //Dolgozó név kikeresése
+    public String empName(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String empName = "";
+        Cursor cursor = db.rawQuery("SELECT e." + EMPLOYEE_NAME + " AS empName" +
+                                        " FROM " + USER_TABLE + " AS u" +
+                                        " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_USER_ID + " = u." + USER_ID +
+                                        " WHERE felhNeve=?", new String[]{userName});
+
+        if (cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            empName = cursor.getString(cursor.getColumnIndex("empName"));
+        }
+        return empName;
+    }
+
+    //Osztály kikeresése
+    public String empDep(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String depName = "";
+        Cursor cursor = db.rawQuery("SELECT d." + DEPARTMENT_NAME + " AS depName" +
+                " FROM " + USER_TABLE + " AS u" +
+                " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_USER_ID + " = u." + USER_ID +
+                " LEFT JOIN " + DEPARTMENT_TABLE + " AS d ON d." + DEPARTMENT_ID + " = e." + EMPLOYEE_DEPARTMANET_ID +
+                " WHERE felhNeve=?", new String[]{userName});
+
+        if (cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            depName = cursor.getString(cursor.getColumnIndex("depName"));
+        }
+        return depName;
+    }
+
+    //Beosztás kikeresése
+    public String empPos(String userName){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String posName = "";
+        Cursor cursor = db.rawQuery("SELECT p." + POSITION_NAME + " AS posName" +
+                " FROM " + USER_TABLE + " AS u" +
+                " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_USER_ID + " = u." + USER_ID +
+                " LEFT JOIN " + POSITION_TABLE + " AS p ON p." + POSITION_ID + " = e." + EMPLOYEE_POSITION_ID +
+                " WHERE felhNeve=?", new String[]{userName});
+
+        if (cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            posName = cursor.getString(cursor.getColumnIndex("posName"));
+        }
+        return posName;
+    }
+
 
 }

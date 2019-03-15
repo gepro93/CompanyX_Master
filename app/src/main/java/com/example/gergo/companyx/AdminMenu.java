@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AdminMenu extends AppCompatActivity{
@@ -20,6 +21,7 @@ public class AdminMenu extends AppCompatActivity{
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private TextView twLogin;
+    private ImageView iwMenuHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class AdminMenu extends AppCompatActivity{
 
         SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
         String LoginUserName = sp.getString("LoginUserName","Nincs adat");
-
+        iwMenuHeader.setImageResource(R.mipmap.ic_nav_admin_round);
         twLogin.setText(LoginUserName);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -96,6 +98,8 @@ public class AdminMenu extends AppCompatActivity{
     }
 
     public void init(){
+        iwMenuHeader = findViewById(R.id.iwMenuHeader);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Főmenü");

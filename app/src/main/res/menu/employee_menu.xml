@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:title=""/>
+    <item
+        android:title=""/>
+    <item
+        android:title=""/>
+
+    <item android:title="Céges eszközök">
+        <menu>
+            <item
+                android:id="@+id/navCarMenu"
+                android:icon="@drawable/button_menu_car"
+                android:title="Autó"/>
+            <item
+                android:id="@+id/navMobileMenu"
+                android:icon="@drawable/button_menu_mobile"
+                android:title="Mobil"/>
+            <item
+                android:id="@+id/navLaptopMenu"
+                android:icon="@drawable/button_menu_laptop"
+                android:title="Laptop"/>
+        </menu>
+    </item>
+
+    <item android:title="Kilépés">
+        <menu>
+            <item
+                android:id="@+id/navLogout"
+                android:icon="@drawable/menu_logout"
+                android:title="Kijelentkezés"/>
+        </menu>
+    </item>
+</menu>

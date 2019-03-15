@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_laptop_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_library_add_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,7 +44,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="menu_laptop_dark" />
+                                      <entry key="outputName" value="button_menu_qr_new" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="040542" />
                                     </map>
@@ -85,7 +85,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="63" />
+                                                <entry key="scalingPercent" value="86" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -96,12 +96,12 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
-                                      <entry key="backgroundColor" value="115838" />
+                                      <entry key="backgroundColor" value="623f2b" />
                                       <entry key="backgroundImage" value="C:\Users\Gergő\Desktop\Resoruces\emp.png" />
-                                      <entry key="backgroundLayerName" value="ic_emp" />
-                                      <entry key="foregroundImage" value="C:\Users\Gergő\Desktop\Resoruces\emp.png" />
-                                      <entry key="foregroundLayerName" value="ic_nav_empl" />
-                                      <entry key="outputName" value="ic_nav_emp" />
+                                      <entry key="backgroundLayerName" value="ic_facil" />
+                                      <entry key="foregroundImage" value="C:\Users\Gergő\Desktop\Resoruces\fac.png" />
+                                      <entry key="foregroundLayerName" value="ic_nav_fac" />
+                                      <entry key="outputName" value="ic_nav_facilities" />
                                       <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>

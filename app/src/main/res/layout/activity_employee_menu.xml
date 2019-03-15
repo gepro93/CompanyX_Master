@@ -7,7 +7,7 @@
     android:weightSum="1000"
     tools:context=".EmployeeMenu"
     android:background="@drawable/ic_background"
-    android:id="@+id/admin_layout"
+    android:id="@+id/employee_layout"
     android:fitsSystemWindows="true"
     >
 
@@ -42,10 +42,44 @@
                     android:layout_weight="30">
 
                     <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/iwEmp"/>
+
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prokli Gergely"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_below="@+id/iwEmp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/twName"
+                    />
+
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Osztály"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_below="@+id/twName"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/twDep"
+                    />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/logo"
-                        android:layout_centerInParent="true"/>
+                        android:text="Beosztás"
+                        android:textSize="15sp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_below="@+id/twDep"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/twPos"
+                        />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -67,11 +101,11 @@
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view_admin"
+        android:id="@+id/nav_view_employee"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/admin_menu">
+        app:menu="@menu/employee_menu">
 
         <include layout="@layout/nav_header"
             android:layout_width="match_parent"

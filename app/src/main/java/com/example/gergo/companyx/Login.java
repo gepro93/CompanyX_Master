@@ -78,7 +78,7 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 2:
                         if (statusCheck){
-                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
                             editor.putString("Permission", "Human Resources");
@@ -91,7 +91,7 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 3:
                         if (statusCheck){
-                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
                             editor.putString("Permission", "Facilities");
@@ -104,7 +104,7 @@ public class Login extends AppCompatActivity{
                         }break;
                     case 4:
                         if (statusCheck){
-                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
                             editor.putString("Permission", "Employee");
