@@ -305,12 +305,12 @@ public class Database extends SQLiteOpenHelper{
 
     //Dolgozó felvétel
     public boolean insertEmployee(String dolgNev, int dolgNeme, String dolgSzuletesiDatum, String dolgAnyjaNeve,
-                                  boolean dolgStatusz, int dolgFizetes, int osztaly_id, int beosztas_id){
+                                  boolean dolgStatusz, String dolgFizetes, int osztaly_id, int beosztas_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EMPLOYEE_NAME, dolgNev);
         contentValues.put(EMPLOYEE_GENDER, dolgNeme);
-        contentValues.put(EMPLOYEE_BIRTH, String.valueOf(dolgSzuletesiDatum));
+        contentValues.put(EMPLOYEE_BIRTH, dolgSzuletesiDatum);
         contentValues.put(EMPLOYEE_MOTHERS_NAME, dolgAnyjaNeve);
         contentValues.put(EMPLOYEE_STATUS, dolgStatusz);
         contentValues.put(EMPLOYEE_SALARY, dolgFizetes);
@@ -612,7 +612,6 @@ public class Database extends SQLiteOpenHelper{
                 user.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
                 user.put("PERMISSION_NAME",cursor.getString(cursor.getColumnIndex(PERMISSION_NAME)));
 
-                user.put("USER_STATUS", cursor.getString(cursor.getColumnIndex(USER_STATUS)));
                     switch (cursor.getInt(cursor.getColumnIndex(USER_STATUS))){
                         case 0:
                             user.put("USER_STATUS","Inaktív");
@@ -1298,7 +1297,7 @@ public class Database extends SQLiteOpenHelper{
 
 
 
-    //Laptop gyártmány létezésének ellenőzése
+    //Dolgozó létezésének ellenőzése
     public Boolean employeeCheck(String empName, String empMoName){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + EMPLOYEE_TABLE + " WHERE dolgNev=? AND dolgAnyjaNeve=?", new String[]{empName,empMoName});
@@ -1306,6 +1305,85 @@ public class Database extends SQLiteOpenHelper{
         if(cursor.getCount()>0){
             return true;
         }else return false;
+    }
+
+    //Dolgozó tábla feltöltése listába
+    public ArrayList<HashMap<String,String>> viewEmployees(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ArrayList<HashMap<String,String>> employeeList = new ArrayList<>();
+
+        String query = "SELECT e."+ EMPLOYEE_ID +", e."+ EMPLOYEE_NAME +", e." + EMPLOYEE_GENDER +", e." + EMPLOYEE_BIRTH +", e." + EMPLOYEE_MOTHERS_NAME +", e." + EMPLOYEE_STATUS +", e." + EMPLOYEE_SALARY +
+                ", d." + DEPARTMENT_NAME +", p." + POSITION_NAME +
+                " FROM " + EMPLOYEE_TABLE + " AS e" +
+                " LEFT JOIN " + DEPARTMENT_TABLE + " AS d ON e." + EMPLOYEE_DEPARTMANET_ID + " = d." + DEPARTMENT_ID +
+                " LEFT JOIN " + POSITION_TABLE + " AS p ON e." + EMPLOYEE_POSITION_ID + " = p." + POSITION_ID;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        while(cursor.moveToNext()){
+            HashMap<String,String> employee = new HashMap<>();
+            employee.put("EMPLOYEE_ID",cursor.getString(cursor.getColumnIndex(EMPLOYEE_ID)));
+            employee.put("EMPLOYEE_NAME",cursor.getString(cursor.getColumnIndex(EMPLOYEE_NAME)));
+
+            switch (cursor.getInt(cursor.getColumnIndex(EMPLOYEE_GENDER))){
+                case 0:
+                    employee.put("EMPLOYEE_GENDER","Nő");
+                    break;
+
+                case 1:
+                    employee.put("EMPLOYEE_GENDER","Férfi");
+                    break;
+                default: employee.put("EMPLOYEE_GENDER","Nincs adat");
+                    break;
+            }
+
+            employee.put("EMPLOYEE_BIRTH",cursor.getString(cursor.getColumnIndex(EMPLOYEE_BIRTH)));
+            employee.put("EMPLOYEE_MOTHERS_NAME",cursor.getString(cursor.getColumnIndex(EMPLOYEE_MOTHERS_NAME)));
+
+            switch (cursor.getInt(cursor.getColumnIndex(EMPLOYEE_STATUS))){
+                case 0:
+                    employee.put("EMPLOYEE_STATUS","Inaktív");
+                    break;
+
+                case 1:
+                    employee.put("EMPLOYEE_STATUS","Aktív");
+                    break;
+                default: employee.put("EMPLOYEE_GENDER","Nincs adat");
+                    break;
+            }
+
+            employee.put("EMPLOYEE_SALARY",cursor.getString(cursor.getColumnIndex(EMPLOYEE_SALARY)));
+            employee.put("DEPARTMENT_NAME",cursor.getString(cursor.getColumnIndex(DEPARTMENT_NAME)));
+            employee.put("POSITION_NAME",cursor.getString(cursor.getColumnIndex(POSITION_NAME)));
+
+            employeeList.add(employee);
+        }
+        return employeeList;
+    }
+
+    //Dolgozó módosítása
+    public Boolean modifyEmployee(int employeeID,String empName,int empGender,String empBirth, String empMoName,boolean empStatus,String empSalary,
+                                int empDep, int empPos){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(EMPLOYEE_NAME, empName);
+        contentValues.put(EMPLOYEE_GENDER, empGender);
+        contentValues.put(EMPLOYEE_BIRTH, empBirth);
+        contentValues.put(EMPLOYEE_MOTHERS_NAME, empMoName);
+        contentValues.put(EMPLOYEE_STATUS, empStatus);
+        contentValues.put(EMPLOYEE_SALARY, empSalary);
+        contentValues.put(EMPLOYEE_DEPARTMANET_ID, empDep);
+        contentValues.put(EMPLOYEE_POSITION_ID, empPos);
+
+        int i = db.update(EMPLOYEE_TABLE, contentValues, EMPLOYEE_ID + "=" + '"'+employeeID+'"',null);
+        return i > 0;
+    }
+
+    //Dolgozó törlése
+    public Boolean employeeDelete(int empId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.delete(EMPLOYEE_TABLE,EMPLOYEE_ID + "="+'"'+empId+'"',null) > 0;
     }
 
 

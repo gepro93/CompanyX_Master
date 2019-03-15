@@ -46,6 +46,22 @@ public class EmployeeHandle extends AppCompatActivity {
             }
         });
 
+        btEmployeeEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EmployeeHandle.this,EmployeeEdit.class));
+                finish();
+            }
+        });
+
+        btEmployeeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EmployeeHandle.this,EmployeeList.class));
+                finish();
+            }
+        });
+
         btEmployeeHandleBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +85,7 @@ public class EmployeeHandle extends AppCompatActivity {
         empName.setHint("Név");
         empName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         empName.setGravity(Gravity.CENTER);
-        empName.setPadding(0, 60, 0, 60);
+        empName.setPadding(0, 30, 0, 30);
         layout.addView(empName); //Edit Text hozzáadása layouthoz
 
 
@@ -86,7 +102,7 @@ public class EmployeeHandle extends AppCompatActivity {
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGender.setAdapter(spinnerDataAdapter);
         spGender.setBackgroundResource(R.color.colorWhite);
-        spGender.setPadding(0,60,0,60);
+        spGender.setPadding(0,30,0,30);
         layout.addView(spGender); //Spinner hozzáadása layouthoz
 
 
@@ -95,7 +111,7 @@ public class EmployeeHandle extends AppCompatActivity {
         birthDate.setHint("Születési dátum");
         birthDate.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         birthDate.setGravity(Gravity.CENTER);
-        birthDate.setPadding(0, 60, 0, 60);
+        birthDate.setPadding(0, 30, 0, 30);
 
         birthDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +144,7 @@ public class EmployeeHandle extends AppCompatActivity {
         motherName.setHint("Anyja neve");
         motherName.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         motherName.setGravity(Gravity.CENTER);
-        motherName.setPadding(0, 60, 0, 60);
+        motherName.setPadding(0, 30, 0, 30);
         layout.addView(motherName); //Edit Text hozzáadása layouthoz
 
         //Edit Text létrehozása
@@ -136,7 +152,7 @@ public class EmployeeHandle extends AppCompatActivity {
         salary.setHint("Fizetés");
         salary.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
         salary.setGravity(Gravity.CENTER);
-        salary.setPadding(0, 60, 0, 60);
+        salary.setPadding(0, 30, 0, 30);
         layout.addView(salary); //Edit Text hozzáadása layouthoz
 
         //Spinner létrehozása
@@ -151,7 +167,7 @@ public class EmployeeHandle extends AppCompatActivity {
         spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDep.setAdapter(spinnerDataAdapter1);
         spDep.setBackgroundResource(R.color.colorWhite);
-        spDep.setPadding(0,60,0,60);
+        spDep.setPadding(0,30,0,30);
         layout.addView(spDep); //Spinner hozzáadása layouthoz
 
 
@@ -167,15 +183,15 @@ public class EmployeeHandle extends AppCompatActivity {
         spinnerDataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPos.setAdapter(spinnerDataAdapter2);
         spPos.setBackgroundResource(R.color.colorWhite);
-        spPos.setPadding(0,60,0,60);
+        spPos.setPadding(0,30,0,30);
         layout.addView(spPos); //Spinner hozzáadása layouthoz
 
         //Spinner létrehozása
         final Spinner spStatus = new Spinner(EmployeeHandle.this, Spinner.MODE_DROPDOWN);
 
         final List<String> statusList = new ArrayList<>();
-        genderList.add(0, "Akív");
-        genderList.add("Inaktív");
+        statusList.add(0, "Akív");
+        statusList.add("Inaktív");
 
         //Pozíció lista adapter létrehozása
         ArrayAdapter<String> spinnerDataAdapter3;
@@ -183,7 +199,7 @@ public class EmployeeHandle extends AppCompatActivity {
         spinnerDataAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spStatus.setAdapter(spinnerDataAdapter3);
         spStatus.setBackgroundResource(R.color.colorWhite);
-        spStatus.setPadding(0,60,0,60);
+        spStatus.setPadding(0,30,0,30);
         layout.addView(spStatus); //Spinner hozzáadása layouthoz
 
         alert.setView(layout);
@@ -207,7 +223,7 @@ public class EmployeeHandle extends AppCompatActivity {
         spDep.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).equals("Válassz pozíciót!")) {
+                if (adapterView.getItemAtPosition(i).equals("Válassz osztályt!")) {
                     selectedDep = 0;
                 } else {
                     selectedDep = adapterView.getSelectedItemPosition();
@@ -223,7 +239,7 @@ public class EmployeeHandle extends AppCompatActivity {
         spPos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (adapterView.getItemAtPosition(i).equals("Nő")) {
+                if (adapterView.getItemAtPosition(i).equals("Válassz pozíciót!")) {
                     selectedPos = 0;
                 } else {
                     selectedPos = adapterView.getSelectedItemPosition();
@@ -263,9 +279,9 @@ public class EmployeeHandle extends AppCompatActivity {
                     String etEmpName = empName.getText().toString();
                     String etMotherName = motherName.getText().toString();
                     String etBirtDate = birthDate.getText().toString();
-                    int etSalary = Integer.parseInt(salary.getText().toString());
+                    String etSalary = salary.getText().toString();
 
-                    if (etEmpName.equals("") || etMotherName.equals("") || etBirtDate.equals("") || etSalary == 0 || selectedDep == 0 || selectedGender == 0 || selectedPos == 0) {
+                    if (etEmpName.equals("") || etMotherName.equals("") || etBirtDate.equals("") || etSalary.equals("") || selectedDep == 0 || selectedGender == 0 || selectedPos == 0) {
                         Toast.makeText(EmployeeHandle.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                     } else {
                         boolean employeeCheck = db.employeeCheck(etEmpName, etMotherName);

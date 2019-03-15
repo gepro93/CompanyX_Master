@@ -60,7 +60,6 @@ public class CarEdit extends AppCompatActivity {
                 modLicenseeNumber = (String) obj.get("CAR_LICENSENUMBER");
                 modMotDate = (String) obj.get("MOTDATE");
                 modVinNumber = (String) obj.get("CAR_VINNUMBER");
-                Toast.makeText(CarEdit.this, modMotDate, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -86,7 +85,7 @@ public class CarEdit extends AppCompatActivity {
 
                 builder.setCancelable(true);
                 builder.setTitle("Törlés");
-                builder.setMessage("Biztosan törlöd az osztályt?");
+                builder.setMessage("Biztosan törlöd az autót?");
 
                 builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
                     @Override

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:id="@+id/twEmpId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0"/>
+
+            <TextView
+                android:id="@+id/twName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Név: "
+                android:drawableLeft="@drawable/button_menu_user"
+                />
+
+            <TextView
+                android:id="@+id/twEmpName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Tony Stark"
+                android:layout_toRightOf="@id/twName"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/twGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Neme: "
+
+                android:layout_below="@id/twName"
+                />
+
+            <TextView
+                android:id="@+id/twEmpGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Férfi"
+                android:layout_toRightOf="@id/twGender"
+                android:layout_below="@id/twName"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/twBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Szül. idő: "
+                android:layout_below="@id/twGender"
+                />
+
+            <TextView
+                android:id="@+id/twEmpBirth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="1993-01-25"
+                android:layout_toRightOf="@id/twBirth"
+                android:layout_below="@id/twGender"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/twMoName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Anyja neve: "
+                android:layout_below="@id/twBirth"
+                />
+
+            <TextView
+                android:id="@+id/twEmpyMoName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Sukár Rózsi"
+                android:layout_toRightOf="@id/twMoName"
+                android:layout_below="@id/twBirth"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            >
+
+            <TextView
+                android:id="@+id/twDepName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Osztály: "
+                />
+
+            <TextView
+                android:id="@+id/twEmpDepName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Human Resources"
+                android:layout_toRightOf="@id/twDepName"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/twPosName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="2dp"
+                android:textSize="14dp"
+                android:text="Beosztás: "
+                android:layout_below="@id/twDepName"
+                />
+
+            <TextView
+                android:id="@+id/twEmpPosName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="2dp"
+                android:textSize="14dp"
+                android:text="Manager"
+                android:layout_toRightOf="@id/twPosName"
+                android:textStyle="bold"
+                android:layout_below="@id/twDepName"
+                />
+
+            <TextView
+                android:id="@+id/twStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Státusz: "
+                android:layout_below="@id/twPosName"
+                />
+
+            <TextView
+                android:id="@+id/twEmpStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Aktív"
+                android:layout_toRightOf="@id/twStatus"
+                android:textStyle="bold"
+                android:layout_below="@id/twPosName"
+                />
+
+            <TextView
+                android:id="@+id/twSalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="Fizetés: "
+                android:layout_below="@id/twStatus"
+                />
+
+            <TextView
+                android:id="@+id/twEmpSalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="450000"
+                android:layout_toRightOf="@id/twSalary"
+                android:textStyle="bold"
+                android:layout_below="@id/twStatus"
+                />
+            <TextView
+                android:id="@+id/twCurrency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:text="HUF"
+                android:layout_toRightOf="@id/twEmpSalary"
+                android:textStyle="bold"
+                android:layout_below="@id/twStatus"
+                />
+
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

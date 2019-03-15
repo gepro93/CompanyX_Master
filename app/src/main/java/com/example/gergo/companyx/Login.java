@@ -65,10 +65,10 @@ public class Login extends AppCompatActivity{
                 switch (permCheck){
                     case 1:
                         if (statusCheck){
-                            SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
+                            SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
-                            editor.putString("Permission", "admin");
+                            editor.putString("Permission", "Admin");
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, AdminMenu.class));
@@ -81,7 +81,7 @@ public class Login extends AppCompatActivity{
                             SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
-                            editor.putString("Permission", "hr");
+                            editor.putString("Permission", "Human Resources");
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, HRMenu.class));
@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity{
                             SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
-                            editor.putString("Permission", "fac");
+                            editor.putString("Permission", "Facilities");
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, FacilitiesMenu.class));
@@ -107,7 +107,7 @@ public class Login extends AppCompatActivity{
                             SharedPreferences sp = getSharedPreferences("LoginUserName",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("LoginUserName", userName);
-                            editor.putString("Permission", "emp");
+                            editor.putString("Permission", "Employee");
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, EmployeeMenu.class));

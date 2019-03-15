@@ -57,6 +57,17 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="0" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
@@ -74,7 +85,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="84" />
+                                                <entry key="scalingPercent" value="63" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -84,10 +95,14 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundLayerName" value="ic_admin" />
-                                      <entry key="foregroundImage" value="C:\Users\Gergő\Desktop\superman.png" />
-                                      <entry key="foregroundLayerName" value="ic_nav_admi" />
-                                      <entry key="outputName" value="ic_nav_admin" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="115838" />
+                                      <entry key="backgroundImage" value="C:\Users\Gergő\Desktop\Resoruces\emp.png" />
+                                      <entry key="backgroundLayerName" value="ic_emp" />
+                                      <entry key="foregroundImage" value="C:\Users\Gergő\Desktop\Resoruces\emp.png" />
+                                      <entry key="foregroundLayerName" value="ic_nav_empl" />
+                                      <entry key="outputName" value="ic_nav_emp" />
+                                      <entry key="webIconShape" value="CIRCLE" />
                                     </map>
                                   </option>
                                 </PersistentState>
