@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_library_add_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_circle_outline_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,9 +44,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="button_menu_qr_new" />
+                                      <entry key="outputName" value="menu_add_light" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="040542" />
+                                      <entry key="themeColor" value="fdf8ff" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -150,6 +150,11 @@
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>

@@ -28,8 +28,8 @@ public class EmployeeHandle extends AppCompatActivity {
     private Database db;
     private LoadScreen ls;
     private ArrayList<String> depList, posList;
-    private int selectedGender, selectedDep, selectedPos;
-    private boolean selectedStatus;
+    private int selectedDep, selectedPos;
+    private boolean selectedStatus, selectedGender;
     private Calendar c;
     private DatePickerDialog dpd;
 
@@ -208,9 +208,9 @@ public class EmployeeHandle extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getItemAtPosition(i).equals("Nő")) {
-                    selectedGender = 0;
+                    selectedGender = false;
                 } else {
-                    selectedGender = 1;
+                    selectedGender = true;
                 }
             }
 
@@ -252,12 +252,6 @@ public class EmployeeHandle extends AppCompatActivity {
             }
         });
 
-        alert.setPositiveButton("Mégsem", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-            }
-        });
-
         spStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -274,6 +268,13 @@ public class EmployeeHandle extends AppCompatActivity {
             }
         });
 
+        alert.setPositiveButton("Mégsem", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+
         alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                     String etEmpName = empName.getText().toString();
@@ -281,7 +282,7 @@ public class EmployeeHandle extends AppCompatActivity {
                     String etBirtDate = birthDate.getText().toString();
                     String etSalary = salary.getText().toString();
 
-                    if (etEmpName.equals("") || etMotherName.equals("") || etBirtDate.equals("") || etSalary.equals("") || selectedDep == 0 || selectedGender == 0 || selectedPos == 0) {
+                    if (etEmpName.equals("") || etMotherName.equals("") || etBirtDate.equals("") || etSalary.equals("") || selectedDep == 0 || selectedPos == 0) {
                         Toast.makeText(EmployeeHandle.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                     } else {
                         boolean employeeCheck = db.employeeCheck(etEmpName, etMotherName);

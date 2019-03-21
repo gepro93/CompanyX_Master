@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/selected_list_view_background"
+    >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        >
+
+        <TextView
+            android:id="@+id/twEmpName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Dolgozó: "
+            />
+
+        <TextView
+            android:id="@+id/twNameOfEmp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Prokli Gergő"
+            android:layout_toRightOf="@id/twEmpName"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twMobileType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="2dp"
+            android:textSize="16sp"
+            android:text="Mobile: "
+            android:layout_below="@id/twEmpName"
+            />
+
+        <TextView
+            android:id="@+id/twTypeOfMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="2dp"
+            android:textSize="16sp"
+            android:text="Iphone 6"
+            android:layout_toRightOf="@id/twMobileType"
+            android:textStyle="bold"
+            android:layout_below="@id/twEmpName"
+            />
+
+        <TextView
+            android:id="@+id/twImeiNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="IMEI szám: "
+            android:layout_below="@id/twMobileType"
+            />
+
+        <TextView
+            android:id="@+id/twMobileImeiNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="IMEI0606060606"
+            android:layout_toRightOf="@id/twImeiNum"
+            android:textStyle="bold"
+            android:layout_below="@id/twMobileType"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

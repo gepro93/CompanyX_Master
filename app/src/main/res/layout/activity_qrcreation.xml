@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QRCreation"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@drawable/ic_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="25">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QR kód létrehozása"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30sp"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="20">
+
+        <Button
+            android:id="@+id/btQrCodeCreate"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:minHeight="90sp"
+            android:background="@drawable/button_v2_background"
+            android:drawableTop="@drawable/menu_button_useradd"
+            android:text="QR kód készítés"
+            android:textAllCaps="false"
+            android:layout_centerInParent="true"
+            android:textColor="@drawable/button_text_color2" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="40"
+        >
+
+        <ImageView
+            android:layout_width="210dp"
+            android:layout_height="210dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/iwQrCode"/>
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mentés"
+            android:layout_marginTop="15dp"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btQrSave"
+            android:alpha="1"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/iwQrCode"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="15">
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btQrCreationBack"
+            android:layout_centerInParent="true"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

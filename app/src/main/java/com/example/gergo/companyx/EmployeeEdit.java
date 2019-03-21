@@ -35,9 +35,9 @@ public class EmployeeEdit extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> empList;
     private ListAdapter adapter;
     private ArrayList<String> depList, posList;
-    private int selectedGender, selectedDep, selectedPos, selectedModDep, selectedModPos, pos, empId;
+    private int  selectedDep, selectedPos, selectedModDep, selectedModPos, pos, empId;
     private String selectedEmpId, modEmpName, modEmpBirth, modEmpMoName, modEmpDep, modEmpPos ,modEmpGender, modEmpStatus, modEmpSalary;
-    private boolean selectedStatus;
+    private boolean selectedStatus, selectedGender;
     private Calendar c;
     private DatePickerDialog dpd;
 
@@ -302,9 +302,9 @@ public class EmployeeEdit extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     if (adapterView.getItemAtPosition(i).equals("Nő")) {
-                        selectedGender = 0;
+                        selectedGender = false;
                     } else {
-                        selectedGender = 1;
+                        selectedGender = true;
                     }
                 }
 

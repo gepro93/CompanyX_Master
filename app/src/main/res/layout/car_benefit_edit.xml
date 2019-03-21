@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/selected_list_view_background"
+    >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            >
+
+            <TextView
+                android:id="@+id/twEmpName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:text="Dolgozó: "
+                />
+
+            <TextView
+                android:id="@+id/twNameOfEmp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:text="Prokli Gergő"
+                android:layout_toRightOf="@id/twEmpName"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/twCarType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="2dp"
+                android:textSize="16sp"
+                android:text="Autó: "
+                android:layout_below="@id/twEmpName"
+                />
+
+            <TextView
+                android:id="@+id/twTypeOfCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="2dp"
+                android:textSize="16sp"
+                android:text="Ford Mustang"
+                android:layout_toRightOf="@id/twCarType"
+                android:textStyle="bold"
+                android:layout_below="@id/twEmpName"
+                />
+
+            <TextView
+                android:id="@+id/twLicNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:text="Rendszám: "
+                android:layout_below="@id/twCarType"
+                />
+
+            <TextView
+                android:id="@+id/twLicNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:text="LGE-261"
+                android:layout_toRightOf="@id/twLicNum"
+                android:textStyle="bold"
+                android:layout_below="@id/twCarType"
+                />
+
+        </RelativeLayout>
+
+</LinearLayout>

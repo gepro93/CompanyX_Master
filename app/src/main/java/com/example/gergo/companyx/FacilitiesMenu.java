@@ -1,9 +1,11 @@
 package com.example.gergo.companyx;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,23 +40,29 @@ public class FacilitiesMenu extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.navCarMenu:
-
+                            startActivity(new Intent(FacilitiesMenu.this, FacCarHandle.class));
+                            finish();
                         break;
 
                     case R.id.navMobileMenu:
-
+                        startActivity(new Intent(FacilitiesMenu.this, FacMobileHandle.class));
+                        finish();
                         break;
 
                     case R.id.navLaptopMenu:
-
+                        startActivity(new Intent(FacilitiesMenu.this, FacLaptopHandle.class));
+                        finish();
                         break;
 
                     case R.id.navQrCreate:
-
+                        startActivity(new Intent(FacilitiesMenu.this, QRCreation.class));
+                        finish();
                         break;
 
                     case R.id.navQrRead:
-
+                        ActivityCompat.requestPermissions(FacilitiesMenu.this,new String[]{Manifest.permission.CAMERA},1);
+                        startActivity(new Intent(FacilitiesMenu.this, QRRead.class));
+                        finish();
                         break;
 
                     case R.id.navLogout:
