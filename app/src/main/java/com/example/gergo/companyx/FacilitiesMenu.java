@@ -60,7 +60,6 @@ public class FacilitiesMenu extends AppCompatActivity {
                         break;
 
                     case R.id.navQrRead:
-                        ActivityCompat.requestPermissions(FacilitiesMenu.this,new String[]{Manifest.permission.CAMERA},1);
                         startActivity(new Intent(FacilitiesMenu.this, QRRead.class));
                         finish();
                         break;

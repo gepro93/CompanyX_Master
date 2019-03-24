@@ -34,10 +34,12 @@
 
         <Button
             android:id="@+id/btCarBrandCreate"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:minHeight="110dp"
             android:layout_marginLeft="40sp"
-            android:layout_marginTop="50sp"
+            android:layout_gravity="center"
             android:layout_marginRight="20sp"
             android:layout_weight="0.5"
             android:background="@drawable/button_v2_background"
@@ -48,10 +50,12 @@
 
         <Button
             android:id="@+id/btCarBrandEdit"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:minHeight="110dp"
             android:layout_marginLeft="20sp"
-            android:layout_marginTop="50sp"
+            android:layout_gravity="center"
             android:layout_marginRight="40sp"
             android:layout_weight="0.5"
             android:background="@drawable/button_v2_background"
@@ -72,12 +76,11 @@
 
         <Button
             android:id="@+id/btCarBrandList"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="150dp"
+            android:minHeight="110dp"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="20sp"
-            android:layout_marginTop="35sp"
-            android:layout_marginRight="40sp"
             android:background="@drawable/button_v2_background"
             android:drawableTop="@drawable/menu_button_userlist"
             android:text="Autó gyártmányok"
@@ -100,9 +103,7 @@
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
             android:id="@+id/btCarBrandHandleBack"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="160sp"
+            android:layout_centerInParent="true"
             />
 
     </RelativeLayout>

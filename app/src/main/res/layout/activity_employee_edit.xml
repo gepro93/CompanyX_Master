@@ -94,8 +94,6 @@
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="40sp"
             android:id="@+id/btEmployeeEditBack"
             />
 
