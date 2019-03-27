@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,6 +55,7 @@ public class DepartmentDelete extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentDelete.this, DepartmentMenu.class));
+                Animatoo.animateSlideRight(DepartmentDelete.this);
                 finish();
             }
         });
@@ -107,6 +110,32 @@ public class DepartmentDelete extends AppCompatActivity {
                 Toast.makeText(DepartmentDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DepartmentDelete.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(DepartmentDelete.this, Login.class));
+                Animatoo.animateFade(DepartmentDelete.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }
 

@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,8 +52,9 @@ public class UserModifyList extends AppCompatActivity {
         btUserModBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    startActivity(new Intent(UserModifyList.this, UserMenu.class));
-                    finish();
+                startActivity(new Intent(UserModifyList.this, UserMenu.class));
+                Animatoo.animateSlideRight(UserModifyList.this);
+                finish();
             }
         });
 
@@ -103,8 +106,9 @@ public class UserModifyList extends AppCompatActivity {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(UserModifyList.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -116,8 +120,9 @@ public class UserModifyList extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserModifyList.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserModifyList.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

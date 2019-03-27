@@ -21,6 +21,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -103,6 +105,7 @@ public class EmployeeEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EmployeeEdit.this, EmployeeHandle.class));
+                Animatoo.animateSlideRight(EmployeeEdit.this);
                 finish();
             }
         });
@@ -401,5 +404,31 @@ public class EmployeeEdit extends AppCompatActivity {
         lwEmployeeEdit = findViewById(R.id.lwEmployeeEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeEdit.this, Login.class));
+                Animatoo.animateFade(EmployeeEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

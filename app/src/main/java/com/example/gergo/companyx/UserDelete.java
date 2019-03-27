@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,6 +79,7 @@ public class UserDelete extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserDelete.this, UserMenu.class));
+                Animatoo.animateSlideRight(UserDelete.this);
                 finish();
             }
         });
@@ -108,8 +111,9 @@ public class UserDelete extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserDelete.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -121,8 +125,9 @@ public class UserDelete extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserDelete.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserDelete.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

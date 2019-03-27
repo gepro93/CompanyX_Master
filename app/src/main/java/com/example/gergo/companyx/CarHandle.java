@@ -21,6 +21,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class CarHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarHandle.this, CarEdit.class));
+                Animatoo.animateSlideLeft(CarHandle.this);
                 finish();
             }
         });
@@ -65,6 +68,7 @@ public class CarHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarHandle.this, CarMenu.class));
+                Animatoo.animateSlideRight(CarHandle.this);
                 finish();
             }
         });
@@ -73,6 +77,7 @@ public class CarHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarHandle.this, CarList.class));
+                Animatoo.animateSlideLeft(CarHandle.this);
                 finish();
             }
         });
@@ -119,6 +124,8 @@ public class CarHandle extends AppCompatActivity {
         motDate.setHint("Műszaki érvényessége");
         motDate.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         motDate.setGravity(Gravity.CENTER);
+        motDate.setFocusable(false);
+        motDate.setClickable(true);
         motDate.setPadding(0, 60, 0, 60);
 
         motDate.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +165,7 @@ public class CarHandle extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(CarHandle.this, android.R.layout.simple_spinner_item, carType);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCarType.setAdapter(spinnerDataAdapter);
+        spCarType.setBackgroundResource(R.color.colorWhite);
         layout.addView(spCarType); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -219,4 +227,30 @@ public class CarHandle extends AppCompatActivity {
         alert.show();
     }
 
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CarHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(CarHandle.this, Login.class));
+                Animatoo.animateFade(CarHandle.this);
+                finish();
+            }
+        });
+        builder.show();
+    }
 }

@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AdminMenu extends AppCompatActivity{
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
+public class AdminMenu extends AppCompatActivity {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -29,47 +31,54 @@ public class AdminMenu extends AppCompatActivity{
         setContentView(R.layout.activity_admin_menu);
         init();
 
-        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
-        String LoginUserName = sp.getString("LoginUserName","Nincs adat");
+        SharedPreferences sp = getSharedPreferences("LoginDetails", MODE_PRIVATE);
+        String LoginUserName = sp.getString("LoginUserName", "Nincs adat");
         iwMenuHeader.setImageResource(R.mipmap.ic_nav_admin_round);
         twLogin.setText(LoginUserName);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.navUserMenu:
                         startActivity(new Intent(AdminMenu.this, UserMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navEmployeeMenu:
                         startActivity(new Intent(AdminMenu.this, EmployeeHandle.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navPositionMenu:
                         startActivity(new Intent(AdminMenu.this, PositionMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navDepartmentMenu:
                         startActivity(new Intent(AdminMenu.this, DepartmentMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navCarMenu:
                         startActivity(new Intent(AdminMenu.this, CarMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navMobileMenu:
                         startActivity(new Intent(AdminMenu.this, MobileMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
                     case R.id.navLaptopMenu:
                         startActivity(new Intent(AdminMenu.this, LaptopMenu.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
                         finish();
                         break;
 
@@ -87,6 +96,7 @@ public class AdminMenu extends AppCompatActivity{
 
                     case R.id.navLogout:
                         startActivity(new Intent(AdminMenu.this, Login.class));
+                        Animatoo.animateFade(AdminMenu.this);
                         finish();
                         break;
                 }
@@ -97,7 +107,7 @@ public class AdminMenu extends AppCompatActivity{
 
     }
 
-    public void init(){
+    public void init() {
         iwMenuHeader = findViewById(R.id.iwMenuHeader);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -107,20 +117,18 @@ public class AdminMenu extends AppCompatActivity{
         navigationView = findViewById(R.id.nav_view_admin);
         twLogin = findViewById(R.id.twLogin);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
 
-    public void onBackPressed(){
-        if (drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        }else{
+    public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AdminMenu.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -132,11 +140,12 @@ public class AdminMenu extends AppCompatActivity{
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(AdminMenu.this, Login.class));
+                Animatoo.animateFade(AdminMenu.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();
-        }
     }
+
 }

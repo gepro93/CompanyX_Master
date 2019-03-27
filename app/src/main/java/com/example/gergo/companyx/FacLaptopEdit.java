@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +79,7 @@ public class FacLaptopEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(FacLaptopEdit.this, FacLaptopHandle.class));
+                Animatoo.animateSlideRight(FacLaptopEdit.this);
                 finish();
             }
         });
@@ -417,5 +420,31 @@ public class FacLaptopEdit extends AppCompatActivity {
         lwFacLaptopEdit = findViewById(R.id.lwFacLaptopEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacLaptopEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(FacLaptopEdit.this, Login.class));
+                Animatoo.animateFade(FacLaptopEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

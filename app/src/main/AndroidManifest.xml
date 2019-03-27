@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".QRRead"></activity>
+        <activity android:name=".EmployeeCarMenu"></activity>
+        <activity android:name=".QRRead" />
         <activity android:name=".QRCreation" />
         <activity android:name=".FacLaptopList" />
         <activity android:name=".FacMobileList" />
@@ -104,8 +106,9 @@
             android:name=".PositionMenu"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
-
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

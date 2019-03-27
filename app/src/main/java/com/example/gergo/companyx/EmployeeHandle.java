@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -50,6 +52,7 @@ public class EmployeeHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EmployeeHandle.this,EmployeeEdit.class));
+                Animatoo.animateSlideLeft(EmployeeHandle.this);
                 finish();
             }
         });
@@ -58,6 +61,7 @@ public class EmployeeHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EmployeeHandle.this,EmployeeList.class));
+                Animatoo.animateSlideLeft(EmployeeHandle.this);
                 finish();
             }
         });
@@ -66,6 +70,7 @@ public class EmployeeHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EmployeeHandle.this,AdminMenu.class));
+                Animatoo.animateSlideRight(EmployeeHandle.this);
                 finish();
             }
         });
@@ -307,5 +312,31 @@ public class EmployeeHandle extends AppCompatActivity {
         btEmployeeHandleBack = findViewById(R.id.btEmployeeHandleBack);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeHandle.this, Login.class));
+                Animatoo.animateFade(EmployeeHandle.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

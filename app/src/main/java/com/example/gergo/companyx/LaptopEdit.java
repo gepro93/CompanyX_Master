@@ -19,6 +19,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -69,6 +71,7 @@ public class LaptopEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LaptopEdit.this,LaptopHandle.class));
+                Animatoo.animateSlideRight(LaptopEdit.this);
                 finish();
             }
         });
@@ -128,6 +131,7 @@ public class LaptopEdit extends AppCompatActivity {
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spLaptopType.setAdapter(spinnerDataAdapter);
             spLaptopType.setSelection(selectedModLaptopType);
+            spLaptopType.setBackgroundResource(R.color.colorWhite);
             layout.addView(spLaptopType); //Spinner hozzáadása layouthoz
             layout.setPadding(0, 30, 0, 30);
             alert.setView(layout);
@@ -197,5 +201,31 @@ public class LaptopEdit extends AppCompatActivity {
         lwLaptopEdit =  findViewById(R.id.lwLaptopEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(LaptopEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(LaptopEdit.this, Login.class));
+                Animatoo.animateFade(LaptopEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

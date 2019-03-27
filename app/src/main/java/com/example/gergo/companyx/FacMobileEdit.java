@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +79,7 @@ public class FacMobileEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(FacMobileEdit.this, FacMobileHandle.class));
+                Animatoo.animateSlideRight(FacMobileEdit.this);
                 finish();
             }
         });
@@ -417,5 +420,31 @@ public class FacMobileEdit extends AppCompatActivity {
         lwFacMobileEdit = findViewById(R.id.lwFacMobileEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacMobileEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(FacMobileEdit.this, Login.class));
+                Animatoo.animateFade(FacMobileEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

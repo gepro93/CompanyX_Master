@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 
 public class LaptopHandle extends AppCompatActivity {
@@ -44,6 +46,7 @@ public class LaptopHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LaptopHandle.this, LaptopEdit.class));
+                Animatoo.animateSlideLeft(LaptopHandle.this);
                 finish();
             }
         });
@@ -52,6 +55,7 @@ public class LaptopHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LaptopHandle.this, LaptopList.class));
+                Animatoo.animateSlideLeft(LaptopHandle.this);
                 finish();
             }
         });
@@ -60,6 +64,7 @@ public class LaptopHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LaptopHandle.this, LaptopMenu.class));
+                Animatoo.animateSlideRight(LaptopHandle.this);
                 finish();
             }
         });
@@ -94,6 +99,7 @@ public class LaptopHandle extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(LaptopHandle.this, android.R.layout.simple_spinner_item, laptopType);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLaptopType.setAdapter(spinnerDataAdapter);
+        spLaptopType.setBackgroundResource(R.color.colorWhite);
         layout.addView(spLaptopType); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -150,5 +156,31 @@ public class LaptopHandle extends AppCompatActivity {
         btLaptopHandleBack = findViewById(R.id.btLaptopHandleBack);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(LaptopHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(LaptopHandle.this, Login.class));
+                Animatoo.animateFade(LaptopHandle.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

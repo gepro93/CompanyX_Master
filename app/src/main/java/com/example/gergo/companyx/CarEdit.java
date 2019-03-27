@@ -22,6 +22,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class CarEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarEdit.this, CarHandle.class));
+                Animatoo.animateSlideRight(CarEdit.this);
                 finish();
             }
         });
@@ -159,8 +162,11 @@ public class CarEdit extends AppCompatActivity {
         motDate.setInputType(InputType.TYPE_CLASS_DATETIME);
         motDate.setGravity(Gravity.CENTER);
         motDate.setText(modMotDate);
+        motDate.setFocusable(false);
+        motDate.setClickable(true);
         motDate.setPadding(0, 60, 0, 60);
         layout.addView(motDate); //Edit Text hozzáadása layouthoz
+
 
         motDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +212,7 @@ public class CarEdit extends AppCompatActivity {
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCarType.setAdapter(spinnerDataAdapter);
         spCarType.setSelection(selectedModCarType);
+        spCarType.setBackgroundResource(R.color.colorWhite);
         layout.addView(spCarType); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -282,5 +289,31 @@ public class CarEdit extends AppCompatActivity {
         lwCarEdit = findViewById(R.id.lwCarEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CarEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(CarEdit.this, Login.class));
+                Animatoo.animateFade(CarEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

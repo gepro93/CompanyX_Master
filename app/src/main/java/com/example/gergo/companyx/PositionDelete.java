@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,6 +55,7 @@ public class PositionDelete extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionDelete.this,PositionMenu.class));
+                Animatoo.animateSlideRight(PositionDelete.this);
                 finish();
             }
         });
@@ -107,6 +110,32 @@ public class PositionDelete extends AppCompatActivity {
             }else Toast.makeText(PositionDelete.this, "Adatbázis hiba a törléskor!", Toast.LENGTH_SHORT).show();
         }
         ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PositionDelete.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(PositionDelete.this, Login.class));
+                Animatoo.animateFade(PositionDelete.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 
 }

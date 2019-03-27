@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class PositionMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionMenu.this,PositionList.class));
+                Animatoo.animateSlideLeft(PositionMenu.this);
                 finish();
             }
         });
@@ -51,6 +54,7 @@ public class PositionMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionMenu.this,PositionModify.class));
+                Animatoo.animateSlideLeft(PositionMenu.this);
                 finish();
             }
         });
@@ -59,6 +63,7 @@ public class PositionMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionMenu.this,PositionDelete.class));
+                Animatoo.animateSlideLeft(PositionMenu.this);
                 finish();
             }
         });
@@ -67,6 +72,7 @@ public class PositionMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionMenu.this,AdminMenu.class));
+                Animatoo.animateSlideRight(PositionMenu.this);
                 finish();
             }
         });
@@ -116,6 +122,7 @@ public class PositionMenu extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(PositionMenu.this, android.R.layout.simple_spinner_item, grades);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         grade.setAdapter(spinnerDataAdapter);
+        grade.setBackgroundResource(R.color.colorWhite);
         layout.addView(grade); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0,30,0,30);
@@ -169,8 +176,9 @@ public class PositionMenu extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(PositionMenu.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -182,8 +190,9 @@ public class PositionMenu extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(PositionMenu.this, Login.class));
+                Animatoo.animateFade(PositionMenu.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

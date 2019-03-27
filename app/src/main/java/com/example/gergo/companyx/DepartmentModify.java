@@ -16,6 +16,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,6 +55,7 @@ public class DepartmentModify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentModify.this, DepartmentMenu.class));
+                Animatoo.animateSlideRight(DepartmentModify.this);
                 finish();
             }
         });
@@ -132,6 +136,32 @@ public class DepartmentModify extends AppCompatActivity {
         lwDepartmentModify = findViewById(R.id.lwDepartmentModify);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DepartmentModify.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(DepartmentModify.this, Login.class));
+                Animatoo.animateFade(DepartmentModify.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 
 }

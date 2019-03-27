@@ -1,6 +1,8 @@
 package com.example.gergo.companyx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +35,7 @@ public class EmployeeList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(EmployeeList.this, EmployeeHandle.class));
+                Animatoo.animateSlideRight(EmployeeList.this);
                 finish();
             }
         });
@@ -50,5 +55,31 @@ public class EmployeeList extends AppCompatActivity {
         btEmpListBack = findViewById(R.id.btEmpListBack);
         lwEmpList = findViewById(R.id.lwEmpList);
         db = new Database(this);
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeList.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeList.this, Login.class));
+                Animatoo.animateFade(EmployeeList.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

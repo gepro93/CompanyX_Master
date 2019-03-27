@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class CarBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarBrandHandle.this, CarBrandEdit.class));
+                Animatoo.animateSlideLeft(CarBrandHandle.this);
                 finish();
             }
         });
@@ -57,6 +60,7 @@ public class CarBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarBrandHandle.this, CarBrandList.class));
+                Animatoo.animateSlideLeft(CarBrandHandle.this);
                 finish();
             }
         });
@@ -65,6 +69,7 @@ public class CarBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarBrandHandle.this,CarMenu.class));
+                Animatoo.animateSlideRight(CarBrandHandle.this);
                 finish();
             }
         });
@@ -108,6 +113,7 @@ public class CarBrandHandle extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(CarBrandHandle.this, android.R.layout.simple_spinner_item, gradeCategory);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGrade.setAdapter(spinnerDataAdapter);
+        spGrade.setBackgroundResource(R.color.colorWhite);
         layout.addView(spGrade); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -166,5 +172,31 @@ public class CarBrandHandle extends AppCompatActivity {
         btCarBrandHandleBack = findViewById(R.id.btCarBrandHandleBack);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CarBrandHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(CarBrandHandle.this, Login.class));
+                Animatoo.animateFade(CarBrandHandle.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -53,6 +54,8 @@ public class QRCreation extends AppCompatActivity {
         setContentView(R.layout.activity_qrcreation);
         init();
 
+        ActivityCompat.requestPermissions(QRCreation.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
         btQrCodeCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,14 +77,13 @@ public class QRCreation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(QRCreation.this,FacilitiesMenu.class));
+                Animatoo.animateSlideRight(QRCreation.this);
                 finish();
             }
         });
     }
 
     private void saveQrCode() {
-        ActivityCompat.requestPermissions(QRCreation.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-
         image = ((BitmapDrawable) iwQrCode.getDrawable()).getBitmap();
         File path = Environment.getExternalStorageDirectory();
         File dir = new File(path+"/QR codes/");
@@ -395,6 +397,32 @@ public class QRCreation extends AppCompatActivity {
         db = new Database(this);
         ls = new LoadScreen();
         multiFormatWriter = new MultiFormatWriter();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(QRCreation.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(QRCreation.this, Login.class));
+                Animatoo.animateFade(QRCreation.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 
 }

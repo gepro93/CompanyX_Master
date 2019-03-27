@@ -1,11 +1,12 @@
 package com.example.gergo.companyx;
 
-import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -38,6 +39,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Animatoo.animateCard(SplashScreen.this);
         finish();
     }
 

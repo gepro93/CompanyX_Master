@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_circle_outline_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/Android/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_exit_to_app_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,9 +44,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="menu_add_light" />
+                                      <entry key="outputName" value="menu_logout_dark" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="fdf8ff" />
+                                      <entry key="themeColor" value="060962" />
                                     </map>
                                   </option>
                                 </PersistentState>

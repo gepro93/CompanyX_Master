@@ -67,7 +67,7 @@
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
             android:id="@+id/btQrSave"
-            android:alpha="1"
+            android:alpha="0"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/iwQrCode"
             />
@@ -85,6 +85,7 @@
             android:layout_height="wrap_content"
             android:text="Vissza"
             android:textColor="@drawable/button_text_color"
+            android:drawableLeft="@drawable/menu_logout"
             android:textAllCaps="false"
             android:id="@+id/btQrCreationBack"
             android:layout_centerInParent="true"

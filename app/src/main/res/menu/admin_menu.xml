@@ -73,7 +73,7 @@
         <menu>
             <item
                 android:id="@+id/navLogout"
-                android:icon="@drawable/menu_logout"
+                android:icon="@drawable/menu_logout_light"
                 android:title="Kijelentkezés"/>
         </menu>
     </item>

@@ -21,6 +21,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,6 +77,7 @@ public class MobileEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileEdit.this,MobileHandle.class));
+                Animatoo.animateSlideRight(MobileEdit.this);
                 finish();
             }
         });
@@ -136,6 +139,7 @@ public class MobileEdit extends AppCompatActivity {
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spMobileType.setAdapter(spinnerDataAdapter);
             spMobileType.setSelection(selectedModMobileType);
+            spMobileType.setBackgroundResource(R.color.colorWhite);
             layout.addView(spMobileType); //Spinner hozzáadása layouthoz
             layout.setPadding(0, 30, 0, 30);
             alert.setView(layout);
@@ -205,5 +209,31 @@ public class MobileEdit extends AppCompatActivity {
         lwMobileEdit =  findViewById(R.id.lwMobileEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MobileEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(MobileEdit.this, Login.class));
+                Animatoo.animateFade(MobileEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

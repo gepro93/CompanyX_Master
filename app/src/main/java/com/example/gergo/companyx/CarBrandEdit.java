@@ -18,6 +18,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -71,6 +74,7 @@ public class CarBrandEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CarBrandEdit.this, CarBrandHandle.class));
+                Animatoo.animateSlideRight(CarBrandEdit.this);
                 finish();
             }
         });
@@ -139,6 +143,7 @@ public class CarBrandEdit extends AppCompatActivity {
             spinnerDataAdapter = new ArrayAdapter(CarBrandEdit.this, android.R.layout.simple_spinner_item, gradeCategory);
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spGrade.setAdapter(spinnerDataAdapter);
+            spGrade.setBackgroundResource(R.color.colorWhite);
             spGrade.setSelection(modSelectedGrade);
             layout.addView(spGrade); //Spinner hozzáadása layouthoz
 
@@ -212,5 +217,31 @@ public class CarBrandEdit extends AppCompatActivity {
         lwCarBrandEdit = findViewById(R.id.lwCarBrandEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CarBrandEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(CarBrandEdit.this, Login.class));
+                Animatoo.animateFade(CarBrandEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

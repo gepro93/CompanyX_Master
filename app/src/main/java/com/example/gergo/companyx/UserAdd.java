@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -49,6 +51,7 @@ public class UserAdd extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserAdd.this, UserMenu.class));
+                Animatoo.animateSlideRight(UserAdd.this);
                 finish();
             }
         });
@@ -199,8 +202,9 @@ public class UserAdd extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserAdd.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -212,8 +216,9 @@ public class UserAdd extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserAdd.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserAdd.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

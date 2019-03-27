@@ -14,6 +14,8 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.zxing.Result;
 
 
@@ -141,7 +143,7 @@ public class QRRead extends AppCompatActivity implements ZXingScannerView.Result
                 sqlQuery = "SELECT a.autoRendszam as identity " +
                         "FROM autok as a " +
                         "LEFT JOIN auto_gyartmanyok AS g ON g.autoGyartmany_id = a.autoGyartmany_id " +
-                        "WHERE autoMarka='" + brand + "' AND autoTipus='"+ type +
+                        "WHERE g.autoMarka='" + brand + "' AND g.autoTipus='"+ type + "' AND a.autoRendszam='"+ identity +
                         "' GROUP BY a.autoRendszam";
                 itemCheck = db.itemCheck(sqlQuery);
                 identityOut = "Rendszám: ";
@@ -150,7 +152,7 @@ public class QRRead extends AppCompatActivity implements ZXingScannerView.Result
                 sqlQuery = "SELECT a.mobilImeiSzam as identity " +
                         "FROM mobilok as a " +
                         "LEFT JOIN mobil_gyartmanyok AS g ON g.mobilGyartmany_id = a.mobilGyartmany_id " +
-                        "WHERE mobilMarka='" + brand + "' AND mobilTipus='"+ type +
+                        "WHERE mobilMarka='" + brand + "' AND mobilTipus='"+ type + "' AND a.mobilImeiSzam='"+ identity +
                         "' GROUP BY a.mobilImeiSzam";
                 itemCheck = db.itemCheck(sqlQuery);
                 identityOut = "IMEI szám: ";
@@ -159,18 +161,20 @@ public class QRRead extends AppCompatActivity implements ZXingScannerView.Result
                 sqlQuery = "SELECT a.laptopImeiSzam as identity " +
                         "FROM laptopok as a " +
                         "LEFT JOIN laptop_gyartmanyok AS g ON g.laptopGyartmany_id = a.laptopGyartmany_id " +
-                        "WHERE laptopMarka='" + brand + "' AND laptopTipus='"+ type +
+                        "WHERE laptopMarka='" + brand + "' AND laptopTipus='"+ type + "' AND a.laptopImeiSzam='"+ identity +
                         "' GROUP BY a.laptopImeiSzam";
                 itemCheck = db.itemCheck(sqlQuery);
                 identityOut = "IMEI szám: ";
                 break;
             default:
                 Toast.makeText(this, "Nincs találat az adatbázisban!", Toast.LENGTH_SHORT).show();
+                onResume();
                 break;
         }
 
         if(!itemCheck){
             Toast.makeText(this, "Nincs találat az adatbázisban!", Toast.LENGTH_SHORT).show();
+            onResume();
         }else {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(QRRead.this);
@@ -244,6 +248,7 @@ public class QRRead extends AppCompatActivity implements ZXingScannerView.Result
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     startActivity(new Intent(QRRead.this, FacilitiesMenu.class));
+                    Animatoo.animateSlideRight(QRRead.this);
                     finish();
                 }
             });
@@ -265,8 +270,30 @@ public class QRRead extends AppCompatActivity implements ZXingScannerView.Result
         scannerView = new ZXingScannerView(this);
     }
 
+
     public void onBackPressed(){
-        startActivity(new Intent(QRRead.this, FacilitiesMenu.class));
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(QRRead.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(QRRead.this, FacilitiesMenu.class));
+                Animatoo.animateFade(QRRead.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

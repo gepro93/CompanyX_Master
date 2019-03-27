@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 
 public class Login extends AppCompatActivity{
 
@@ -72,6 +74,7 @@ public class Login extends AppCompatActivity{
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, AdminMenu.class));
+                            Animatoo.animateZoom(this);
                             finish();
                         }else{
                             Toast.makeText(Login.this, "Inaktív admin profil", Toast.LENGTH_SHORT).show();
@@ -85,6 +88,7 @@ public class Login extends AppCompatActivity{
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, HRMenu.class));
+                            Animatoo.animateZoom(this);
                             finish();
                         }else{
                             Toast.makeText(Login.this, "Inaktív HR profil", Toast.LENGTH_SHORT).show();
@@ -98,6 +102,7 @@ public class Login extends AppCompatActivity{
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, FacilitiesMenu.class));
+                            Animatoo.animateZoom(this);
                             finish();
                         }else{
                             Toast.makeText(Login.this, "Inaktív Facilities profil!", Toast.LENGTH_SHORT).show();
@@ -111,6 +116,7 @@ public class Login extends AppCompatActivity{
                             editor.apply();
                             editor.commit();
                             startActivity(new Intent(Login.this, EmployeeMenu.class));
+                            Animatoo.animateZoom(this);
                             finish();
                         }else{
                             Toast.makeText(Login.this, "Inaktív Employee profil!", Toast.LENGTH_SHORT).show();
@@ -122,7 +128,6 @@ public class Login extends AppCompatActivity{
         }
     }
 
-    //Vissza gomb megnyomásakor dialog box használata
     public void onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
 

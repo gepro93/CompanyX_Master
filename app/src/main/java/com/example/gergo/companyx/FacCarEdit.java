@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +19,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +35,12 @@ public class FacCarEdit extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> carBenefitList;
     private ListAdapter adapter;
     private int benefitId, modBenefitId, statusId,selectedModCar, selectedCar, pos, empId;
-    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, modCarLic, selectedEmp, nameOfEmployee, carBrand, carType, carLicNum;
+    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, modCarLic, selectedUser, nameOfEmployee, carBrand, carType, carLicNum;
     private ArrayList<String> carList, empList, carBrandList, carTypeList, carLicList;
     private boolean selectedStatus;
     private LinearLayout layout;
     private AlertDialog.Builder alert;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +83,27 @@ public class FacCarEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(FacCarEdit.this, FacCarHandle.class));
+                Animatoo.animateSlideRight(FacCarEdit.this);
                 finish();
             }
         });
+    }
+
+    private void errorMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacCarEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Figyelmeztetés!");
+        builder.setMessage("Ez a dolgozó a beosztása alapján, nem jogosult autó használatra!");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setPositiveButton("Oké", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
     }
 
     private void addCarBenefit() {
@@ -119,14 +142,8 @@ public class FacCarEdit extends AppCompatActivity {
         //Spinner létrehozása
         final Spinner spCarBrand = new Spinner(FacCarEdit.this, Spinner.MODE_DROPDOWN);
 
-        carBrandList = db.carBrandList();
-        carBrandList.add(0,"Válassz márkát!");
-
-        ArrayAdapter<String> spinnerDataAdapter1;
-        spinnerDataAdapter1 = new ArrayAdapter(FacCarEdit.this, android.R.layout.simple_spinner_item, carBrandList);
-        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCarBrand.setAdapter(spinnerDataAdapter1);
         spCarBrand.setSelection(0);
+        spCarBrand.setAlpha(0);
         spCarBrand.setBackgroundResource(R.color.colorWhite);
         spCarBrand.setPadding(0, 0, 0, 60);
         layout.addView(spCarBrand); //Spinner hozzáadása layouthoz
@@ -157,11 +174,40 @@ public class FacCarEdit extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz dolgozót!")){
-                    selectedEmp = adapterView.getItemAtPosition(i).toString();
-                    nameOfEmployee = db.employeeNameSearch(selectedEmp);
-                    empId = Integer.parseInt(db.empIdSearch(selectedEmp));
+                    spCarBrand.setAlpha(0);
+                    selectedUser = adapterView.getItemAtPosition(i).toString();
+                    nameOfEmployee = db.employeeNameSearch(selectedUser);
+                    empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
-                }else selectedEmp = "empty";
+
+                    String brandQuery = "SELECT agy.autoMarka AS autoMarka " +
+                            "FROM auto_gyartmanyok AS agy " +
+                            "LEFT JOIN autok AS a ON a.autoGyartmany_id = agy.autoGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' "+
+                            "GROUP BY agy.autoMarka";
+                    carBrandList = db.queryFillList(brandQuery,"autoMarka");
+                    carBrandList.add(0,"Válassz márkát!");
+
+                    if (carBrandList.size() <= 1){
+                        errorMessage();
+
+                    }else{
+                        ArrayAdapter<String> spinnerDataAdapter1;
+                        spinnerDataAdapter1 = new ArrayAdapter(FacCarEdit.this, android.R.layout.simple_spinner_item, carBrandList);
+                        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spCarBrand.setAdapter(spinnerDataAdapter1);
+                        spCarBrand.setAlpha(1);
+                    }
+                }else {
+                    selectedUser = "empty";
+                    spCarBrand.setAlpha(0);
+                    spCarType.setAlpha(0);
+                    spCarLic.setAlpha(0);
+                }
 
             }
 
@@ -176,7 +222,17 @@ public class FacCarEdit extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz márkát!")){
                     carBrand = spCarBrand.getItemAtPosition(i).toString();
-                    carTypeList = db.carTypeList(carBrand);
+
+                    String carTypeQuery = "SELECT agy.autoTipus AS autoTipus " +
+                            "FROM auto_gyartmanyok AS agy " +
+                            "LEFT JOIN autok AS a ON a.autoGyartmany_id = agy.autoGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' AND agy.autoMarka="+"'"+carBrand+"' " +
+                            "GROUP BY agy.autoTipus";
+                    carTypeList = db.queryFillList(carTypeQuery, "autoTipus");
                     carTypeList.add(0,"Válassz típust!");
                     ArrayAdapter<String> spinnerDataAdapter2;
                     spinnerDataAdapter2 = new ArrayAdapter(FacCarEdit.this, android.R.layout.simple_spinner_item, carTypeList);
@@ -245,7 +301,7 @@ public class FacCarEdit extends AppCompatActivity {
 
         alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(selectedEmp.equals("empty") || carBrand.equals("empty") || carType.equals("empty") || carLicNum.equals("empty")){
+                if(selectedUser.equals("empty") || carBrand.equals("empty") || carType.equals("empty") || carLicNum.equals("empty")){
                     Toast.makeText(FacCarEdit.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                 }else {
                     int carId = db.carIdSearch(carLicNum);
@@ -417,5 +473,31 @@ public class FacCarEdit extends AppCompatActivity {
         lwFacCarEdit = findViewById(R.id.lwFacCarEdit);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacCarEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(FacCarEdit.this, Login.class));
+                Animatoo.animateFade(FacCarEdit.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 
 
@@ -43,6 +46,7 @@ public class MobileHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileHandle.this, MobileEdit.class));
+                Animatoo.animateSlideLeft(MobileHandle.this);
                 finish();
             }
         });
@@ -51,6 +55,7 @@ public class MobileHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileHandle.this, MobileList.class));
+                Animatoo.animateSlideLeft(MobileHandle.this);
                 finish();
             }
         });
@@ -59,6 +64,7 @@ public class MobileHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileHandle.this, MobileMenu.class));
+                Animatoo.animateSlideRight(MobileHandle.this);
                 finish();
             }
         });
@@ -94,6 +100,7 @@ public class MobileHandle extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(MobileHandle.this, android.R.layout.simple_spinner_item, mobileType);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spMobileType.setAdapter(spinnerDataAdapter);
+        spMobileType.setBackgroundResource(R.color.colorWhite);
         layout.addView(spMobileType); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -150,5 +157,31 @@ public class MobileHandle extends AppCompatActivity {
         btMobileHandleBack = findViewById(R.id.btMobileHandleBack);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MobileHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(MobileHandle.this, Login.class));
+                Animatoo.animateFade(MobileHandle.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

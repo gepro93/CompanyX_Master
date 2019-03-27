@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 
 public class DepartmentMenu extends AppCompatActivity {
 
@@ -30,6 +32,7 @@ public class DepartmentMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentMenu.this, AdminMenu.class));
+                Animatoo.animateSlideRight(DepartmentMenu.this);
                 finish();
             }
         });
@@ -45,6 +48,7 @@ public class DepartmentMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentMenu.this, DepartmentModify.class));
+                Animatoo.animateSlideLeft(DepartmentMenu.this);
                 finish();
             }
         });
@@ -53,6 +57,7 @@ public class DepartmentMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentMenu.this, DepartmentDelete.class));
+                Animatoo.animateSlideLeft(DepartmentMenu.this);
                 finish();
             }
         });
@@ -61,6 +66,7 @@ public class DepartmentMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DepartmentMenu.this, DepartmentList.class));
+                Animatoo.animateSlideLeft(DepartmentMenu.this);
                 finish();
             }
         });
@@ -127,5 +133,29 @@ public class DepartmentMenu extends AppCompatActivity {
         ls = new LoadScreen();
     }
 
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DepartmentMenu.this);
 
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(DepartmentMenu.this, Login.class));
+                Animatoo.animateFade(DepartmentMenu.this);
+                finish();
+            }
+        });
+        builder.show();
+    }
 }

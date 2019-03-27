@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 public class UserMenu extends AppCompatActivity {
 
     private Button btUserCreate, btUserModify, btUserDelete, btUserList, btUserMenuBack;
@@ -23,6 +25,7 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserMenu.this, UserList.class));
+                Animatoo.animateSlideLeft(UserMenu.this);
                 finish();
             }
         });
@@ -31,6 +34,7 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserMenu.this, AdminMenu.class));
+                Animatoo.animateSlideRight(UserMenu.this);
                 finish();
             }
         });
@@ -39,6 +43,7 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserMenu.this, UserAdd.class));
+                Animatoo.animateSlideLeft(UserMenu.this);
                 finish();
             }
         });
@@ -47,6 +52,7 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserMenu.this, UserDelete.class));
+                Animatoo.animateSlideLeft(UserMenu.this);
                 finish();
             }
         });
@@ -55,6 +61,7 @@ public class UserMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(UserMenu.this, UserModifyList.class));
+                Animatoo.animateSlideLeft(UserMenu.this);
                 finish();
             }
         });
@@ -72,8 +79,9 @@ public class UserMenu extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserMenu.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -85,8 +93,9 @@ public class UserMenu extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserMenu.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserMenu.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

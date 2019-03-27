@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +40,40 @@ public class UserModify extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_modify);
         init();
+        createList();
 
+        btUserModifyExecute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userModify(); //Felhasználó módosítása
+            }
+        });
+
+        btUserModifyBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserModify.this, UserModifyList.class));
+                Animatoo.animateSlideRight(UserModify.this);
+                finish();
+            }
+        });
+
+    }
+
+    public void init(){
+        etUsernameMod = (EditText) findViewById(R.id.etUsernameMod);
+        etPasswordMod1 = (EditText) findViewById(R.id.etPasswordMod1);
+        etPasswordMod2 = (EditText) findViewById(R.id.etPasswordMod2);
+        spPermissionMod = (Spinner) findViewById(R.id.spPermissionMod);
+        spStatusMod = (Spinner) findViewById(R.id.spStatusMod);
+        btUserModifyExecute = (Button) findViewById(R.id.btUserModifyExecute);
+        btUserModifyBack = (Button) findViewById(R.id.btUserModifyBack);
+        twUserName = (TextView) findViewById(R.id.twUserName);
+        db = new Database(this);
+        ls = new LoadScreen();
+    }
+
+    public void createList(){
         //Jogosultság lista létrehozása
         List<String> permission = new ArrayList<>();
         permission.add(0,"Admin");
@@ -114,60 +149,6 @@ public class UserModify extends AppCompatActivity {
 
             }
         });
-
-
-        btUserModifyExecute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userModify(); //Felhasználó módosítása
-            }
-        });
-
-        btUserModifyBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(UserModify.this, UserModifyList.class));
-                finish();
-            }
-        });
-
-    }
-
-    public void init(){
-        etUsernameMod = (EditText) findViewById(R.id.etUsernameMod);
-        etPasswordMod1 = (EditText) findViewById(R.id.etPasswordMod1);
-        etPasswordMod2 = (EditText) findViewById(R.id.etPasswordMod2);
-        spPermissionMod = (Spinner) findViewById(R.id.spPermissionMod);
-        spStatusMod = (Spinner) findViewById(R.id.spStatusMod);
-        btUserModifyExecute = (Button) findViewById(R.id.btUserModifyExecute);
-        btUserModifyBack = (Button) findViewById(R.id.btUserModifyBack);
-        twUserName = (TextView) findViewById(R.id.twUserName);
-        db = new Database(this);
-        ls = new LoadScreen();
-    }
-
-    public void onBackPressed(){
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(UserModify.this);
-
-        builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
-
-        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-                System.exit(0);
-            }
-        });
-        builder.show();
     }
 
     public void userModify(){
@@ -251,5 +232,31 @@ public class UserModify extends AppCompatActivity {
 
         }
 
+    }
+
+    public void onBackPressed(){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(UserModify.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserModify.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserModify.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

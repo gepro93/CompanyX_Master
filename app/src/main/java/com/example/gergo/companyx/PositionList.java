@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,8 +39,8 @@ public class PositionList extends AppCompatActivity {
         btPositionListBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent UserListBack = new Intent(PositionList.this, PositionMenu.class);
-                startActivity(UserListBack);
+                startActivity(new Intent(PositionList.this, PositionMenu.class));
+                Animatoo.animateSlideRight(PositionList.this);
                 finish();
             }
 
@@ -51,12 +53,14 @@ public class PositionList extends AppCompatActivity {
         db = new Database(this);
     }
 
+
     public void onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(PositionList.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -68,8 +72,9 @@ public class PositionList extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(PositionList.this, Login.class));
+                Animatoo.animateFade(PositionList.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

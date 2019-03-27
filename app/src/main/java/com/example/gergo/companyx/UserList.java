@@ -11,6 +11,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,8 +35,8 @@ public class UserList extends AppCompatActivity {
         btUserListBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent UserListBack = new Intent(UserList.this, UserMenu.class);
-                startActivity(UserListBack);
+                startActivity(new Intent(UserList.this, UserMenu.class));
+                Animatoo.animateSlideRight(UserList.this);
                 finish();
             }
         });
@@ -50,8 +52,9 @@ public class UserList extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserList.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kilépés");
-        builder.setMessage("Valóban be szeretnéd zárni az alkalmazást?");
+        builder.setTitle("Kamera bezárása");
+        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
             @Override
@@ -63,8 +66,9 @@ public class UserList extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(UserList.this, FacilitiesMenu.class));
+                Animatoo.animateFade(UserList.this);
                 finish();
-                System.exit(0);
             }
         });
         builder.show();

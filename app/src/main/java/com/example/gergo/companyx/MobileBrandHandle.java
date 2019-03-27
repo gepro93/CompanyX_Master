@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 
 public class MobileBrandHandle extends AppCompatActivity {
@@ -43,6 +45,7 @@ public class MobileBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileBrandHandle.this, MobileBrandEdit.class));
+                Animatoo.animateSlideLeft(MobileBrandHandle.this);
                 finish();
             }
         });
@@ -51,6 +54,7 @@ public class MobileBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileBrandHandle.this, MobileBrandList.class));
+                Animatoo.animateSlideLeft(MobileBrandHandle.this);
                 finish();
             }
         });
@@ -59,6 +63,7 @@ public class MobileBrandHandle extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MobileBrandHandle.this, MobileMenu.class));
+                Animatoo.animateSlideRight(MobileBrandHandle.this);
                 finish();
             }
         });
@@ -102,6 +107,7 @@ public class MobileBrandHandle extends AppCompatActivity {
         spinnerDataAdapter = new ArrayAdapter(MobileBrandHandle.this, android.R.layout.simple_spinner_item, gradeCategory);
         spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGrade.setAdapter(spinnerDataAdapter);
+        spGrade.setBackgroundResource(R.color.colorWhite);
         layout.addView(spGrade); //Spinner hozzáadása layouthoz
 
         layout.setPadding(0, 30, 0, 30);
@@ -160,5 +166,31 @@ public class MobileBrandHandle extends AppCompatActivity {
         btMobileBrandHandleBack = findViewById(R.id.btMobileBrandHandleBack);
         db = new Database(this);
         ls = new LoadScreen();
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MobileBrandHandle.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(MobileBrandHandle.this, Login.class));
+                Animatoo.animateFade(MobileBrandHandle.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

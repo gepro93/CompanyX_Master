@@ -19,6 +19,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +66,7 @@ public class PositionModify extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(PositionModify.this,PositionMenu.class));
+                Animatoo.animateSlideRight(PositionModify.this);
                 finish();
             }
         });
@@ -137,6 +140,7 @@ public class PositionModify extends AppCompatActivity {
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             grade.setAdapter(spinnerDataAdapter);
             grade.setSelection(modGradeId);
+            grade.setBackgroundResource(R.color.colorWhite);
             layout.addView(grade); //Spinner hozzáadása layouthoz
 
             layout.setPadding(0,30,0,30);
@@ -181,4 +185,30 @@ public class PositionModify extends AppCompatActivity {
         }
     }
 
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(PositionModify.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(PositionModify.this, Login.class));
+                Animatoo.animateFade(PositionModify.this);
+                finish();
+            }
+        });
+        builder.show();
+    }
 }
