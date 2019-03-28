@@ -54,7 +54,7 @@ public class EmployeeMenu extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.navCarMenu:
-                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("a",empName);
+                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("a",userName);
                         if (itemBenefitCheckByUserName){
                             startActivity(new Intent(EmployeeMenu.this,EmployeeCarMenu.class));
                             Animatoo.animateSlideLeft(EmployeeMenu.this);
@@ -63,18 +63,18 @@ public class EmployeeMenu extends AppCompatActivity {
                         break;
 
                     case R.id.navMobileMenu:
-                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("m",empName);
+                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("m",userName);
                         if (itemBenefitCheckByUserName){
-                            startActivity(new Intent(EmployeeMenu.this,EmployeeCarMenu.class));
+                            startActivity(new Intent(EmployeeMenu.this,EmployeeMobile.class));
                             Animatoo.animateSlideLeft(EmployeeMenu.this);
                             finish();
                         }else Toast.makeText(EmployeeMenu.this, "Jelenleg Neked nincs kiadva mobil!", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.navLaptopMenu:
-                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("l",empName);
+                        itemBenefitCheckByUserName = db.itemBenefitCheckByUserName("l",userName);
                         if (itemBenefitCheckByUserName){
-                            startActivity(new Intent(EmployeeMenu.this,EmployeeCarMenu.class));
+                            startActivity(new Intent(EmployeeMenu.this,EmployeeLaptop.class));
                             Animatoo.animateSlideLeft(EmployeeMenu.this);
                             finish();
                         }else Toast.makeText(EmployeeMenu.this, "Jelenleg Neked nincs kiadva laptop!", Toast.LENGTH_SHORT).show();

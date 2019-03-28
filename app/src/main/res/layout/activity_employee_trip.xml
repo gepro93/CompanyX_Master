@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EmployeeTrip"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@drawable/ic_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="40"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
+                android:src="@drawable/logo"
+                android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="50">
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:id="@+id/etKmData"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/imageView"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:hint="Km óra állása"
+            android:textColorHint="@color/colorBlack"
+            android:textColor="@color/colorBlack"
+            android:textSize="20dp"
+            android:background="#11000000" />
+        
+        <Button
+            android:background="@drawable/button_background_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Indulás"
+            android:textSize="20dp"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btStartTrip"
+            android:layout_below="@id/etKmData"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            />
+
+        <Button
+            android:background="@drawable/button_background_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Érkezés"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp"
+            android:textSize="20dp"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btFinishTrip"
+            android:layout_below="@id/etKmData"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:alpha="0"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="230dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="30dp"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="car.json"
+            android:layout_below="@id/btStartTrip"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/ltCar"/>
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rögzítés"
+            android:paddingRight="40dp"
+            android:paddingLeft="40dp"
+            android:textSize="20dp"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btSaveTrip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:alpha="0"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Induláskor"
+            android:layout_below="@id/btSaveTrip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/indulaskor"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/indulaskor"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Km óra állása: "
+            android:id="@+id/kmstart"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/indulaskor"
+            android:layout_toRightOf="@id/kmstart"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="15000"
+            android:id="@+id/twKmStart"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/kmstart"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="GPS koordináta: "
+            android:id="@+id/gpsstart"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/kmstart"
+            android:layout_toRightOf="@id/gpsstart"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="123.156161,123.15613651"
+            android:id="@+id/twGpsStart"
+            android:alpha="0"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Érkezéskor:"
+            android:layout_below="@id/gpsstart"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/erkezeskor"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/erkezeskor"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Km óra állása: "
+            android:id="@+id/kmend"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/erkezeskor"
+            android:layout_toRightOf="@id/kmend"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="15000"
+            android:id="@+id/twKmEnd"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/kmend"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="GPS koordináta: "
+            android:id="@+id/gpsend"
+            android:alpha="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            android:layout_below="@id/kmend"
+            android:layout_toRightOf="@id/gpsend"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="123.156161,123.15613651"
+            android:id="@+id/twGpsEnd"
+            android:alpha="0"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="10">
+
+
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Vissza"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btEmployeeCarMenuBack"
+            android:layout_centerInParent="true"
+            />
+
+        <Button
+            android:background="@drawable/button_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/menu_logout"
+            android:text="Mégsem"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:id="@+id/btEmployeeCarMenuCancel"
+            android:layout_centerInParent="true"
+            android:alpha="0"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
