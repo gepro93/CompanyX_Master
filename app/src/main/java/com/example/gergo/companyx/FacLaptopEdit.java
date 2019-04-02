@@ -32,8 +32,8 @@ public class FacLaptopEdit extends AppCompatActivity {
     private LoadScreen ls;
     private ArrayList<HashMap<String, String>> laptopBenefitList;
     private ListAdapter adapter;
-    private int benefitId, modBenefitId, statusId,selectedModLaptop, selectedLaptop, pos, empId;
-    private String modEmpName,modLaptop, modImeiNum, modStatus, selectedBenefitId, modLaptopImei, selectedEmp, nameOfEmployee, laptopBrand, laptopType, laptopImeiNum;
+    private int benefitId, modBenefitId, statusId,selectedModLaptop, selectedLaptop, pos, empId, userId;
+    private String modEmpName,modLaptop, modImeiNum, modStatus, selectedBenefitId, selectedImeiNumber, modLaptopImei, modUserName, selectedUser, nameOfEmployee, laptopBrand, laptopType, laptopImeiNum;
     private ArrayList<String> laptopList, empList, laptopBrandList, laptopTypeList, laptopImeiList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -56,6 +56,7 @@ public class FacLaptopEdit extends AppCompatActivity {
                 modImeiNum = (String) obj.get("LAPTOP_IMEINUMBER");
                 modStatus = (String) obj.get("BENEFIT_STATUS");
                 selectedBenefitId = (String) obj.get("BENEFIT_ID");
+                modUserName = (String) obj.get("USER_NAME");
                 modBenefitId = Integer.parseInt(selectedBenefitId);
                 modLaptopImei = modLaptop + " " + modImeiNum;
             }
@@ -109,7 +110,7 @@ public class FacLaptopEdit extends AppCompatActivity {
             //Spinner létrehozása
             final Spinner spLaptop = new Spinner(FacLaptopEdit.this, Spinner.MODE_DROPDOWN);
 
-            laptopList = db.laptopList();
+            laptopList = db.laptopList(modUserName);
 
             for (int s = 0; s < laptopList.size(); s++){
                 if (laptopList.get(s).equals(modLaptopImei)) {
@@ -155,7 +156,8 @@ public class FacLaptopEdit extends AppCompatActivity {
             spLaptop.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectedLaptop = adapterView.getSelectedItemPosition()+1;
+                    selectedImeiNumber = getImeiNum(adapterView.getItemAtPosition(i).toString());
+                    selectedLaptop = db.laptopIdSearch(selectedImeiNumber);
                 }
 
                 @Override
@@ -283,11 +285,12 @@ public class FacLaptopEdit extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz dolgozót!")){
-                    selectedEmp = adapterView.getItemAtPosition(i).toString();
-                    nameOfEmployee = db.employeeNameSearch(selectedEmp);
-                    empId = Integer.parseInt(db.empIdSearch(selectedEmp));
+                    selectedUser = adapterView.getItemAtPosition(i).toString();
+                    nameOfEmployee = db.employeeNameSearch(selectedUser);
+                    userId = Integer.parseInt(db.userIdSearch(selectedUser));
+                    empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
-                }else selectedEmp = "empty";
+                }else selectedUser = "empty";
 
             }
 
@@ -371,7 +374,7 @@ public class FacLaptopEdit extends AppCompatActivity {
 
         alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(selectedEmp.equals("empty") || laptopBrand.equals("empty") || laptopType.equals("empty") || laptopImeiNum.equals("empty")){
+                if(selectedUser.equals("empty") || laptopBrand.equals("empty") || laptopType.equals("empty") || laptopImeiNum.equals("empty")){
                     Toast.makeText(FacLaptopEdit.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                 }else {
                     int laptopId = db.laptopIdSearch(laptopImeiNum);
@@ -381,7 +384,7 @@ public class FacLaptopEdit extends AppCompatActivity {
                         if (!laptopBenefitCheck) {
                             boolean empLaptopBenefitCheckForInactive = db.empLaptopBenefitCheckForInactive(empId);
                             if(!empLaptopBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "l", laptopId, true);
+                                boolean insertBenefit = db.insertBenefit(empId, "l", laptopId, true, userId);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacLaptopEdit.this, "Laptop kiadása folyamatban...", "Kiadás");
                                     createList();
@@ -407,10 +410,16 @@ public class FacLaptopEdit extends AppCompatActivity {
     private void createList() {
         laptopBenefitList = db.viewActiveLaptopBenefit();
         adapter = new SimpleAdapter(FacLaptopEdit.this, laptopBenefitList, R.layout.laptop_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","LAPTOPTYPE","LAPTOP_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfLaptop,R.id.twLaptopImeiNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","LAPTOPTYPE","LAPTOP_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfLaptop,R.id.twLaptopImeiNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacLaptopEdit.setAdapter(adapter);
+    }
+
+    private String getImeiNum(String imeiNum){
+        String[] splited = imeiNum.split("\\s+");
+        String splittedImeiNum = splited[2];
+        return splittedImeiNum;
     }
 
     private void init() {

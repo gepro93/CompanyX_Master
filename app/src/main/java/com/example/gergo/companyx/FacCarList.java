@@ -45,8 +45,8 @@ public class FacCarList extends AppCompatActivity {
     private void createList() {
         carBenefitList = db.viewActiveCarBenefit();
         adapter = new SimpleAdapter(FacCarList.this, carBenefitList, R.layout.car_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","CARTYPE","CAR_LICENSENUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfCar,R.id.twLicNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","CARTYPE","CAR_LICENSENUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfCar,R.id.twLicNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacCarList.setAdapter(adapter);
     }

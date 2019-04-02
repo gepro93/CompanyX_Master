@@ -34,8 +34,8 @@ public class FacCarEdit extends AppCompatActivity {
     private LoadScreen ls;
     private ArrayList<HashMap<String, String>> carBenefitList;
     private ListAdapter adapter;
-    private int benefitId, modBenefitId, statusId,selectedModCar, selectedCar, pos, empId;
-    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, modCarLic, selectedUser, nameOfEmployee, carBrand, carType, carLicNum;
+    private int benefitId, modBenefitId, statusId,selectedModCar, selectedCar, pos, empId, userId;
+    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, selectedLicNum, modCarLic, modUserName, selectedUser, nameOfEmployee, carBrand, carType, carLicNum;
     private ArrayList<String> carList, empList, carBrandList, carTypeList, carLicList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -59,6 +59,7 @@ public class FacCarEdit extends AppCompatActivity {
                 modLicNum = (String) obj.get("CAR_LICENSENUMBER");
                 modStatus = (String) obj.get("BENEFIT_STATUS");
                 selectedBenefitId = (String) obj.get("BENEFIT_ID");
+                modUserName = (String) obj.get("USER_NAME");
                 modBenefitId = Integer.parseInt(selectedBenefitId);
                 modCarLic = modCar + " " + modLicNum;
             }
@@ -177,6 +178,7 @@ public class FacCarEdit extends AppCompatActivity {
                     spCarBrand.setAlpha(0);
                     selectedUser = adapterView.getItemAtPosition(i).toString();
                     nameOfEmployee = db.employeeNameSearch(selectedUser);
+                    userId = Integer.parseInt(db.userIdSearch(selectedUser));
                     empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
 
@@ -311,7 +313,7 @@ public class FacCarEdit extends AppCompatActivity {
                         if (!carBenefitCheck) {
                             boolean empCarBenefitCheckForInactive = db.empCarBenefitCheckForInactive(empId);
                             if(!empCarBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "a", carId, true);
+                                boolean insertBenefit = db.insertBenefit(empId, "a", carId, true, userId);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacCarEdit.this, "Autó kiadása folyamatban...", "Kiadás");
                                     createList();
@@ -357,7 +359,7 @@ public class FacCarEdit extends AppCompatActivity {
             //Spinner létrehozása
             final Spinner spCar = new Spinner(FacCarEdit.this, Spinner.MODE_DROPDOWN);
 
-            carList = db.carList();
+            carList = db.carList(modUserName);
 
             for (int s = 0; s < carList.size(); s++){
                 if (carList.get(s).equals(modCarLic)) {
@@ -402,7 +404,8 @@ public class FacCarEdit extends AppCompatActivity {
             spCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectedCar = adapterView.getSelectedItemPosition()+1;
+                    selectedLicNum = getCarLic(adapterView.getItemAtPosition(i).toString());
+                    selectedCar = db.carIdSearch(selectedLicNum);
                 }
 
                 @Override
@@ -459,12 +462,17 @@ public class FacCarEdit extends AppCompatActivity {
     private void createList() {
         carBenefitList = db.viewActiveCarBenefit();
         adapter = new SimpleAdapter(FacCarEdit.this, carBenefitList, R.layout.car_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","CARTYPE","CAR_LICENSENUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfCar,R.id.twLicNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","CARTYPE","CAR_LICENSENUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfCar,R.id.twLicNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacCarEdit.setAdapter(adapter);
     }
 
+    private String getCarLic(String licNum){
+        String[] splited = licNum.split("\\s+");
+        String splittedLicNum = splited[2];
+        return splittedLicNum;
+    }
 
     private void init() {
         btFacCarNew = findViewById(R.id.btFacCarNew);

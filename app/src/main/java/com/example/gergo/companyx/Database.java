@@ -140,6 +140,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String BENEFIT_ITEM = "eszkoz";
     public static final String BENEFIT_ITEM_ID = "eszkoz_id";
     public static final String BENEFIT_STATUS = "status";
+    public static final String BENEFIT_USER_ID = "user_id";
 
 
 
@@ -260,7 +261,7 @@ public class Database extends SQLiteOpenHelper{
                 + BENEFIT_ITEM + " char not null, "
                 + BENEFIT_ITEM_ID + " integer not null, "
                 + BENEFIT_STATUS + " boolean not null,"
-                + " FOREIGN KEY ("+BENEFIT_EMPLOYEE_ID+") REFERENCES "+EMPLOYEE_TABLE+"("+EMPLOYEE_ID+"))");
+                + BENEFIT_USER_ID + " integer not null)");
 
     }
 
@@ -508,13 +509,14 @@ public class Database extends SQLiteOpenHelper{
 
     //Juttatás felvétel
     public boolean insertBenefit(int dolgId, String eszkoz,
-                                     int eszkoz_id, boolean status){
+                                     int eszkoz_id, boolean status,int dolgozo_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BENEFIT_EMPLOYEE_ID, dolgId);
         contentValues.put(BENEFIT_ITEM, eszkoz);
         contentValues.put(BENEFIT_ITEM_ID, eszkoz_id);
         contentValues.put(BENEFIT_STATUS, status);
+        contentValues.put(BENEFIT_USER_ID, dolgozo_id);
 
         long eredmeny = db.insert(BENEFIT_TABLE, null, contentValues);
 
@@ -1165,8 +1167,8 @@ public class Database extends SQLiteOpenHelper{
 
             while(cursor.moveToNext()){
                 HashMap<String,String> brand = new HashMap<>();
-                brand.put("MODELOFMOBIL_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_BRAND)));
-                brand.put("MODELOFMOBIL_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFMOBIL_TYPE)));
+                brand.put("MODELOFLAPTOP_BRAND",cursor.getString(cursor.getColumnIndex(MODELOFLAPTOP_BRAND)));
+                brand.put("MODELOFLAPTOP_TYPE",cursor.getString(cursor.getColumnIndex(MODELOFLAPTOP_TYPE)));
                 brand.put("GRADE_NAME",cursor.getString(cursor.getColumnIndex(GRADE_NAME)));
 
                 laptopBrandList.add(brand);
@@ -1419,11 +1421,12 @@ public class Database extends SQLiteOpenHelper{
             ArrayList<HashMap<String,String>> carBenefitList = new ArrayList<>();
 
             String query = "SELECT b."+ BENEFIT_ID +", e."+ EMPLOYEE_NAME +", (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE+ ") AS " + CARTYPE +
-                    ", c."+ CAR_LICENSENUMBER + ", b." + BENEFIT_STATUS +
+                    ", c."+ CAR_LICENSENUMBER + ", b." + BENEFIT_STATUS + ", u." + USER_NAME +
                     " FROM " + BENEFIT_TABLE + " AS b" +
                     " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_ID + " = b." + BENEFIT_EMPLOYEE_ID +
                     " LEFT JOIN " + CAR_TABLE + " AS c ON c." + CAR_ID + " = b." + BENEFIT_ITEM_ID +
                     " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = b." + BENEFIT_USER_ID +
                     " WHERE " + BENEFIT_STATUS + "= 1 AND " + BENEFIT_ITEM + " = 'a'";
 
             Cursor cursor = db.rawQuery(query,null);
@@ -1434,6 +1437,7 @@ public class Database extends SQLiteOpenHelper{
                 carBenefit.put("EMPLOYEE_NAME",cursor.getString(cursor.getColumnIndex(EMPLOYEE_NAME)));
                 carBenefit.put("CARTYPE",cursor.getString(cursor.getColumnIndex(CARTYPE)));
                 carBenefit.put("CAR_LICENSENUMBER",cursor.getString(cursor.getColumnIndex(CAR_LICENSENUMBER)));
+
 
                 switch (cursor.getInt(cursor.getColumnIndex(BENEFIT_STATUS))){
                     case 0:
@@ -1447,6 +1451,8 @@ public class Database extends SQLiteOpenHelper{
                         break;
                 }
 
+                carBenefit.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
+
                 carBenefitList.add(carBenefit);
             }
             return carBenefitList;
@@ -1454,15 +1460,21 @@ public class Database extends SQLiteOpenHelper{
 
 
         //Autó gyártmányok feltöltése listába
-        public ArrayList<String> carList(){
+        public ArrayList<String> carList(String userName){
             SQLiteDatabase db = this.getReadableDatabase();
             ArrayList<String> modelOfCarList = new ArrayList<>();
 
             String query = "SELECT (m."+ MODELOFCAR_BRAND + " || " + "' '" + " || m." + MODELOFCAR_TYPE + " || " + "' '" + " || c." + CAR_LICENSENUMBER + ") AS CAR" +
                     " FROM " + CAR_TABLE + " AS c" +
-                    " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID;
+                    " LEFT JOIN " + MODELOFCAR_TABLE + " AS m ON m." + MODELOFCAR_ID + " = c." + CAR_MODEL_ID +
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFCAR_GRADE_ID +
+                    " LEFT JOIN " + POSITION_TABLE + " AS p ON p." + POSITION_GRADE_ID + " = g." + GRADE_ID +
+                    " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_POSITION_ID + " = p." + POSITION_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = e." + EMPLOYEE_USER_ID +
+                    " WHERE "+ USER_NAME +"=?" +
+                    " GROUP BY CAR";
 
-            Cursor cursor = db.rawQuery(query,null);
+            Cursor cursor = db.rawQuery(query,new String[]{userName});
 
             while(cursor.moveToNext()){
                 modelOfCarList.add(cursor.getString(cursor.getColumnIndex("CAR")));
@@ -1530,17 +1542,32 @@ public class Database extends SQLiteOpenHelper{
         //Dolgozó ID kikeresése
         public String empIdSearch(String userName){
             SQLiteDatabase db = this.getReadableDatabase();
-            String empName = "";
-            Cursor cursor = db.rawQuery("SELECT e." + EMPLOYEE_ID + " AS posName" +
+            String empId = "";
+            Cursor cursor = db.rawQuery("SELECT e." + EMPLOYEE_ID + " AS empId" +
                     " FROM " + USER_TABLE + " AS u" +
                     " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_USER_ID + " = u." + USER_ID +
                     " WHERE felhNeve=?", new String[]{userName});
 
             if (cursor!=null && cursor.getCount()>0) {
                 cursor.moveToFirst();
-                empName = cursor.getString(cursor.getColumnIndex("posName"));
-            }else empName = "Dolgozó neve";
-            return empName;
+                empId = cursor.getString(cursor.getColumnIndex("empId"));
+            }else empId = "0";
+            return empId;
+        }
+
+        //Felhasználó ID kikeresése
+        public String userIdSearch(String userName){
+            SQLiteDatabase db = this.getReadableDatabase();
+            String userId = "";
+            Cursor cursor = db.rawQuery("SELECT " + USER_ID + " AS userId" +
+                    " FROM " + USER_TABLE +
+                    " WHERE felhNeve=?", new String[]{userName});
+
+            if (cursor!=null && cursor.getCount()>0) {
+                cursor.moveToFirst();
+                userId = cursor.getString(cursor.getColumnIndex("userId"));
+            }else userId = "0";
+            return userId;
         }
 
         //Autó márka feltöltése listába
@@ -1655,12 +1682,14 @@ public class Database extends SQLiteOpenHelper{
             ArrayList<HashMap<String,String>> mobileBenefitList = new ArrayList<>();
 
             String query = "SELECT b."+ BENEFIT_ID +", e."+ EMPLOYEE_NAME +", (m."+ MODELOFMOBIL_BRAND + " || " + "' '" + " || m." + MODELOFMOBIL_TYPE + ") AS " + MOBILTYPE +
-                    ", c."+ MOBIL_IMEINUMBER + ", b." + BENEFIT_STATUS +
+                    ", c."+ MOBIL_IMEINUMBER + ", b." + BENEFIT_STATUS +", u." + USER_NAME +
                     " FROM " + BENEFIT_TABLE + " AS b" +
                     " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_ID + " = b." + BENEFIT_EMPLOYEE_ID +
                     " LEFT JOIN " + MOBILE_TABLE + " AS c ON c." + MOBIL_ID + " = b." + BENEFIT_ITEM_ID +
                     " LEFT JOIN " + MODELOFMOBIL_TABLE + " AS m ON m." + MODELOFMOBIL_ID + " = c." + MOBIL_MODEL_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = b." + BENEFIT_USER_ID +
                     " WHERE " + BENEFIT_STATUS + "= 1 AND " + BENEFIT_ITEM + " = 'm'";
+
 
             Cursor cursor = db.rawQuery(query,null);
 
@@ -1670,6 +1699,7 @@ public class Database extends SQLiteOpenHelper{
                 mobileBenefit.put("EMPLOYEE_NAME",cursor.getString(cursor.getColumnIndex(EMPLOYEE_NAME)));
                 mobileBenefit.put("MOBILTYPE",cursor.getString(cursor.getColumnIndex(MOBILTYPE)));
                 mobileBenefit.put("MOBIL_IMEINUMBER",cursor.getString(cursor.getColumnIndex(MOBIL_IMEINUMBER)));
+
 
                 switch (cursor.getInt(cursor.getColumnIndex(BENEFIT_STATUS))){
                     case 0:
@@ -1683,21 +1713,30 @@ public class Database extends SQLiteOpenHelper{
                         break;
                 }
 
+                mobileBenefit.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
+
                 mobileBenefitList.add(mobileBenefit);
             }
             return mobileBenefitList;
         }
 
         //Mobil gyártmányok feltöltése listába
-        public ArrayList<String> mobileList(){
+        public ArrayList<String> mobileList(String userName){
             SQLiteDatabase db = this.getReadableDatabase();
             ArrayList<String> modelOfMobileList = new ArrayList<>();
 
             String query = "SELECT (m."+ MODELOFMOBIL_BRAND + " || " + "' '" + " || m." + MODELOFMOBIL_TYPE + " || " + "' '" + " || c." + MOBIL_IMEINUMBER + ") AS mobil" +
                     " FROM " + MOBILE_TABLE + " AS c" +
-                    " LEFT JOIN " + MODELOFMOBIL_TABLE + " AS m ON m." + MODELOFMOBIL_ID + " = c." + MOBIL_MODEL_ID;
+                    " LEFT JOIN " + MODELOFMOBIL_TABLE + " AS m ON m." + MODELOFMOBIL_ID + " = c." + MOBIL_MODEL_ID +
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFMOBIL_GRADE_ID +
+                    " LEFT JOIN " + POSITION_TABLE + " AS p ON p." + POSITION_GRADE_ID + " = g." + GRADE_ID +
+                    " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_POSITION_ID + " = p." + POSITION_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = e." + EMPLOYEE_USER_ID +
+                    " WHERE "+ USER_NAME +"=?" +
+                    " GROUP BY mobil";
 
-            Cursor cursor = db.rawQuery(query,null);
+
+            Cursor cursor = db.rawQuery(query,new String[]{userName});
 
             while(cursor.moveToNext()){
                 modelOfMobileList.add(cursor.getString(cursor.getColumnIndex("mobil")));
@@ -1827,12 +1866,14 @@ public class Database extends SQLiteOpenHelper{
             ArrayList<HashMap<String,String>> laptopBenefitList = new ArrayList<>();
 
             String query = "SELECT b."+ BENEFIT_ID +", e."+ EMPLOYEE_NAME +", (m."+ MODELOFLAPTOP_BRAND + " || " + "' '" + " || m." + MODELOFLAPTOP_TYPE + ") AS " + LAPTOPTYPE +
-                    ", c."+ LAPTOP_IMEINUMBER + ", b." + BENEFIT_STATUS +
+                    ", c."+ LAPTOP_IMEINUMBER + ", b." + BENEFIT_STATUS + ", u." + USER_NAME +
                     " FROM " + BENEFIT_TABLE + " AS b" +
                     " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_ID + " = b." + BENEFIT_EMPLOYEE_ID +
                     " LEFT JOIN " + LAPTOP_TABLE + " AS c ON c." + LAPTOP_ID + " = b." + BENEFIT_ITEM_ID +
                     " LEFT JOIN " + MODELOFLAPTOP_TABLE + " AS m ON m." + MODELOFLAPTOP_ID + " = c." + LAPTOP_MODEL_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = b." + BENEFIT_USER_ID +
                     " WHERE " + BENEFIT_STATUS + "= 1 AND " + BENEFIT_ITEM + " = 'l'";
+
 
             Cursor cursor = db.rawQuery(query,null);
 
@@ -1855,21 +1896,29 @@ public class Database extends SQLiteOpenHelper{
                         break;
                 }
 
+                laptopBenefit.put("USER_NAME",cursor.getString(cursor.getColumnIndex(USER_NAME)));
+
                 laptopBenefitList.add(laptopBenefit);
             }
             return laptopBenefitList;
         }
 
         //Laptop gyártmányok feltöltése listába
-        public ArrayList<String> laptopList(){
+        public ArrayList<String> laptopList(String userName){
             SQLiteDatabase db = this.getReadableDatabase();
             ArrayList<String> modelOfLaptopList = new ArrayList<>();
 
             String query = "SELECT (m."+ MODELOFLAPTOP_BRAND + " || " + "' '" + " || m." + MODELOFLAPTOP_TYPE + " || " + "' '" + " || c." + LAPTOP_IMEINUMBER + ") AS laptop" +
                     " FROM " + LAPTOP_TABLE + " AS c" +
-                    " LEFT JOIN " + MODELOFLAPTOP_TABLE + " AS m ON m." + MODELOFLAPTOP_ID + " = c." + LAPTOP_MODEL_ID;
+                    " LEFT JOIN " + MODELOFLAPTOP_TABLE + " AS m ON m." + MODELOFLAPTOP_ID + " = c." + LAPTOP_MODEL_ID +
+                    " LEFT JOIN " + GRADE_TABLE + " AS g ON g." + GRADE_ID + " = m." + MODELOFLAPTOP_GRADE_ID +
+                    " LEFT JOIN " + POSITION_TABLE + " AS p ON p." + POSITION_GRADE_ID + " = g." + GRADE_ID +
+                    " LEFT JOIN " + EMPLOYEE_TABLE + " AS e ON e." + EMPLOYEE_POSITION_ID + " = p." + POSITION_ID +
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = e." + EMPLOYEE_USER_ID +
+                    " WHERE "+ USER_NAME +"=?" +
+                    " GROUP BY laptop";
 
-            Cursor cursor = db.rawQuery(query,null);
+            Cursor cursor = db.rawQuery(query,new String[]{userName});
 
             while(cursor.moveToNext()){
                 modelOfLaptopList.add(cursor.getString(cursor.getColumnIndex("laptop")));

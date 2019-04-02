@@ -45,8 +45,8 @@ public class FacMobileList extends AppCompatActivity {
     private void createList() {
         mobileBenefitList = db.viewActiveMobileBenefit();
         adapter = new SimpleAdapter(FacMobileList.this, mobileBenefitList, R.layout.mobile_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","MOBILTYPE","MOBIL_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfMobile,R.id.twMobileImeiNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","MOBILTYPE","MOBIL_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfMobile,R.id.twMobileImeiNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacMobileList.setAdapter(adapter);
     }

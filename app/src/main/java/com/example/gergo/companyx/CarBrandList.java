@@ -35,7 +35,7 @@ public class CarBrandList extends AppCompatActivity {
         btCarBrandListBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CarBrandList.this,CarHandle.class));
+                startActivity(new Intent(CarBrandList.this,CarBrandHandle.class));
                 Animatoo.animateSlideRight(CarBrandList.this);
                 finish();
             }

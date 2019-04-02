@@ -41,7 +41,7 @@ public class FacMobileHandle extends AppCompatActivity {
         btFacMobileList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FacMobileHandle.this, FacLaptopList.class));
+                startActivity(new Intent(FacMobileHandle.this, FacMobileList.class));
                 Animatoo.animateSlideLeft(FacMobileHandle.this);
                 finish();
             }

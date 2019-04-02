@@ -45,8 +45,8 @@ public class FacLaptopList extends AppCompatActivity {
     private void createList() {
         laptopBenefitList = db.viewActiveLaptopBenefit();
         adapter = new SimpleAdapter(FacLaptopList.this, laptopBenefitList, R.layout.laptop_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","LAPTOPTYPE","LAPTOP_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfMobile,R.id.twMobileImeiNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","LAPTOPTYPE","LAPTOP_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfLaptop,R.id.twLaptopImeiNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacLaptopList.setAdapter(adapter);
     }

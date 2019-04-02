@@ -32,8 +32,8 @@ public class FacMobileEdit extends AppCompatActivity {
     private LoadScreen ls;
     private ArrayList<HashMap<String, String>> mobileBenefitList;
     private ListAdapter adapter;
-    private int benefitId, modBenefitId, statusId,selectedModMobile, selectedMobile, pos, empId;
-    private String modEmpName,modMobile, modImeiNum, modStatus, selectedBenefitId, modMobileImei, selectedEmp, nameOfEmployee, mobileBrand, mobileType, mobileImeiNum;
+    private int benefitId, modBenefitId, statusId,selectedModMobile, selectedMobile, pos, empId, userId;
+    private String modEmpName,modMobile, modImeiNum, modStatus, selectedBenefitId, modMobileImei, selectedImeiNumber, modUserName, selectedUser, nameOfEmployee, mobileBrand, mobileType, mobileImeiNum;
     private ArrayList<String> mobileList, empList, mobileBrandList, mobileTypeList, mobileImeiList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -56,6 +56,7 @@ public class FacMobileEdit extends AppCompatActivity {
                 modImeiNum = (String) obj.get("MOBIL_IMEINUMBER");
                 modStatus = (String) obj.get("BENEFIT_STATUS");
                 selectedBenefitId = (String) obj.get("BENEFIT_ID");
+                modUserName = (String) obj.get("USER_NAME");
                 modBenefitId = Integer.parseInt(selectedBenefitId);
                 modMobileImei = modMobile + " " + modImeiNum;
             }
@@ -159,11 +160,12 @@ public class FacMobileEdit extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz dolgozót!")){
-                    selectedEmp = adapterView.getItemAtPosition(i).toString();
-                    nameOfEmployee = db.employeeNameSearch(selectedEmp);
-                    empId = Integer.parseInt(db.empIdSearch(selectedEmp));
+                    selectedUser = adapterView.getItemAtPosition(i).toString();
+                    nameOfEmployee = db.employeeNameSearch(selectedUser);
+                    userId = Integer.parseInt(db.userIdSearch(selectedUser));
+                    empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
-                }else selectedEmp = "empty";
+                }else selectedUser = "empty";
 
             }
 
@@ -247,7 +249,7 @@ public class FacMobileEdit extends AppCompatActivity {
 
         alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if(selectedEmp.equals("empty") || mobileBrand.equals("empty") || mobileType.equals("empty") || mobileImeiNum.equals("empty")){
+                if(selectedUser.equals("empty") || mobileBrand.equals("empty") || mobileType.equals("empty") || mobileImeiNum.equals("empty")){
                     Toast.makeText(FacMobileEdit.this, "Minden mező kitöltése kötelező!", Toast.LENGTH_SHORT).show();
                 }else {
                     int mobileId = db.mobileIdSearch(mobileImeiNum);
@@ -257,7 +259,7 @@ public class FacMobileEdit extends AppCompatActivity {
                         if (!mobileBenefitCheck) {
                             boolean empMobileBenefitCheckForInactive = db.empMobileBenefitCheckForInactive(empId);
                             if(!empMobileBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "m", mobileId, true);
+                                boolean insertBenefit = db.insertBenefit(empId, "m", mobileId, true, userId);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacMobileEdit.this, "Mobil kiadása folyamatban...", "Kiadás");
                                     createList();
@@ -291,7 +293,6 @@ public class FacMobileEdit extends AppCompatActivity {
             //Linear Layout felépítése
             LinearLayout layout = new LinearLayout(FacMobileEdit.this);
             layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setPadding(0, 60, 0, 60);
 
             //TextView létrehozása
             final TextView empName = new TextView(FacMobileEdit.this);
@@ -304,7 +305,7 @@ public class FacMobileEdit extends AppCompatActivity {
             //Spinner létrehozása
             final Spinner spMobile = new Spinner(FacMobileEdit.this, Spinner.MODE_DROPDOWN);
 
-            mobileList = db.mobileList();
+            mobileList = db.mobileList(modUserName);
 
             for (int s = 0; s < mobileList.size(); s++){
                 if (mobileList.get(s).equals(modMobileImei)) {
@@ -321,7 +322,7 @@ public class FacMobileEdit extends AppCompatActivity {
             spMobile.setPadding(0, 0, 0, 60);
             layout.addView(spMobile); //Spinner hozzáadása layouthoz
 
-
+            layout.setPadding(0, 60, 0, 60);
 
             //Spinner létrehozása
             final Spinner spStatus = new Spinner(FacMobileEdit.this, Spinner.MODE_DROPDOWN);
@@ -350,7 +351,8 @@ public class FacMobileEdit extends AppCompatActivity {
             spMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectedMobile = adapterView.getSelectedItemPosition()+1;
+                    selectedImeiNumber = getImeiNum(adapterView.getItemAtPosition(i).toString());
+                    selectedMobile = db.mobileIdSearch(selectedImeiNumber);
                 }
 
                 @Override
@@ -407,10 +409,16 @@ public class FacMobileEdit extends AppCompatActivity {
     private void createList() {
         mobileBenefitList = db.viewActiveMobileBenefit();
         adapter = new SimpleAdapter(FacMobileEdit.this, mobileBenefitList, R.layout.mobile_benefit_edit,
-                new String[]{"EMPLOYEE_NAME","MOBILTYPE","MOBIL_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS"},
-                new int[]{R.id.twNameOfEmp,R.id.twTypeOfMobile,R.id.twMobileImeiNumber,benefitId,statusId});
+                new String[]{"EMPLOYEE_NAME","MOBILTYPE","MOBIL_IMEINUMBER","BENEFIT_ID","BENEFIT_STATUS","USER_NAME"},
+                new int[]{R.id.twNameOfEmp,R.id.twTypeOfMobile,R.id.twMobileImeiNumber,benefitId,statusId,R.id.twNameOfUser});
 
         lwFacMobileEdit.setAdapter(adapter);
+    }
+
+    private String getImeiNum(String imeiNum){
+        String[] splited = imeiNum.split("\\s+");
+        String splittedImeiNum = splited[2];
+        return splittedImeiNum;
     }
 
     private void init() {

@@ -102,6 +102,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:alpha="0"
+            android:layout_below="@+id/gpsend"
             />
 
         <TextView
@@ -111,7 +112,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="Induláskor"
-            android:layout_below="@id/btSaveTrip"
+            android:layout_below="@id/etKmData"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:id="@+id/indulaskor"
