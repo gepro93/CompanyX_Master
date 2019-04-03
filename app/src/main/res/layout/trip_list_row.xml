@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/selected_list_view_background"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/twEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Dolgozó: "
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/twEmployeeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Steve Brickle"
+            android:layout_toRightOf="@id/twEmployee"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Dátum: "
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            android:layout_toRightOf="@+id/twEmployeeName"
+            />
+
+        <TextView
+            android:id="@+id/twDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="2018-08-08 08:08:08"
+            android:layout_toRightOf="@+id/twDateTitle"
+            />
+
+
+        <TextView
+            android:id="@+id/twKmStartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Km óra állása - Induláskor: "
+            android:layout_below="@+id/twEmployee"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twKmStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="100000"
+            android:layout_toRightOf="@+id/twKmStartTitle"
+            android:layout_below="@+id/twEmployee"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twkm1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text=" km"
+            android:layout_toRightOf="@+id/twKmStart"
+            android:layout_below="@+id/twEmployee"
+            />
+
+        <TextView
+            android:id="@+id/twKmEndTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Érkezéskor: "
+            android:layout_below="@+id/twKmStartTitle"
+            android:paddingLeft="120dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twKmEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="100000"
+            android:layout_toRightOf="@+id/twKmEndTitle"
+            android:layout_below="@+id/twKmStartTitle"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twkm2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text=" km"
+            android:layout_toRightOf="@+id/twKmEnd"
+            android:layout_below="@+id/twKmStart"
+            />
+
+        <TextView
+            android:id="@+id/twGpsStartTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="GPS pozíció - Induláskor: "
+            android:layout_below="@+id/twKmEndTitle"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twGpsStart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="49.2546,45.123158"
+            android:layout_toRightOf="@+id/twGpsStartTitle"
+            android:layout_below="@+id/twKmEndTitle"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twGpsEndTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Érkezéskor: "
+            android:layout_below="@+id/twGpsStartTitle"
+            android:paddingLeft="110dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twGpsEnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="49.2546,45.123158"
+            android:layout_toRightOf="@+id/twGpsEndTitle"
+            android:layout_below="@+id/twGpsStartTitle"
+            android:textStyle="italic"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

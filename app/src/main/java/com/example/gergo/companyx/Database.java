@@ -132,7 +132,7 @@ public class Database extends SQLiteOpenHelper{
     public static final String TRIP_EMPLOYEE_ID = "dolgozo_id";
     public static final String TRIP_CAR_ID = "auto_id";
 
-    //tranzakciók tábla és oszlopok definiálása
+    //juttatások tábla és oszlopok definiálása
     public static final String BENEFIT_TABLE = "juttatasok";
 
     public static final String BENEFIT_ID = "dolgozo_id";
@@ -141,6 +141,18 @@ public class Database extends SQLiteOpenHelper{
     public static final String BENEFIT_ITEM_ID = "eszkoz_id";
     public static final String BENEFIT_STATUS = "status";
     public static final String BENEFIT_USER_ID = "user_id";
+    public static final String BENEFIT_FAC_USER = "fac_user_name";
+
+    //juttatások_log tábla és oszlopok definiálása
+    public static final String BENEFIT_LOG_TABLE = "juttatasok_log";
+
+    public static final String BENEFIT_LOG_ID = "log_id";
+    public static final String BENEFIT_LOG_BENEFIT_ID = "juttatas_id";
+    public static final String BENEFIT_LOG_USER_ID = "user_id";
+    public static final String BENEFIT_LOG_ITEM = "eszkoz";
+    public static final String BENEFIT_LOG_ITEM_ID = "eszkoz_id";
+    public static final String BENEFIT_LOG_STATUS = "status";
+    public static final String BENEFIT_LOG_DATETIME = "datetime";
 
 
 
@@ -261,7 +273,31 @@ public class Database extends SQLiteOpenHelper{
                 + BENEFIT_ITEM + " char not null, "
                 + BENEFIT_ITEM_ID + " integer not null, "
                 + BENEFIT_STATUS + " boolean not null,"
-                + BENEFIT_USER_ID + " integer not null)");
+                + BENEFIT_USER_ID + " integer not null,"
+                + BENEFIT_FAC_USER + " text not null)");
+
+
+        sqLiteDatabase.execSQL("CREATE TABLE "
+                + BENEFIT_LOG_TABLE + " ("
+                + BENEFIT_LOG_ID + " integer primary key autoincrement, "
+                + BENEFIT_LOG_BENEFIT_ID + " integer not null, "
+                + BENEFIT_LOG_USER_ID + " integer not null, "
+                + BENEFIT_LOG_ITEM + " char not null, "
+                + BENEFIT_LOG_ITEM_ID + " integer not null, "
+                + BENEFIT_LOG_STATUS + " boolean not null,"
+                + BENEFIT_LOG_DATETIME + " timestamp not null)");
+
+        sqLiteDatabase.execSQL("CREATE TRIGGER juttatasInsert AFTER INSERT " +
+                "ON juttatasok " +
+                "BEGIN " +
+                "   INSERT INTO juttatas_log(juttatas_id, user_id, eszkoz, eszkoz_id, status, fac_user_name) VALUES (new.juttatas_id, new.user_id, new.eszkoz, new.eszkoz_id, new.status, new.fac_user_name); " +
+                "END");
+
+        sqLiteDatabase.execSQL("CREATE TRIGGER juttatasUpdate AFTER UPDATE " +
+                "ON juttatasok " +
+                "BEGIN " +
+                "   INSERT INTO juttatas_log(juttatas_id, user_id, eszkoz, eszkoz_id, status, fac_user_name) VALUES (new.juttatas_id, new.user_id, new.eszkoz, new.eszkoz_id, new.status, new.fac_user_name); " +
+                "END");
 
     }
 
@@ -281,6 +317,7 @@ public class Database extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GRADE_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + BENEFIT_TABLE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + BENEFIT_LOG_TABLE);
     }
 
     //Felhasználó felvétel
@@ -509,7 +546,7 @@ public class Database extends SQLiteOpenHelper{
 
     //Juttatás felvétel
     public boolean insertBenefit(int dolgId, String eszkoz,
-                                     int eszkoz_id, boolean status,int dolgozo_id){
+                                     int eszkoz_id, boolean status,int dolgozo_id, String facUser){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(BENEFIT_EMPLOYEE_ID, dolgId);
@@ -517,6 +554,7 @@ public class Database extends SQLiteOpenHelper{
         contentValues.put(BENEFIT_ITEM_ID, eszkoz_id);
         contentValues.put(BENEFIT_STATUS, status);
         contentValues.put(BENEFIT_USER_ID, dolgozo_id);
+        contentValues.put(BENEFIT_USER_ID, facUser);
 
         long eredmeny = db.insert(BENEFIT_TABLE, null, contentValues);
 
@@ -2226,6 +2264,156 @@ public class Database extends SQLiteOpenHelper{
                 laptopBenefitList.add(cursor.getString(cursor.getColumnIndex(LAPTOP_IMEINUMBER)));
             }
             return laptopBenefitList;
+        }
+
+
+            //Juttatások feltöltése listába
+        public ArrayList<HashMap<String,String>> viewBenefits(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> benefitList = new ArrayList<>();
+
+            String query = "SELECT " +
+                    "CASE j.eszkoz " +
+                    "   WHEN 'a' " +
+                    "   THEN (SELECT g.autoMarka || \" \" || g.autoTipus || \" \" || a.autoRendszam " +
+                    "           FROM autok as a " +
+                    "           LEFT JOIN auto_gyartmanyok as g on g.autoGyartmany_id = a.autoGyartmany_id " +
+                    "           LEFT JOIN felhasznalok as f on f.felh_id = user_id " +
+                    "           WHERE a.auto_id = eszkoz_id)" +
+                    "   WHEN 'm' " +
+                    "   THEN (SELECT g.mobilMarka || \" \" || g.mobilTipus || \" \" || a.mobilImeiSzam " +
+                    "           FROM mobilok as a " +
+                    "           LEFT JOIN mobil_gyartmanyok as g on g.mobilGyartmany_id = a.mobilGyartmany_id " +
+                    "           WHERE a.mobil_id = eszkoz_id)" +
+                    "   WHEN 'l' " +
+                    "       THEN (SELECT g.laptopMarka || \" \" || g.laptopTipus || \" \" || a.LaptopImeiSzam " +
+                    "           FROM laptopok as a " +
+                    "           LEFT JOIN laptop_gyartmanyok as g on g.laptopGyartmany_id = a.laptopGyartmany_id " +
+                    "           WHERE a.laptop_id = eszkoz_id)" +
+                    "END tipus, d.dolgNev, " +
+                    "CASE status " +
+                    "   WHEN 1 THEN 'Kiadva' " +
+                    "   ELSE 'Átvéve' " +
+                    "END status, datetime, fac_user_name " +
+                    "FROM juttatas_log as j " +
+                    "LEFT JOIN felhasznalok as f on f.felh_id = j.user_id " +
+                    "LEFT JOIN dolgozok as d on d.felh_id = f.felh_id";
+
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> benefit = new HashMap<>();
+                benefit.put("tipus",cursor.getString(cursor.getColumnIndex("tipus")));
+                benefit.put("dolgNev",cursor.getString(cursor.getColumnIndex("dolgNev")));
+                benefit.put("status",cursor.getString(cursor.getColumnIndex("status")));
+                benefit.put("datetime",cursor.getString(cursor.getColumnIndex("datetime")));
+                benefit.put("fac_user_name",cursor.getString(cursor.getColumnIndex("fac_user_name")));
+
+                benefitList.add(benefit);
+            }
+            return benefitList;
+        }
+
+
+        //Utak feltöltése listába
+        public ArrayList<HashMap<String,String>> viewTrips(){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ArrayList<HashMap<String,String>> tripList = new ArrayList<>();
+
+            String query = "SELECT d.dolgNev, u.kmIndulas , u.gpsIndulas, u.kmErkezes, u.gpsErkezes, u.rogzitesIdo" +
+                    " FROM utak AS u" +
+                    " LEFT JOIN dolgozok AS d ON d.dolg_id = u.dolgozo_id";
+
+
+            Cursor cursor = db.rawQuery(query,null);
+
+            while(cursor.moveToNext()){
+                HashMap<String,String> trip = new HashMap<>();
+                trip.put("dolgNev",cursor.getString(cursor.getColumnIndex("dolgNev")));
+                trip.put("kmIndulas",cursor.getString(cursor.getColumnIndex("kmIndulas")));
+                trip.put("gpsIndulas",cursor.getString(cursor.getColumnIndex("gpsIndulas")));
+                trip.put("kmErkezes",cursor.getString(cursor.getColumnIndex("kmErkezes")));
+                trip.put("gpsErkezes",cursor.getString(cursor.getColumnIndex("gpsErkezes")));
+                trip.put("rogzitesIdo",cursor.getString(cursor.getColumnIndex("rogzitesIdo")));
+
+                tripList.add(trip);
+            }
+            return tripList;
+        }
+
+        //Dolgozónév felhasználó nélküli lista
+        public ArrayList<String> empNameList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> empNameList = new ArrayList<>();
+            String query = "SELECT dolgNev " +
+                             "FROM dolgozok " +
+                                "WHERE felh_id IS NULL";
+            Cursor cursor = db.rawQuery(query, null);
+
+            while(cursor.moveToNext()){
+                empNameList.add(cursor.getString(cursor.getColumnIndex("dolgNev")));
+            }
+            return empNameList;
+        }
+
+        //Dolgozónév felhasználóval lista
+        public ArrayList<String> empNameListWithUser(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> empNameList = new ArrayList<>();
+            String query = "SELECT dolgNev " +
+                    "FROM dolgozok " +
+                    "WHERE felh_id IS NOT NULL";
+            Cursor cursor = db.rawQuery(query, null);
+
+            while(cursor.moveToNext()){
+                empNameList.add(cursor.getString(cursor.getColumnIndex("dolgNev")));
+            }
+            return empNameList;
+        }
+
+        //Felhasználónév lista
+        public ArrayList<String> userNameList(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            ArrayList<String> empNameList = new ArrayList<>();
+            String query = "SELECT felhNeve " +
+                    "FROM felhasznalok f " +
+                    "LEFT JOIN dolgozok d ON f.felh_id = d.felh_id " +
+                    "WHERE " +
+                    "   f.felh_id IS NOT NULL " +
+                    "   AND d.felh_id IS NULL " +
+                    "   AND felhNeve NOT LIKE '%admin%' " +
+                    "   AND felhNeve NOT LIKE '%fac%' " +
+                    "   AND felhNeve NOT LIKE '%hr%'";
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            while(cursor.moveToNext()){
+                empNameList.add(cursor.getString(cursor.getColumnIndex("felhNeve")));
+            }
+            return empNameList;
+        }
+
+        //Felhasználó törlése dolgozói profilból
+        public Boolean deleteUserFromEmp(String empName){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(EMPLOYEE_USER_ID, (byte[]) null);
+
+            int i = db.update(EMPLOYEE_TABLE, contentValues, EMPLOYEE_NAME + "=" +"'"+empName+"'",null);
+            return i > 0;
+        }
+
+        //Felhasználó hozzáadása dolgozói profilhoz
+        public Boolean addUserToEmp(String empName, int userId){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(EMPLOYEE_USER_ID, userId);
+
+            int i = db.update(EMPLOYEE_TABLE, contentValues, EMPLOYEE_NAME + "=" +"'"+empName+"'",null);
+            return i > 0;
         }
 
 }

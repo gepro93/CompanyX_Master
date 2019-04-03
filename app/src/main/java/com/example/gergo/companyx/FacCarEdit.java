@@ -2,6 +2,7 @@ package com.example.gergo.companyx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class FacCarEdit extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> carBenefitList;
     private ListAdapter adapter;
     private int benefitId, modBenefitId, statusId,selectedModCar, selectedCar, pos, empId, userId;
-    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, selectedLicNum, modCarLic, modUserName, selectedUser, nameOfEmployee, carBrand, carType, carLicNum;
+    private String modEmpName,modCar, modLicNum, modStatus, selectedBenefitId, selectedLicNum, modCarLic, modUserName, selectedUser, nameOfEmployee, carBrand, carType, carLicNum, userName;
     private ArrayList<String> carList, empList, carBrandList, carTypeList, carLicList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -48,6 +49,9 @@ public class FacCarEdit extends AppCompatActivity {
         setContentView(R.layout.activity_fac_car_edit);
         init();
         createList();
+
+        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        userName = sp.getString("LoginUserName","Nincs adat");
 
         lwFacCarEdit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -313,7 +317,7 @@ public class FacCarEdit extends AppCompatActivity {
                         if (!carBenefitCheck) {
                             boolean empCarBenefitCheckForInactive = db.empCarBenefitCheckForInactive(empId);
                             if(!empCarBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "a", carId, true, userId);
+                                boolean insertBenefit = db.insertBenefit(empId, "a", carId, true, userId,userName);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacCarEdit.this, "Autó kiadása folyamatban...", "Kiadás");
                                     createList();

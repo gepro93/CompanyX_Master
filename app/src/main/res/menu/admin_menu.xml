@@ -52,20 +52,16 @@
         </menu>
     </item>
 
-    <item android:title="Tranzakciók">
+    <item android:title="Előzmények">
         <menu>
             <item
                 android:id="@+id/navTrans"
                 android:icon="@drawable/button_menu_transactions"
-                android:title="Céges eszköz"/>
+                android:title="Juttatások"/>
             <item
                 android:id="@+id/navTrip"
                 android:icon="@drawable/button_menu_trip"
-                android:title="Utak"/>
-            <item
-                android:id="@+id/navLog"
-                android:icon="@drawable/button_menu_log"
-                android:title="Adatbázis"/>
+                android:title="Útnyilvántartás"/>
         </menu>
     </item>
 

@@ -83,16 +83,17 @@ public class AdminMenu extends AppCompatActivity {
                         break;
 
                     case R.id.navTrans:
-
+                        startActivity(new Intent(AdminMenu.this, BenefitList.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
+                        finish();
                         break;
 
                     case R.id.navTrip:
-
+                        startActivity(new Intent(AdminMenu.this, TripList.class));
+                        Animatoo.animateSlideLeft(AdminMenu.this);
+                        finish();
                         break;
 
-                    case R.id.navLog:
-
-                        break;
 
                     case R.id.navLogout:
                         startActivity(new Intent(AdminMenu.this, Login.class));

@@ -2,6 +2,7 @@ package com.example.gergo.companyx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class FacLaptopEdit extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> laptopBenefitList;
     private ListAdapter adapter;
     private int benefitId, modBenefitId, statusId,selectedModLaptop, selectedLaptop, pos, empId, userId;
-    private String modEmpName,modLaptop, modImeiNum, modStatus, selectedBenefitId, selectedImeiNumber, modLaptopImei, modUserName, selectedUser, nameOfEmployee, laptopBrand, laptopType, laptopImeiNum;
+    private String modEmpName,modLaptop, modImeiNum, modStatus, selectedBenefitId, selectedImeiNumber, modLaptopImei, modUserName, selectedUser, nameOfEmployee, laptopBrand, laptopType, laptopImeiNum, userName;
     private ArrayList<String> laptopList, empList, laptopBrandList, laptopTypeList, laptopImeiList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -45,6 +46,9 @@ public class FacLaptopEdit extends AppCompatActivity {
         setContentView(R.layout.activity_fac_laptop_edit);
         init();
         createList();
+
+        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        userName = sp.getString("LoginUserName","Nincs adat");
 
         lwFacLaptopEdit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -384,7 +388,7 @@ public class FacLaptopEdit extends AppCompatActivity {
                         if (!laptopBenefitCheck) {
                             boolean empLaptopBenefitCheckForInactive = db.empLaptopBenefitCheckForInactive(empId);
                             if(!empLaptopBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "l", laptopId, true, userId);
+                                boolean insertBenefit = db.insertBenefit(empId, "l", laptopId, true, userId, userName);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacLaptopEdit.this, "Laptop kiadása folyamatban...", "Kiadás");
                                     createList();

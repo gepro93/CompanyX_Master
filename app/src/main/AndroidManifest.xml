@@ -22,53 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".EmployeeLaptop"></activity>
-        <activity android:name=".EmployeeMobile" />
-        <activity android:name=".EmployeeTripList" />
-        <activity android:name=".EmployeeTrip" />
-        <activity android:name=".EmployeeCarMenu" />
-        <activity android:name=".QRRead" />
-        <activity android:name=".QRCreation" />
-        <activity android:name=".FacLaptopList" />
-        <activity android:name=".FacMobileList" />
-        <activity android:name=".FacCarList" />
-        <activity android:name=".FacLaptopEdit" />
-        <activity android:name=".FacLaptopHandle" />
-        <activity android:name=".FacMobileEdit" />
-        <activity android:name=".FacMobileHandle" />
-        <activity android:name=".FacCarEdit" />
-        <activity android:name=".FacCarHandle" />
-        <activity android:name=".EmployeeList" />
-        <activity android:name=".EmployeeEdit" />
-        <activity android:name=".EmployeeHandle" />
-        <activity android:name=".LaptopBrandList" />
-        <activity android:name=".LaptopBrandEdit" />
-        <activity android:name=".LaptopBrandHandle" />
-        <activity android:name=".LaptopList" />
-        <activity android:name=".LaptopEdit" />
-        <activity android:name=".LaptopHandle" />
-        <activity android:name=".LaptopMenu" />
-        <activity android:name=".MobileBrandList" />
-        <activity android:name=".MobileBrandEdit" />
-        <activity android:name=".MobileBrandHandle" />
-        <activity android:name=".MobileList" />
-        <activity android:name=".MobileEdit" />
-        <activity android:name=".MobileHandle" />
-        <activity android:name=".MobileMenu" />
-        <activity android:name=".CarBrandEdit" />
-        <activity android:name=".CarBrandList" />
-        <activity android:name=".CarList" />
-        <activity android:name=".CarEdit" />
-        <activity android:name=".CarBrandHandle" />
-        <activity android:name=".CarHandle" />
-        <activity android:name=".CarMenu" />
-        <activity android:name=".DepartmentDelete" />
-        <activity android:name=".DepartmentModify" />
-        <activity android:name=".DepartmentList" />
-        <activity android:name=".DepartmentMenu" />
-        <activity android:name=".PositionDelete" />
-        <activity android:name=".PositionModify" />
-        <activity android:name=".PositionList" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
@@ -80,38 +33,187 @@
         </activity>
         <activity
             android:name=".Login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name=".AdminMenu" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminMenu"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HRMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FacilitiesMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EmployeeMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserAdd"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserDelete"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserModifyList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserModify"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PositionMenu"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TripList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".BenefitList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeLaptop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeMobile"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeTripList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeTrip"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeCarMenu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".QRRead"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".QRCreation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacLaptopList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacMobileList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacCarList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacLaptopEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacLaptopHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacMobileEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacMobileHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacCarEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FacCarHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EmployeeHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopBrandList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopBrandEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopBrandHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LaptopMenu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileBrandList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileBrandEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileBrandHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MobileMenu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarBrandEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarBrandList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarEdit"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarBrandHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarHandle"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarMenu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".DepartmentDelete"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".DepartmentModify"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".DepartmentList"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".DepartmentMenu"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PositionDelete"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PositionModify"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PositionList"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

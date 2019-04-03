@@ -2,6 +2,7 @@ package com.example.gergo.companyx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class FacMobileEdit extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> mobileBenefitList;
     private ListAdapter adapter;
     private int benefitId, modBenefitId, statusId,selectedModMobile, selectedMobile, pos, empId, userId;
-    private String modEmpName,modMobile, modImeiNum, modStatus, selectedBenefitId, modMobileImei, selectedImeiNumber, modUserName, selectedUser, nameOfEmployee, mobileBrand, mobileType, mobileImeiNum;
+    private String modEmpName,modMobile, modImeiNum, modStatus, selectedBenefitId, modMobileImei, selectedImeiNumber, modUserName, selectedUser, nameOfEmployee, mobileBrand, mobileType, mobileImeiNum, userName;
     private ArrayList<String> mobileList, empList, mobileBrandList, mobileTypeList, mobileImeiList;
     private boolean selectedStatus;
     private LinearLayout layout;
@@ -45,6 +46,9 @@ public class FacMobileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_fac_mobile_edit);
         init();
         createList();
+
+        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        userName = sp.getString("LoginUserName","Nincs adat");
 
         lwFacMobileEdit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -259,7 +263,7 @@ public class FacMobileEdit extends AppCompatActivity {
                         if (!mobileBenefitCheck) {
                             boolean empMobileBenefitCheckForInactive = db.empMobileBenefitCheckForInactive(empId);
                             if(!empMobileBenefitCheckForInactive) {
-                                boolean insertBenefit = db.insertBenefit(empId, "m", mobileId, true, userId);
+                                boolean insertBenefit = db.insertBenefit(empId, "m", mobileId, true, userId, userName);
                                 if (insertBenefit) {
                                     ls.progressDialog(FacMobileEdit.this, "Mobil kiadása folyamatban...", "Kiadás");
                                     createList();

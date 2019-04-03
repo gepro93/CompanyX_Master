@@ -52,7 +52,7 @@ public class SplashScreen extends AppCompatActivity {
 
     public void progressBarAnimation(){
         AnimationLogin anim = new AnimationLogin(this,progressBar,twPrecentage,0f,100f);
-        anim.setDuration(6000);
+        anim.setDuration(2000);
         progressBar.setAnimation(anim);
     }
 

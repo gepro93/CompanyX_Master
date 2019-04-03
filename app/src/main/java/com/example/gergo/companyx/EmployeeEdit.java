@@ -3,6 +3,7 @@ package com.example.gergo.companyx;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class EmployeeEdit extends AppCompatActivity {
     private ListAdapter adapter;
     private ArrayList<String> depList, posList;
     private int  selectedDep, selectedPos, selectedModDep, selectedModPos, pos, empId;
-    private String selectedEmpId, modEmpName, modEmpBirth, modEmpMoName, modEmpDep, modEmpPos ,modEmpGender, modEmpStatus, modEmpSalary;
+    private String selectedEmpId, modEmpName, modEmpBirth, modEmpMoName, modEmpDep, modEmpPos ,modEmpGender, modEmpStatus, modEmpSalary, permission;
     private boolean selectedStatus, selectedGender;
     private Calendar c;
     private DatePickerDialog dpd;
@@ -48,6 +49,10 @@ public class EmployeeEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_edit);
         init();
+
+        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        permission = sp.getString("Permission","Nincs adat");
+
         createList();
 
         lwEmployeeEdit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,9 +109,15 @@ public class EmployeeEdit extends AppCompatActivity {
         btEmployeeEditBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EmployeeEdit.this, EmployeeHandle.class));
-                Animatoo.animateSlideRight(EmployeeEdit.this);
-                finish();
+                if(permission.equals("Human Resources")){
+                    startActivity(new Intent(EmployeeEdit.this, HRMenu.class));
+                    Animatoo.animateSlideRight(EmployeeEdit.this);
+                    finish();
+                }else{
+                    startActivity(new Intent(EmployeeEdit.this, EmployeeHandle.class));
+                    Animatoo.animateSlideRight(EmployeeEdit.this);
+                    finish();
+                }
             }
         });
     }
@@ -188,6 +199,8 @@ public class EmployeeEdit extends AppCompatActivity {
             birthDate.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
             birthDate.setGravity(Gravity.CENTER);
             birthDate.setText(modEmpBirth);
+            birthDate.setFocusable(false);
+            birthDate.setClickable(true);
             birthDate.setPadding(0, 30, 0, 30);
 
             birthDate.setOnClickListener(new View.OnClickListener() {

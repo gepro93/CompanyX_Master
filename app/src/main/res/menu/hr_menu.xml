@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:title=""/>
+    <item
+        android:title=""/>
+    <item
+        android:title=""/>
+
+    <item android:title="Munkavállalók kezelése">
+        <menu>
+            <item
+                android:id="@+id/navCreateEmployee"
+                android:icon="@drawable/menu_add_light"
+                android:title="Létrehozás"/>
+            <item
+                android:id="@+id/navEmployeeEdit"
+                android:icon="@drawable/menu_modify"
+                android:title="Módosítás"/>
+            <item
+                android:id="@+id/navAddUser"
+                android:icon="@drawable/button_menu_qr_new"
+                android:title="Felhasználó hozzárendelés"/>
+        </menu>
+    </item>
+
+    <item android:title="Kilépés">
+        <menu>
+            <item
+                android:id="@+id/navLogout"
+                android:icon="@drawable/menu_logout_light"
+                android:title="Kijelentkezés"/>
+        </menu>
+    </item>
+</menu>

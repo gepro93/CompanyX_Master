@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="horizontal"
+    android:background="@drawable/selected_list_view_background"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/twUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Kezelő: "
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/twFacUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="fac"
+            android:layout_toRightOf="@id/twUser"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Dátum: "
+            android:layout_toRightOf="@+id/twFacUser"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twDateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="2008-08-08 08:08:08"
+            android:layout_toRightOf="@id/twDate"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twBenefit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Juttatás adatok: "
+            android:layout_below="@+id/twUser"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twBenefitItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:text="Ford Focus CMP-000 WIN09080701615561565"
+            android:layout_below="@+id/twBenefit"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Státusz: "
+            android:layout_below="@+id/twBenefitItem"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twStatusType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="Kiadva"
+            android:layout_toRightOf="@+id/twStatus"
+            android:layout_below="@+id/twBenefitItem"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/twEmployee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            android:text="Jogosult: "
+            android:layout_below="@+id/twStatus"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/twEmployeeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:layout_marginTop="9dp"
+            android:text="Steve Brickle"
+            android:layout_toRightOf="@+id/twEmployee"
+            android:layout_below="@+id/twStatus"
+            android:textStyle="italic"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

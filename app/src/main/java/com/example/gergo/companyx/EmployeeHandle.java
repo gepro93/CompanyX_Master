@@ -116,6 +116,8 @@ public class EmployeeHandle extends AppCompatActivity {
         birthDate.setHint("Születési dátum");
         birthDate.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         birthDate.setGravity(Gravity.CENTER);
+        birthDate.setFocusable(false);
+        birthDate.setClickable(true);
         birthDate.setPadding(0, 30, 0, 30);
 
         birthDate.setOnClickListener(new View.OnClickListener() {

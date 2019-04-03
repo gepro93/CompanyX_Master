@@ -24,7 +24,7 @@ public class LoadScreen {
             public void run() {
                 try{
                     while(progress.getProgress() <= progress.getMax()){
-                        Thread.sleep(20);
+                        Thread.sleep(15);
                         handler.sendMessage(handler.obtainMessage());
                         if(progress.getProgress() == progress.getMax()){
                             progress.dismiss();
