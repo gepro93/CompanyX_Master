@@ -37,6 +37,7 @@ public class EmployeeTrip extends AppCompatActivity {
     private LoadScreen ls;
     private TextView indulaskor, kmstart, twKmStart, gpsstart, twGpsStart, erkezeskor, kmend, twKmEnd, gpsend, twGpsEnd;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +86,7 @@ public class EmployeeTrip extends AppCompatActivity {
         btStartTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!etKmData.equals("")){
+                if (!etKmData.getText().toString().equals("")){
                 gpsStart = longitude+","+latitude;
                 kmStart = Integer.parseInt(etKmData.getText().toString());
                 hideStartScreen();
@@ -100,7 +101,7 @@ public class EmployeeTrip extends AppCompatActivity {
         btFinishTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (etKmData.equals("")){
+                if (!etKmData.getText().toString().equals("")){
                     etKmData.setError("Km óra állás megadása kötelező!");
                 }else{
                     kmEnd = Integer.parseInt(etKmData.getText().toString());
