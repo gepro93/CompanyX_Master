@@ -91,7 +91,7 @@ public class EmployeeTrip extends AppCompatActivity {
                 kmStart = Integer.parseInt(etKmData.getText().toString());
                 hideStartScreen();
                 showFinishScreen();
-                etKmData.setText("");
+                etKmData.getText().clear();
                 etKmData.clearFocus();
                 }else etKmData.setError("Km óra állás megadása kötelező!");
                 clearFocus(view);
@@ -101,7 +101,7 @@ public class EmployeeTrip extends AppCompatActivity {
         btFinishTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!etKmData.getText().toString().equals("")){
+                if (etKmData.getText().toString().equals("")){
                     etKmData.setError("Km óra állás megadása kötelező!");
                 }else{
                     kmEnd = Integer.parseInt(etKmData.getText().toString());
