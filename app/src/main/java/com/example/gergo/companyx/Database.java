@@ -1551,7 +1551,8 @@ public class Database extends SQLiteOpenHelper{
 
             String query = "SELECT u."+ USER_NAME + " AS emp" +
                     " FROM " + EMPLOYEE_TABLE + " AS e" +
-                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = e." + EMPLOYEE_USER_ID;
+                    " LEFT JOIN " + USER_TABLE + " AS u ON u." + USER_ID + " = e." + EMPLOYEE_USER_ID +
+                    " WHERE e."+ EMPLOYEE_USER_ID +" IS NOT NULL";
 
             Cursor cursor = db.rawQuery(query,null);
 
