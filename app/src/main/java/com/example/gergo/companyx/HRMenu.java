@@ -355,6 +355,7 @@ public class HRMenu extends AppCompatActivity {
         salary.setHint("Fizetés");
         salary.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
         salary.setGravity(Gravity.CENTER);
+        salary.setInputType(InputType.TYPE_CLASS_NUMBER);
         salary.setPadding(0, 30, 0, 30);
         layout.addView(salary); //Edit Text hozzáadása layouthoz
 
@@ -393,7 +394,7 @@ public class HRMenu extends AppCompatActivity {
         final Spinner spStatus = new Spinner(HRMenu.this, Spinner.MODE_DROPDOWN);
 
         final List<String> statusList = new ArrayList<>();
-        statusList.add(0, "Akív");
+        statusList.add(0, "Aktív");
         statusList.add("Inaktív");
 
         //Pozíció lista adapter létrehozása

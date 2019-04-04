@@ -3,6 +3,7 @@ package com.example.gergo.companyx;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +43,8 @@ public class EmployeeTrip extends AppCompatActivity {
         setContentView(R.layout.activity_employee_trip);
         init();
         onCreateClickable();
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
         userName = sp.getString("LoginUserName","Nincs adat");
@@ -128,7 +132,7 @@ public class EmployeeTrip extends AppCompatActivity {
                         showStartScreen();
                     } else Toast.makeText(EmployeeTrip.this, "Nem sikerült rögzíteni az utat!", Toast.LENGTH_SHORT).show();
                 }else Toast.makeText(EmployeeTrip.this, "Hiba a program futása közben!", Toast.LENGTH_SHORT).show();
-
+                clearFocus(view);
             }
         });
 
@@ -215,7 +219,6 @@ public class EmployeeTrip extends AppCompatActivity {
         btEmployeeCarMenuBack.setAlpha(1);
         btSaveTrip.setEnabled(true);
         btEmployeeCarMenuBack.setEnabled(true);
-
     }
 
     private void hideResult(){
@@ -230,7 +233,7 @@ public class EmployeeTrip extends AppCompatActivity {
         gpsend.setAlpha(0);
         twGpsEnd.setAlpha(0);
         btSaveTrip.setAlpha(0);
-        btSaveTrip.setClickable(false);
+        btSaveTrip.setEnabled(false);
     }
 
     private void init() {
@@ -254,5 +257,31 @@ public class EmployeeTrip extends AppCompatActivity {
         twKmEnd = findViewById(R.id.twKmEnd);
         gpsend = findViewById(R.id.gpsend);
         twGpsEnd = findViewById(R.id.twGpsEnd);
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeTrip.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeTrip.this, Login.class));
+                Animatoo.animateFade(EmployeeTrip.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

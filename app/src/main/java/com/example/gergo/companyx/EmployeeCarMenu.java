@@ -1,7 +1,11 @@
 package com.example.gergo.companyx;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +32,8 @@ public class EmployeeCarMenu extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
         userName = sp.getString("LoginUserName","Nincs adat");
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         carDetails = db.viewCarBenefitByUser(userName);
         twEmpCarType.setText(carDetails.get(0));
@@ -73,5 +79,31 @@ public class EmployeeCarMenu extends AppCompatActivity {
         btTripList = findViewById(R.id.btTripList);
         btEmployeeCarMenuBack = findViewById(R.id.btEmployeeCarMenuBack);
         db = new Database(this);
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeCarMenu.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeCarMenu.this, Login.class));
+                Animatoo.animateFade(EmployeeCarMenu.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

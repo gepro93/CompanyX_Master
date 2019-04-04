@@ -42,7 +42,9 @@
             android:textColorHint="@color/colorBlack"
             android:textColor="@color/colorBlack"
             android:textSize="20dp"
-            android:background="#11000000" />
+            android:background="#11000000"
+            android:inputType="number"
+            />
         
         <Button
             android:background="@drawable/button_background_start"

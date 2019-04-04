@@ -234,8 +234,8 @@ public class UserModify extends AppCompatActivity {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(UserModify.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kamera bezárása");
-        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
         builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
@@ -248,7 +248,7 @@ public class UserModify extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(UserModify.this, FacilitiesMenu.class));
+                startActivity(new Intent(UserModify.this, Login.class));
                 Animatoo.animateFade(UserModify.this);
                 finish();
             }

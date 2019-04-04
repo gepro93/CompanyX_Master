@@ -39,23 +39,23 @@
                 android:id="@+id/twUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:text="Felhasználónév: "
-                android:layout_toRightOf="@+id/twNameOfEmp"
-                android:paddingLeft="10dp"
+                android:layout_below="@+id/twEmpName"
                 />
 
             <TextView
                 android:id="@+id/twNameOfUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 android:text="x605149"
                 android:layout_toRightOf="@id/twUserName"
+                android:layout_below="@+id/twEmpName"
                 android:textStyle="bold"
                 />
 
@@ -67,7 +67,7 @@
                 android:layout_marginTop="2dp"
                 android:textSize="16sp"
                 android:text="Autó: "
-                android:layout_below="@id/twEmpName"
+                android:layout_below="@id/twUserName"
                 />
 
             <TextView
@@ -80,7 +80,7 @@
                 android:text="Ford Mustang"
                 android:layout_toRightOf="@id/twCarType"
                 android:textStyle="bold"
-                android:layout_below="@id/twEmpName"
+                android:layout_below="@id/twUserName"
                 />
 
             <TextView

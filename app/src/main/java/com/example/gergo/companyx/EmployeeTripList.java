@@ -213,4 +213,30 @@ public class EmployeeTripList extends AppCompatActivity {
         btEmployeeTripListBack = findViewById(R.id.btEmployeeTripListBack);
         db = new Database(this);
     }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeTripList.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeTripList.this, Login.class));
+                Animatoo.animateFade(EmployeeTripList.this);
+                finish();
+            }
+        });
+        builder.show();
+    }
 }

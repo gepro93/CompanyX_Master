@@ -1,7 +1,9 @@
 package com.example.gergo.companyx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -57,5 +59,31 @@ public class EmployeeLaptop extends AppCompatActivity {
         twLaptopType = findViewById(R.id.twLaptopType);
         twImei = findViewById(R.id.twImei);
         db = new Database(this);
+    }
+
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeLaptop.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(EmployeeLaptop.this, Login.class));
+                Animatoo.animateFade(EmployeeLaptop.this);
+                finish();
+            }
+        });
+        builder.show();
     }
 }

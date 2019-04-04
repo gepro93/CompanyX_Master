@@ -60,7 +60,7 @@
             android:layout_weight="0.5"
             android:background="@drawable/button_v2_background"
             android:drawableTop="@drawable/menu_button_useredit"
-            android:text="Autók kezelése"
+            android:text="Módosítás"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color2" />
 

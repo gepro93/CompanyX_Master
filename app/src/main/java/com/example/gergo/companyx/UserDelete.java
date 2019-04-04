@@ -111,8 +111,8 @@ public class UserDelete extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserDelete.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kamera bezárása");
-        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
         builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
@@ -125,7 +125,7 @@ public class UserDelete extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(UserDelete.this, FacilitiesMenu.class));
+                startActivity(new Intent(UserDelete.this, Login.class));
                 Animatoo.animateFade(UserDelete.this);
                 finish();
             }

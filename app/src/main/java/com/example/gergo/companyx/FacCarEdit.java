@@ -72,7 +72,7 @@ public class FacCarEdit extends AppCompatActivity {
         btFacCarNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCarBenefit();
+                handelCarBenefit();
             }
         });
 
@@ -111,7 +111,7 @@ public class FacCarEdit extends AppCompatActivity {
         builder.show();
     }
 
-    private void addCarBenefit() {
+    private void handelCarBenefit() {
         alert = new AlertDialog.Builder(FacCarEdit.this);
 
         alert.setTitle("Új autó kiadás");

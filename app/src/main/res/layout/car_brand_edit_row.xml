@@ -7,49 +7,79 @@
     android:background="@drawable/selected_list_view_background"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         >
+
+        <TextView
+            android:id="@+id/twCarBrandTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_car"
+            android:text="Márka: "
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/twCarBrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/button_menu_car"
             android:text="Ford"
             android:textSize="15sp"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_gravity="center"/>
+            android:layout_toRightOf="@+id/twCarBrandTitle"
+            />
+
+        <TextView
+            android:id="@+id/twCarTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_data"
+            android:text="Típus: "
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:layout_below="@+id/twCarBrandTitle"/>
 
         <TextView
             android:id="@+id/twCarType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/twCarType"
+            android:layout_below="@id/twCarBrandTitle"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:text="Focus"
-            android:drawableLeft="@drawable/button_menu_data"
-            android:layout_gravity="center"
-            android:paddingLeft="10sp"
-            android:paddingRight="20sp"
+            android:layout_toRightOf="@+id/twCarTypeTitle"
+
+            />
+
+        <TextView
+            android:id="@+id/twGradeNameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/button_menu_grade"
+            android:text="Kategória (fizetés besorolás): "
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:layout_below="@+id/twCarTypeTitle"
             />
 
         <TextView
             android:id="@+id/twGradeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/twCarType"
+            android:layout_below="@+id/twCarTypeTitle"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:text="Grade 4"
-            android:drawableLeft="@drawable/button_menu_grade"
+            android:layout_toRightOf="@+id/twGradeNameTitle"
             android:layout_gravity="center"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

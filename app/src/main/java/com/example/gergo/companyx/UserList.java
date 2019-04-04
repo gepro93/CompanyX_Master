@@ -52,8 +52,8 @@ public class UserList extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserList.this);
 
         builder.setCancelable(true);
-        builder.setTitle("Kamera bezárása");
-        builder.setMessage("Valóban bezárod a kamerát?");
+        builder.setTitle("Kijelentkezés");
+        builder.setMessage("Valóban kijelentkezel?");
         builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setNegativeButton("Mégsem", new DialogInterface.OnClickListener() {
@@ -66,7 +66,7 @@ public class UserList extends AppCompatActivity {
         builder.setPositiveButton("Igen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(UserList.this, FacilitiesMenu.class));
+                startActivity(new Intent(UserList.this, Login.class));
                 Animatoo.animateFade(UserList.this);
                 finish();
             }

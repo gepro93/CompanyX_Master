@@ -133,7 +133,7 @@ public class CarBrandEdit extends AppCompatActivity {
             gradeCategory = db.gradeList();
 
             for (int s = 0; s < gradeCategory.size(); s++){
-                if (gradeCategory.get(s).equals(modCarType)) {
+                if (gradeCategory.get(s).equals(modGrade)) {
                     modSelectedGrade = s;
                 }
             }
