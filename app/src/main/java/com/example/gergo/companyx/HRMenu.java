@@ -355,7 +355,7 @@ public class HRMenu extends AppCompatActivity {
         salary.setHint("Fizetés");
         salary.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
         salary.setGravity(Gravity.CENTER);
-        salary.setInputType(InputType.TYPE_CLASS_NUMBER);
+        salary.setInputType(InputType.TYPE_CLASS_NUMBER );
         salary.setPadding(0, 30, 0, 30);
         layout.addView(salary); //Edit Text hozzáadása layouthoz
 

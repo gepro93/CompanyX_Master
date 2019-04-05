@@ -1,6 +1,7 @@
 package com.example.gergo.companyx;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ public class TripList extends AppCompatActivity {
     private Database db;
     private ArrayList<HashMap<String, String>> tripList;
     private ListAdapter adapter;
+    private String permission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +31,21 @@ public class TripList extends AppCompatActivity {
         init();
         createList();
 
+        SharedPreferences sp = getSharedPreferences("LoginDetails",MODE_PRIVATE);
+        permission = sp.getString("Permission","Nincs adat");
+
         btTripListBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TripList.this, AdminMenu.class));
+                if(permission.equals("Facilities")){
+                    startActivity(new Intent(TripList.this, FacilitiesMenu.class));
+                    Animatoo.animateSlideRight(TripList.this);
+                    finish();
+                }else
+                    startActivity(new Intent(TripList.this, AdminMenu.class));
                 Animatoo.animateSlideRight(TripList.this);
                 finish();
+
             }
         });
     }

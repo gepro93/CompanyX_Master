@@ -40,6 +40,14 @@
         </menu>
     </item>
 
+    <item android:title="Útnyilvántartás"><menu>
+        <item
+            android:id="@+id/navTripList"
+            android:icon="@drawable/button_menu_trip"
+            android:title="Útnyilvántartás ellenőrzése"/>
+    </menu></item>
+
+
     <item android:title="Kilépés">
         <menu>
             <item

@@ -71,6 +71,12 @@ public class FacilitiesMenu extends AppCompatActivity {
                         finish();
                         break;
 
+                    case R.id.navTripList:
+                        startActivity(new Intent(FacilitiesMenu.this, TripList.class));
+                        Animatoo.animateSlideLeft(FacilitiesMenu.this);
+                        finish();
+                        break;
+
                     case R.id.navLogout:
                         startActivity(new Intent(FacilitiesMenu.this, Login.class));
                         Animatoo.animateFade(FacilitiesMenu.this);

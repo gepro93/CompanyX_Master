@@ -135,7 +135,7 @@ public class Database extends SQLiteOpenHelper{
     //juttatások tábla és oszlopok definiálása
     public static final String BENEFIT_TABLE = "juttatasok";
 
-    public static final String BENEFIT_ID = "dolgozo_id";
+    public static final String BENEFIT_ID = "juttatas_id";
     public static final String BENEFIT_EMPLOYEE_ID = "dolgozo_id";
     public static final String BENEFIT_ITEM = "eszkoz";
     public static final String BENEFIT_ITEM_ID = "eszkoz_id";
@@ -509,21 +509,6 @@ public class Database extends SQLiteOpenHelper{
         }
     }
 
-    //Grade felvétel
-    public boolean insertGrade(int fizetesAlsoErtek, int fizetesFelsoErtek){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(SALARY_MIN_VALUE, fizetesAlsoErtek);
-        contentValues.put(SALARY_MAX_VALUE, fizetesFelsoErtek);
-
-        long eredmeny = db.insert(GRADE_TABLE,  null, contentValues);
-
-        if(eredmeny == -1){
-            return false;
-        }else{
-            return true;
-        }
-    }
 
     //Út felvétel
     public boolean insertTrip(int dolgozo_id,String gpsIndulas, String gpsErkezes, int kmIndulas, int kmErkezes){
