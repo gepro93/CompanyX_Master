@@ -171,8 +171,14 @@ public class PositionModify extends AppCompatActivity {
 
                     if (etPosition.equals("")){
                         position.setError("A mező kitöltése kötelező!");
+                    }else if(positionName.equals(etPosition)) {
+                        boolean positionModify = db.positionModify(positionName,etPosition,gradeId);
+                        if (positionModify){
+                            ls.progressDialog(PositionModify.this,"Módosítás folyamatban...", "Módosítás");
+                            createList();
+                        }else Toast.makeText(PositionModify.this, "Adatbázis hiba módosításkor!", Toast.LENGTH_SHORT).show();
                     }else if(positionCheck) {
-                        position.setError("A beosztás már létezik!");
+                        Toast.makeText(PositionModify.this, "Ez a beosztás már létezik!", Toast.LENGTH_SHORT).show();
                     }else{
                         boolean positionModify = db.positionModify(positionName,etPosition,gradeId);
                         if (positionModify){
