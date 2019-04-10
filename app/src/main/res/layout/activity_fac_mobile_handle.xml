@@ -44,7 +44,7 @@
             android:layout_weight="0.5"
             android:background="@drawable/button_v2_background"
             android:drawableTop="@drawable/menu_button_brand"
-            android:text="Juttatás kezelés"
+            android:text="Mobil kiadás/átvétel"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color2" />
 

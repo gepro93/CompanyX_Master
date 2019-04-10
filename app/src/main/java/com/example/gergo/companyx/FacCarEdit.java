@@ -70,7 +70,7 @@ public class FacCarEdit extends AppCompatActivity {
         btFacCarNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handelCarBenefit();
+                addCarBenefit();
             }
         });
 
@@ -97,7 +97,7 @@ public class FacCarEdit extends AppCompatActivity {
 
         builder.setCancelable(true);
         builder.setTitle("Figyelmeztetés!");
-        builder.setMessage("Ez a dolgozó a beosztása alapján, nem jogosult autó használatra!");
+        builder.setMessage("Ez a dolgozó a beosztása alapján, nem jogosult autó használatra vagy nincs autó a flottában!");
         builder.setIcon(R.drawable.ic_dialog_error);
 
         builder.setPositiveButton("Oké", new DialogInterface.OnClickListener() {
@@ -109,7 +109,7 @@ public class FacCarEdit extends AppCompatActivity {
         builder.show();
     }
 
-    private void handelCarBenefit() {
+    private void addCarBenefit() {
         alert = new AlertDialog.Builder(FacCarEdit.this);
 
         alert.setTitle("Új autó kiadás");
@@ -198,7 +198,6 @@ public class FacCarEdit extends AppCompatActivity {
 
                     if (carBrandList.size() <= 1){
                         errorMessage();
-
                     }else{
                         ArrayAdapter<String> spinnerDataAdapter1;
                         spinnerDataAdapter1 = new ArrayAdapter(FacCarEdit.this, android.R.layout.simple_spinner_item, carBrandList);
@@ -321,15 +320,15 @@ public class FacCarEdit extends AppCompatActivity {
                                     createList();
                                 } else Toast.makeText(FacCarEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }else{
-                                boolean updateCarBenefitForInactive = db.updateCarBenefitForInactive(carId,true);
+                                boolean updateCarBenefitForInactive = db.updateCarBenefitForInactive(carId,true,userName);
                                 if(updateCarBenefitForInactive){
                                     ls.progressDialog(FacCarEdit.this, "Autó kiadása folyamatban...", "Kiadás");
                                     createList();
                                 }else Toast.makeText(FacCarEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }
-                        }
+                        }else
                         Toast.makeText(FacCarEdit.this, "Az autó már ki van adva egy dolgozónak!", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
                     Toast.makeText(FacCarEdit.this, "Ennek a dolgozónak már van kiadva autó", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -362,12 +361,6 @@ public class FacCarEdit extends AppCompatActivity {
             final Spinner spCar = new Spinner(FacCarEdit.this, Spinner.MODE_DROPDOWN);
 
             carList = db.carList(modUserName);
-
-            for (int s = 0; s < carList.size(); s++){
-                if (carList.get(s).equals(modCarLic)) {
-                    selectedModCar = s;
-                }
-            }
 
             ArrayAdapter<String> spinnerDataAdapter;
             spinnerDataAdapter = new ArrayAdapter(FacCarEdit.this, android.R.layout.simple_spinner_item, carList);
@@ -402,6 +395,12 @@ public class FacCarEdit extends AppCompatActivity {
             layout.addView(spStatus); //Spinner hozzáadása layouthoz
 
             alert.setView(layout);
+
+            for (int s = 0; s < carList.size(); s++){
+                if (carList.get(s).equals(modCarLic)) {
+                    selectedModCar = db.carIdSearch(modLicNum);
+                }
+            }
 
             spCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -440,7 +439,7 @@ public class FacCarEdit extends AppCompatActivity {
             alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                         if(selectedCar == selectedModCar){
-                            boolean updateCarBenefit = db.updateBenefit(modBenefitId,selectedCar,selectedStatus);
+                            boolean updateCarBenefit = db.updateBenefit(modBenefitId,selectedCar,selectedStatus,userName);
                             if(updateCarBenefit){
                                 ls.progressDialog(FacCarEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                                 createList();
@@ -448,7 +447,7 @@ public class FacCarEdit extends AppCompatActivity {
                         }else{
                             boolean carBenefitCheck = db.carBenefitCheck(selectedCar);
                             if(!carBenefitCheck){
-                                boolean updateCarBenefit = db.updateBenefit(modBenefitId,selectedCar,selectedStatus);
+                                boolean updateCarBenefit = db.updateBenefit(modBenefitId,selectedCar,selectedStatus,userName);
                                 if(updateCarBenefit){
                                     ls.progressDialog(FacCarEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                                     createList();

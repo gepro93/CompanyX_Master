@@ -116,12 +116,6 @@ public class FacLaptopEdit extends AppCompatActivity {
 
             laptopList = db.laptopList(modUserName);
 
-            for (int s = 0; s < laptopList.size(); s++){
-                if (laptopList.get(s).equals(modLaptopImei)) {
-                    selectedModLaptop = s;
-                }
-            }
-
             ArrayAdapter<String> spinnerDataAdapter;
             spinnerDataAdapter = new ArrayAdapter(FacLaptopEdit.this, android.R.layout.simple_spinner_item, laptopList);
             spinnerDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -156,6 +150,12 @@ public class FacLaptopEdit extends AppCompatActivity {
             layout.addView(spStatus); //Spinner hozzáadása layouthoz
 
             alert.setView(layout);
+
+            for (int s = 0; s < laptopList.size(); s++){
+                if (laptopList.get(s).equals(modLaptopImei)) {
+                    selectedModLaptop = db.laptopIdSearch(modImeiNum);
+                }
+            }
 
             spLaptop.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -194,7 +194,7 @@ public class FacLaptopEdit extends AppCompatActivity {
             alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     if(selectedLaptop == selectedModLaptop){
-                        boolean updateLaptopBenefit = db.updateBenefit(modBenefitId,selectedLaptop,selectedStatus);
+                        boolean updateLaptopBenefit = db.updateBenefit(modBenefitId,selectedLaptop,selectedStatus,userName);
                         if(updateLaptopBenefit){
                             ls.progressDialog(FacLaptopEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                             createList();
@@ -202,7 +202,7 @@ public class FacLaptopEdit extends AppCompatActivity {
                     }else{
                         boolean laptopBenefitCheck = db.laptopBenefitCheck(selectedLaptop);
                         if(!laptopBenefitCheck){
-                            boolean updateLaptopBenefit = db.updateBenefit(modBenefitId,selectedLaptop,selectedStatus);
+                            boolean updateLaptopBenefit = db.updateBenefit(modBenefitId,selectedLaptop,selectedStatus,userName);
                             if(updateLaptopBenefit){
                                 ls.progressDialog(FacLaptopEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                                 createList();
@@ -213,6 +213,23 @@ public class FacLaptopEdit extends AppCompatActivity {
             });
 
             alert.show();}
+    }
+
+    private void errorMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacLaptopEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Figyelmeztetés!");
+        builder.setMessage("Ez a dolgozó a beosztása alapján, nem jogosult laptop használatra vagy nincs laptop a flottában!");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setPositiveButton("Oké", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
     }
 
     private void addLaptopBenefit() {
@@ -251,13 +268,7 @@ public class FacLaptopEdit extends AppCompatActivity {
         //Spinner létrehozása
         final Spinner spLaptopBrand = new Spinner(FacLaptopEdit.this, Spinner.MODE_DROPDOWN);
 
-        laptopBrandList = db.laptopBrandList();
-        laptopBrandList.add(0,"Válassz márkát!");
-
-        ArrayAdapter<String> spinnerDataAdapter1;
-        spinnerDataAdapter1 = new ArrayAdapter(FacLaptopEdit.this, android.R.layout.simple_spinner_item, laptopBrandList);
-        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spLaptopBrand.setAdapter(spinnerDataAdapter1);
+        spLaptopBrand.setAlpha(0);
         spLaptopBrand.setSelection(0);
         spLaptopBrand.setBackgroundResource(R.color.colorWhite);
         spLaptopBrand.setPadding(0, 0, 0, 60);
@@ -294,7 +305,36 @@ public class FacLaptopEdit extends AppCompatActivity {
                     userId = Integer.parseInt(db.userIdSearch(selectedUser));
                     empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
-                }else selectedUser = "empty";
+
+                    String brandQuery = "SELECT agy.laptopMarka AS laptopMarka " +
+                            "FROM laptop_gyartmanyok AS agy " +
+                            "LEFT JOIN laptopok AS a ON a.laptopGyartmany_id = agy.laptopGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' "+
+                            "GROUP BY agy.laptopMarka";
+                    laptopBrandList = db.queryFillList(brandQuery,"laptopMarka");
+                    laptopBrandList.add(0,"Válassz márkát!");
+
+                    if(laptopBrandList.size() <= 1){
+                        errorMessage();
+                    }else{
+                        ArrayAdapter<String> spinnerDataAdapter1;
+                        spinnerDataAdapter1 = new ArrayAdapter(FacLaptopEdit.this, android.R.layout.simple_spinner_item, laptopBrandList);
+                        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spLaptopBrand.setAdapter(spinnerDataAdapter1);
+                        spLaptopBrand.setAlpha(1);
+                    }
+
+
+                }else {
+                    selectedUser = "empty";
+                    spLaptopBrand.setAlpha(0);
+                    spLaptopType.setAlpha(0);
+                    spLaptopImei.setAlpha(0);
+                }
 
             }
 
@@ -309,7 +349,17 @@ public class FacLaptopEdit extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz márkát!")){
                     laptopBrand = spLaptopBrand.getItemAtPosition(i).toString();
-                    laptopTypeList = db.laptopTypeList(laptopBrand);
+
+                    String carTypeQuery = "SELECT agy.laptopTipus AS laptopTipus " +
+                            "FROM laptop_gyartmanyok AS agy " +
+                            "LEFT JOIN laptopok AS a ON a.laptopGyartmany_id = agy.laptopGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' AND agy.laptopMarka="+"'"+laptopBrand+"' " +
+                            "GROUP BY agy.laptopTipus";
+                    laptopTypeList = db.queryFillList(carTypeQuery, "laptopTipus");
                     laptopTypeList.add(0,"Válassz típust!");
                     ArrayAdapter<String> spinnerDataAdapter2;
                     spinnerDataAdapter2 = new ArrayAdapter(FacLaptopEdit.this, android.R.layout.simple_spinner_item, laptopTypeList);
@@ -394,16 +444,14 @@ public class FacLaptopEdit extends AppCompatActivity {
                                     createList();
                                 } else Toast.makeText(FacLaptopEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }else{
-                                boolean updateLaptopBenefitForInactive = db.updateLaptopBenefitForInactive(laptopId,true);
+                                boolean updateLaptopBenefitForInactive = db.updateLaptopBenefitForInactive(laptopId,true,userName);
                                 if(updateLaptopBenefitForInactive){
                                     ls.progressDialog(FacLaptopEdit.this, "Laptop kiadása folyamatban...", "Kiadás");
                                     createList();
                                 }else Toast.makeText(FacLaptopEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        Toast.makeText(FacLaptopEdit.this, "A laptop már ki van adva egy dolgozónak!", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(FacLaptopEdit.this, "Ennek a dolgozónak már van kiadva laptop", Toast.LENGTH_SHORT).show();
+                        }else Toast.makeText(FacLaptopEdit.this, "A laptop már ki van adva egy dolgozónak!", Toast.LENGTH_SHORT).show();
+                    }else Toast.makeText(FacLaptopEdit.this, "Ennek a dolgozónak már van kiadva laptop", Toast.LENGTH_SHORT).show();
                 }
             }
         });

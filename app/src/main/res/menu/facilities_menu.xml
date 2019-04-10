@@ -27,7 +27,7 @@
         </menu>
     </item>
 
-    <item android:title="QR kód készítés">
+    <item android:title="QR kód kezelés">
         <menu>
             <item
                 android:id="@+id/navQrCreate"

@@ -45,7 +45,7 @@ public class CarBrandList extends AppCompatActivity {
 
     private void createList() {
         carBrandList = db.viewCarBrands();
-        adapter = new SimpleAdapter(CarBrandList.this, carBrandList, R.layout.car_brand_list_row,
+        adapter = new SimpleAdapter(CarBrandList.this, carBrandList, R.layout.car_brand_edit_row,
                 new String[]{"MODELOFCAR_BRAND","MODELOFCAR_TYPE","GRADE_NAME"},
                 new int[]{R.id.twCarBrand,R.id.twCarType,R.id.twGradeName});
 

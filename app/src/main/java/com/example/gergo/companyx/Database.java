@@ -1170,7 +1170,7 @@ public class Database extends SQLiteOpenHelper{
         //Laptop gyártmány létezésének ellenőzése
         public Boolean laptopBrandCheck(String brand, String type){
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + LAPTOP_TABLE + " WHERE laptopMarka=? AND laptopTipus=?", new String[]{brand,type});
+            Cursor cursor = db.rawQuery("SELECT * FROM " + MODELOFLAPTOP_TABLE + " WHERE laptopMarka=? AND laptopTipus=?", new String[]{brand,type});
 
             if(cursor.getCount()>0){
                 return true;
@@ -1204,9 +1204,9 @@ public class Database extends SQLiteOpenHelper{
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put(MODELOFMOBIL_BRAND, laptopBrand);
-            contentValues.put(MODELOFMOBIL_TYPE, laptopType);
-            contentValues.put(MODELOFMOBIL_GRADE_ID, gradeId);
+            contentValues.put(MODELOFLAPTOP_BRAND, laptopBrand);
+            contentValues.put(MODELOFLAPTOP_TYPE, laptopType);
+            contentValues.put(MODELOFLAPTOP_GRADE_ID, gradeId);
 
             int i = db.update(MODELOFLAPTOP_TABLE, contentValues, MODELOFLAPTOP_BRAND + "=" + '"'+oldLaptopBrand+'"' +" AND "+ MODELOFLAPTOP_TYPE + "=" + '"'+oldLaptopType+'"',null);
             return i > 0;
@@ -1518,12 +1518,13 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Juttatás módosítása
-        public Boolean updateBenefit(int benefitId,int itemId,boolean status){
+        public Boolean updateBenefit(int benefitId,int itemId,boolean status, String userName){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(BENEFIT_ITEM_ID, itemId);
             contentValues.put(BENEFIT_STATUS, status);
+            contentValues.put(BENEFIT_FAC_USER, userName);
 
             int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ID + "=" + '"'+benefitId+'"',null);
             return i > 0;
@@ -1594,41 +1595,6 @@ public class Database extends SQLiteOpenHelper{
             return userId;
         }
 
-        //Autó márka feltöltése listába
-        public ArrayList<String> carBrandList(){
-            SQLiteDatabase db = this.getReadableDatabase();
-            ArrayList<String> brandOfCarList = new ArrayList<>();
-
-            String query = "SELECT "+MODELOFCAR_BRAND+" AS brand" +
-                    " FROM " + MODELOFCAR_TABLE +
-                    " GROUP BY " + MODELOFCAR_BRAND;
-
-            Cursor cursor = db.rawQuery(query,null);
-
-            while(cursor.moveToNext()){
-                brandOfCarList.add(cursor.getString(cursor.getColumnIndex("brand")));
-            }
-            return brandOfCarList;
-        }
-
-        //Autó típus feltöltése listába
-        public ArrayList<String> carTypeList(String brand){
-            SQLiteDatabase db = this.getReadableDatabase();
-            ArrayList<String> typeOfCarList = new ArrayList<>();
-
-            String query = "SELECT "+MODELOFCAR_TYPE+" AS type" +
-                    " FROM " + MODELOFCAR_TABLE +
-                    " WHERE " + MODELOFCAR_BRAND + "=?" +
-                    " GROUP BY " + MODELOFCAR_TYPE;
-
-            Cursor cursor = db.rawQuery(query,new String[]{brand});
-
-            while(cursor.moveToNext()){
-                typeOfCarList.add(cursor.getString(cursor.getColumnIndex("type")));
-            }
-            return typeOfCarList;
-        }
-
         //Autó rendszám feltöltése listába
         public ArrayList<String> carLicList(String brand, String type){
             SQLiteDatabase db = this.getReadableDatabase();
@@ -1688,14 +1654,15 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Autó juttatás módosítása
-        public Boolean updateCarBenefitForInactive(int itemId,boolean status){
+        public Boolean updateCarBenefitForInactive(int itemId,boolean status, String userName){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(BENEFIT_ITEM_ID, itemId);
             contentValues.put(BENEFIT_STATUS, status);
+            contentValues.put(BENEFIT_FAC_USER, userName);
 
-            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" + "a",null);
+            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" +"'"+ "a"+"'",null);
             return i > 0;
         }
 
@@ -1873,14 +1840,15 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Mobil juttatás módosítása
-        public Boolean updateMobileBenefitForInactive(int itemId,boolean status){
+        public Boolean updateMobileBenefitForInactive(int itemId,boolean status, String userName){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(BENEFIT_ITEM_ID, itemId);
             contentValues.put(BENEFIT_STATUS, status);
+            contentValues.put(BENEFIT_FAC_USER, userName);
 
-            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" + "m",null);
+            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" +"'"+"m"+"'",null);
             return i > 0;
         }
 
@@ -2055,14 +2023,15 @@ public class Database extends SQLiteOpenHelper{
         }
 
         //Laptop juttatás módosítása
-        public Boolean updateLaptopBenefitForInactive(int itemId,boolean status){
+        public Boolean updateLaptopBenefitForInactive(int itemId,boolean status, String userName){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(BENEFIT_ITEM_ID, itemId);
             contentValues.put(BENEFIT_STATUS, status);
+            contentValues.put(BENEFIT_FAC_USER, userName);
 
-            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" + "l",null);
+            int i = db.update(BENEFIT_TABLE, contentValues, BENEFIT_ITEM + "=" +"'"+"l"+"'",null);
             return i > 0;
         }
 

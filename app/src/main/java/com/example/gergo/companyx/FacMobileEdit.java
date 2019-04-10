@@ -90,6 +90,23 @@ public class FacMobileEdit extends AppCompatActivity {
         });
     }
 
+    private void errorMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(FacMobileEdit.this);
+
+        builder.setCancelable(true);
+        builder.setTitle("Figyelmeztetés!");
+        builder.setMessage("Ez a dolgozó a beosztása alapján, nem jogosult mobil használatra vagy nincs mobil a flottában!");
+        builder.setIcon(R.drawable.ic_dialog_error);
+
+        builder.setPositiveButton("Oké", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
+    }
+
     private void addMobileBenefit() {
         alert = new AlertDialog.Builder(FacMobileEdit.this);
 
@@ -126,13 +143,7 @@ public class FacMobileEdit extends AppCompatActivity {
         //Spinner létrehozása
         final Spinner spMobileBrand = new Spinner(FacMobileEdit.this, Spinner.MODE_DROPDOWN);
 
-        mobileBrandList = db.mobileBrandList();
-        mobileBrandList.add(0,"Válassz márkát!");
-
-        ArrayAdapter<String> spinnerDataAdapter1;
-        spinnerDataAdapter1 = new ArrayAdapter(FacMobileEdit.this, android.R.layout.simple_spinner_item, mobileBrandList);
-        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMobileBrand.setAdapter(spinnerDataAdapter1);
+        spMobileBrand.setAlpha(0);
         spMobileBrand.setSelection(0);
         spMobileBrand.setBackgroundResource(R.color.colorWhite);
         spMobileBrand.setPadding(0, 0, 0, 60);
@@ -164,12 +175,40 @@ public class FacMobileEdit extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz dolgozót!")){
+                    spMobileBrand.setAlpha(0);
                     selectedUser = adapterView.getItemAtPosition(i).toString();
                     nameOfEmployee = db.employeeNameSearch(selectedUser);
                     userId = Integer.parseInt(db.userIdSearch(selectedUser));
                     empId = Integer.parseInt(db.empIdSearch(selectedUser));
                     empName.setText(nameOfEmployee);
-                }else selectedUser = "empty";
+
+                    String brandQuery = "SELECT agy.mobilMarka AS mobilMarka " +
+                            "FROM mobil_gyartmanyok AS agy " +
+                            "LEFT JOIN mobilok AS a ON a.mobilGyartmany_id = agy.mobilGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' "+
+                            "GROUP BY agy.mobilMarka";
+                    mobileBrandList = db.queryFillList(brandQuery,"mobilMarka");
+                    mobileBrandList.add(0,"Válassz márkát!");
+
+                    if (mobileBrandList.size() <= 1){
+                        errorMessage();
+                    }else{
+                        ArrayAdapter<String> spinnerDataAdapter1;
+                        spinnerDataAdapter1 = new ArrayAdapter(FacMobileEdit.this, android.R.layout.simple_spinner_item, mobileBrandList);
+                        spinnerDataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spMobileBrand.setAdapter(spinnerDataAdapter1);
+                        spMobileBrand.setAlpha(1);
+                    }
+                }else {
+                    selectedUser = "empty";
+                    spMobileBrand.setAlpha(0);
+                    spMobileType.setAlpha(0);
+                    spMobileImei.setAlpha(0);
+                }
 
             }
 
@@ -184,7 +223,17 @@ public class FacMobileEdit extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (!adapterView.getItemAtPosition(i).equals("Válassz márkát!")){
                     mobileBrand = spMobileBrand.getItemAtPosition(i).toString();
-                    mobileTypeList = db.mobileTypeList(mobileBrand);
+
+                    String carTypeQuery = "SELECT agy.mobilTipus AS mobilTipus " +
+                            "FROM mobil_gyartmanyok AS agy " +
+                            "LEFT JOIN mobilok AS a ON a.mobilGyartmany_id = agy.mobilGyartmany_id " +
+                            "LEFT JOIN gradek AS g ON g.grade_id = agy.grade_id " +
+                            "LEFT JOIN beosztasok AS b ON b.grade_id = g.grade_id " +
+                            "LEFT JOIN dolgozok AS d ON d.beosztas_id = b.beosztas_id " +
+                            "LEFT JOIN felhasznalok AS f ON f.felh_id = d.felh_id " +
+                            "WHERE felhNeve="+"'"+selectedUser+"' AND agy.mobilMarka="+"'"+mobileBrand+"' " +
+                            "GROUP BY agy.mobilTipus";
+                    mobileTypeList = db.queryFillList(carTypeQuery, "mobilTipus");
                     mobileTypeList.add(0,"Válassz típust!");
                     ArrayAdapter<String> spinnerDataAdapter2;
                     spinnerDataAdapter2 = new ArrayAdapter(FacMobileEdit.this, android.R.layout.simple_spinner_item, mobileTypeList);
@@ -269,16 +318,14 @@ public class FacMobileEdit extends AppCompatActivity {
                                     createList();
                                 } else Toast.makeText(FacMobileEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }else{
-                                boolean updateMobileBenefitForInactive = db.updateMobileBenefitForInactive(mobileId,true);
+                                boolean updateMobileBenefitForInactive = db.updateMobileBenefitForInactive(mobileId,true, userName);
                                 if(updateMobileBenefitForInactive){
                                     ls.progressDialog(FacMobileEdit.this, "Mobil kiadása folyamatban...", "Kiadás");
                                     createList();
                                 }else Toast.makeText(FacMobileEdit.this, "Adatbázis hiba!", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        Toast.makeText(FacMobileEdit.this, "A mobil már ki van adva egy dolgozónak!", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(FacMobileEdit.this, "Ennek a dolgozónak már van kiadva mobil", Toast.LENGTH_SHORT).show();
+                        }else Toast.makeText(FacMobileEdit.this, "A mobil már ki van adva egy dolgozónak!", Toast.LENGTH_SHORT).show();
+                    }else Toast.makeText(FacMobileEdit.this, "Ennek a dolgozónak már van kiadva mobil", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -310,12 +357,6 @@ public class FacMobileEdit extends AppCompatActivity {
             final Spinner spMobile = new Spinner(FacMobileEdit.this, Spinner.MODE_DROPDOWN);
 
             mobileList = db.mobileList(modUserName);
-
-            for (int s = 0; s < mobileList.size(); s++){
-                if (mobileList.get(s).equals(modMobileImei)) {
-                    selectedModMobile = s;
-                }
-            }
 
             ArrayAdapter<String> spinnerDataAdapter;
             spinnerDataAdapter = new ArrayAdapter(FacMobileEdit.this, android.R.layout.simple_spinner_item, mobileList);
@@ -351,6 +392,12 @@ public class FacMobileEdit extends AppCompatActivity {
             layout.addView(spStatus); //Spinner hozzáadása layouthoz
 
             alert.setView(layout);
+
+            for (int s = 0; s < mobileList.size(); s++){
+                if (mobileList.get(s).equals(modMobileImei)) {
+                    selectedModMobile = db.mobileIdSearch(modImeiNum);;
+                }
+            }
 
             spMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -389,7 +436,7 @@ public class FacMobileEdit extends AppCompatActivity {
             alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     if(selectedMobile == selectedModMobile){
-                        boolean updateMobileBenefit = db.updateBenefit(modBenefitId,selectedMobile,selectedStatus);
+                        boolean updateMobileBenefit = db.updateBenefit(modBenefitId,selectedMobile,selectedStatus,userName);
                         if(updateMobileBenefit){
                             ls.progressDialog(FacMobileEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                             createList();
@@ -397,7 +444,7 @@ public class FacMobileEdit extends AppCompatActivity {
                     }else{
                         boolean mobileBenefitCheck = db.mobileBenefitCheck(selectedMobile);
                         if(!mobileBenefitCheck){
-                            boolean updateMobileBenefit = db.updateBenefit(modBenefitId,selectedMobile,selectedStatus);
+                            boolean updateMobileBenefit = db.updateBenefit(modBenefitId,selectedMobile,selectedStatus,userName);
                             if(updateMobileBenefit){
                                 ls.progressDialog(FacMobileEdit.this, "Juttatás kezelése folyamatban...", "Kezelés");
                                 createList();

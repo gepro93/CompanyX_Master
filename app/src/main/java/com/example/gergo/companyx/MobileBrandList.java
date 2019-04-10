@@ -49,7 +49,7 @@ public class MobileBrandList extends AppCompatActivity {
 
     private void createList() {
         mobileBrandList = db.viewMobileBrands();
-        adapter = new SimpleAdapter(MobileBrandList.this, mobileBrandList, R.layout.mobile_brand_list_row,
+        adapter = new SimpleAdapter(MobileBrandList.this, mobileBrandList, R.layout.mobile_brand_edit_row,
                 new String[]{"MODELOFMOBIL_BRAND","MODELOFMOBIL_TYPE","GRADE_NAME"},
                 new int[]{R.id.twMobileBrand,R.id.twMobileType,R.id.twGradeName});
 

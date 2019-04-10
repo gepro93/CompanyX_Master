@@ -49,7 +49,7 @@ public class LaptopBrandList extends AppCompatActivity {
 
     private void createList() {
         laptopBrandList = db.viewLaptopBrands();
-        adapter = new SimpleAdapter(LaptopBrandList.this, laptopBrandList, R.layout.laptop_brand_list_row,
+        adapter = new SimpleAdapter(LaptopBrandList.this, laptopBrandList, R.layout.laptop_brand_edit_row,
                 new String[]{"MODELOFLAPTOP_BRAND","MODELOFLAPTOP_TYPE","GRADE_NAME"},
                 new int[]{R.id.twLaptopBrand,R.id.twLaptopType,R.id.twGradeName});
 

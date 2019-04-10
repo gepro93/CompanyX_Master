@@ -138,6 +138,8 @@ public class MobileBrandHandle extends AppCompatActivity {
 
         alert.setNegativeButton("Mentés", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                brandName.setText(brandName.getText().toString().replaceAll(" ","_"));
+                typeName.setText(typeName.getText().toString().replaceAll(" ","_"));
                 String etBrandName = brandName.getText().toString();
                 String etTypeName = typeName.getText().toString();
 
